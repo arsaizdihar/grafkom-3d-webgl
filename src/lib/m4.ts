@@ -1,5 +1,7 @@
 // source: https://webglfundamentals.org/webgl/lessons/webgl-3d-orthographic.html
 
+import { Transform } from "./engine/transform";
+
 // column major matrix
 export class Matrix4 {
   public el: number[];
@@ -121,6 +123,36 @@ export class Matrix4 {
       0,
       1,
     ]);
+  }
+
+  /**
+   *
+   * @param transform
+   * @returns the computed matrix from the transform with formula M = T * Rz * Ry * Rx * S. Right now using euler angles.
+   */
+  static compose(transform: Transform) {
+    // TODO: use quaternion instead of euler angles
+    return Matrix4.multiply(
+      Matrix4.translation(
+        transform.translation.x,
+        transform.translation.y,
+        transform.translation.z
+      ),
+      Matrix4.multiply(
+        Matrix4.zRotation(transform.rotation.z),
+        Matrix4.multiply(
+          Matrix4.yRotation(transform.rotation.y),
+          Matrix4.multiply(
+            Matrix4.xRotation(transform.rotation.x),
+            Matrix4.scaling(
+              transform.scaling.x,
+              transform.scaling.y,
+              transform.scaling.z
+            )
+          )
+        )
+      )
+    );
   }
 
   translate(tx: number, ty: number, tz: number) {
