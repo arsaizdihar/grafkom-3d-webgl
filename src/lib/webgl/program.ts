@@ -18,6 +18,7 @@ export class Program<
   >
 > {
   public gl: WebGLRenderingContext;
+  public indexBuffer: WebGLBuffer | null;
   private attributes: Record<
     keyof TAttribs,
     {
@@ -92,6 +93,8 @@ export class Program<
         location,
       };
     });
+
+    this.indexBuffer = this.gl.createBuffer();
   }
 
   private createProgram(
@@ -156,6 +159,15 @@ export class Program<
       }
       (this.gl[uniform.type] as any)(uniform.location, ...args);
     });
+  }
+
+  bindIndexBuffer(bufferData: number[]) {
+    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+    this.gl.bufferData(
+      this.gl.ELEMENT_ARRAY_BUFFER,
+      new Uint16Array(bufferData),
+      this.gl.STATIC_DRAW
+    );
   }
 
   /**

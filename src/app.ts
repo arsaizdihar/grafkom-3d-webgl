@@ -20,25 +20,16 @@ export class Application {
         position: {
           size: 3,
         },
-      },
-      uniforms: {
-        color: {
-          type: "uniform4f",
+        vertexColor: {
+          size: 4,
         },
       },
+      uniforms: {},
     });
   }
 
   draw() {
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-
-    this.program.setUniforms({ color: [1, 0, 0, 1] });
-
-    this.program.bindBufferStaticDraw(
-      this.program.a.position.buffer,
-      [-1, -1, 0, 1, -1, 0, 0, 1, 0]
-    );
-    this.gl.drawArrays(this.gl.TRIANGLES, 0, 3);
   }
 }
