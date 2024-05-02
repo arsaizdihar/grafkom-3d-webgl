@@ -1,5 +1,6 @@
 // source: https://webglfundamentals.org/webgl/lessons/webgl-3d-orthographic.html
 
+import { Euler } from "./engine/euler";
 import { Transform } from "./engine/transform";
 
 // column major matrix
@@ -41,6 +42,13 @@ export class Matrix4 {
     const s = Math.sin(angleInRadians);
 
     return new Matrix4([c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  }
+
+  static rotation(euler: Euler) {
+    return Matrix4.multiply(
+      Matrix4.zRotation(euler.z),
+      Matrix4.multiply(Matrix4.yRotation(euler.y), Matrix4.xRotation(euler.x))
+    );
   }
 
   static scaling(sx: number, sy: number, sz: number) {
@@ -134,22 +142,16 @@ export class Matrix4 {
     // TODO: use quaternion instead of euler angles
     return Matrix4.multiply(
       Matrix4.translation(
-        transform.translation.x,
-        transform.translation.y,
-        transform.translation.z
+        transform.position.x,
+        transform.position.y,
+        transform.position.z
       ),
       Matrix4.multiply(
-        Matrix4.zRotation(transform.rotation.z),
-        Matrix4.multiply(
-          Matrix4.yRotation(transform.rotation.y),
-          Matrix4.multiply(
-            Matrix4.xRotation(transform.rotation.x),
-            Matrix4.scaling(
-              transform.scaling.x,
-              transform.scaling.y,
-              transform.scaling.z
-            )
-          )
+        Matrix4.rotation(transform.rotation),
+        Matrix4.scaling(
+          transform.scaling.x,
+          transform.scaling.y,
+          transform.scaling.z
         )
       )
     );
@@ -173,5 +175,9 @@ export class Matrix4 {
 
   scale(sx: number, sy: number, sz: number) {
     return Matrix4.multiply(this, Matrix4.scaling(sx, sy, sz));
+  }
+
+  clone() {
+    return new Matrix4([...this.el]);
   }
 }

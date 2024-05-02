@@ -3,13 +3,12 @@ import { Transform } from "./transform";
 
 export class Node {
   public children: Node[] = [];
-  public transform: Transform;
   protected parent: Node | null = null;
+  public transform: Transform;
 
   private _localMatrix: Matrix4;
   set localMatrix(matrix: Matrix4) {
     this._localMatrix = matrix;
-    this.computeWorldMatrix();
   }
   get localMatrix(): Matrix4 {
     return this._localMatrix;
@@ -23,27 +22,60 @@ export class Node {
     this._worldMatrix = matrix;
   }
 
-  constructor(transform?: Transform, parent?: Node, children?: Node[]) {
+  constructor(transform?: Transform, parent?: Node) {
     this.transform = transform || new Transform();
     this.parent = parent || null;
-    if (children) {
-      this.children = children;
-    }
     this._localMatrix = Matrix4.compose(this.transform);
     this._worldMatrix = Matrix4.identity();
+  }
+
+  addChild(node: Node) {
+    node.removeFromParent();
+    this.children.push(node);
+    node.parent = this;
+    return this;
+  }
+
+  removeChild(node: Node) {
+    const index = this.children.indexOf(node);
+    if (index !== -1) {
+      this.children[index].parent = null;
+      this.children.splice(index, 1);
+    }
+    return this;
+  }
+
+  removeFromParent() {
+    if (this.parent) {
+      this.parent.removeChild(this);
+    }
+    return this;
   }
 
   computeLocalMatrix() {
     this.localMatrix = Matrix4.compose(this.transform);
   }
 
-  computeWorldMatrix() {
-    this._worldMatrix = this.parent
-      ? Matrix4.multiply(this.parent.worldMatrix, this.localMatrix)
-      : this.localMatrix;
+  computeWorldMatrix(updateParent = true, updateChildren = true) {
+    if (updateParent && this.parent) {
+      this.parent.computeWorldMatrix(true, false);
+    }
 
-    this.children.forEach((child) => {
-      child.computeWorldMatrix();
-    });
+    // this.computeLocalMatrix();
+
+    if (this.parent) {
+      this._worldMatrix = Matrix4.multiply(
+        this.parent.worldMatrix,
+        this.localMatrix
+      );
+    } else {
+      this._worldMatrix = this.localMatrix.clone();
+    }
+
+    if (updateChildren) {
+      this.children.forEach((child) => {
+        child.computeWorldMatrix(false, true);
+      });
+    }
   }
 }
