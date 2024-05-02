@@ -6,8 +6,10 @@ export class Node {
   public children: Node[] = [];
   public camera?: Camera = undefined;
   public mesh?: Mesh = undefined;
+  public transform: Transform;
 
-  constructor(public transform: Transform, children?: Node[]) {
+  constructor(transform?: Transform, children?: Node[]) {
+    this.transform = transform || new Transform();
     if (children) {
       this.children = children;
     }
