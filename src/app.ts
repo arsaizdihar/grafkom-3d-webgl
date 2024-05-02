@@ -1,3 +1,4 @@
+import { Matrix4 } from "./lib/m4";
 import { Program } from "./lib/webgl/program";
 import fragmentShaderSource from "./shaders/fragment-shader.glsl";
 import vertexShaderSource from "./shaders/vertex-shader.glsl";
@@ -5,6 +6,7 @@ import vertexShaderSource from "./shaders/vertex-shader.glsl";
 export class Application {
   public gl;
   public program;
+  public projection;
 
   constructor(public canvas: HTMLCanvasElement) {
     const gl = canvas.getContext("webgl");
@@ -26,6 +28,11 @@ export class Application {
       },
       uniforms: {},
     });
+    this.projection = Matrix4.projection(
+      canvas.clientWidth,
+      canvas.clientHeight,
+      400
+    );
   }
 
   draw() {

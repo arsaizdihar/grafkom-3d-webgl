@@ -122,4 +122,24 @@ export class Matrix4 {
       1,
     ]);
   }
+
+  translate(tx: number, ty: number, tz: number) {
+    return Matrix4.multiply(this, Matrix4.translation(tx, ty, tz));
+  }
+
+  xRotate(angleInRadians: number) {
+    return Matrix4.multiply(this, Matrix4.xRotation(angleInRadians));
+  }
+
+  yRotate(angleInRadians: number) {
+    return Matrix4.multiply(this, Matrix4.yRotation(angleInRadians));
+  }
+
+  zRotate(angleInRadians: number) {
+    return Matrix4.multiply(this, Matrix4.zRotation(angleInRadians));
+  }
+
+  scale(sx: number, sy: number, sz: number) {
+    return Matrix4.multiply(this, Matrix4.scaling(sx, sy, sz));
+  }
 }
