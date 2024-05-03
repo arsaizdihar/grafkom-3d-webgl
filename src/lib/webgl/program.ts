@@ -1,14 +1,15 @@
+import { BufferAttribute } from "../engine/buffer-attribute";
+
 type UniformTypes =
   | `uniform${1 | 2 | 3 | 4}${"i" | "f"}${"v" | ""}`
   | `uniformMatrix${2 | 3 | 4}fv`;
 
+type AttributeSingleDataType = BufferAttribute | Float32Array | number[];
+type AttributeDataType = [AttributeSingleDataType] | number[];
+export type AttributeSetters = (...v: AttributeDataType) => void;
+
 export class Program<
-  TAttribs extends Record<
-    string,
-    {
-      size: number;
-    }
-  >,
+  TAttribs extends string,
   TUniforms extends Record<
     string,
     {
@@ -19,16 +20,10 @@ export class Program<
 > {
   public gl: WebGLRenderingContext;
   public indexBuffer: WebGLBuffer | null;
-  private attributes: Record<
-    keyof TAttribs,
-    {
-      buffer: WebGLBuffer | null;
-      location: number;
-    }
-  >;
+  private attributeSetters: Record<TAttribs, AttributeSetters>;
 
   public get a() {
-    return this.attributes;
+    return this.attributeSetters;
   }
 
   private uniforms: {
@@ -54,28 +49,17 @@ export class Program<
     gl: WebGLRenderingContext;
     vertexShaderSource: string;
     fragmentShaderSource: string;
-    attributes: TAttribs;
+    attributes: TAttribs[];
     uniforms: TUniforms;
   }) {
     this.gl = gl;
     this.program = this.createProgram(vertexShaderSource, fragmentShaderSource);
     this.gl.useProgram(this.program);
-    this.attributes = {} as typeof this.attributes;
-    Object.entries(attributes).forEach(([attribName, obj]) => {
-      const location = this.gl.getAttribLocation(
-        this.program,
+    this.attributeSetters = {} as typeof this.attributeSetters;
+    attributes.forEach((attribName) => {
+      this.attributeSetters[attribName] = this.createAttributeSetter(
         "a_" + attribName
       );
-      const buffer = this.gl.createBuffer();
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-      gl.enableVertexAttribArray(location);
-      gl.vertexAttribPointer(location, obj.size, gl.FLOAT, false, 0, 0);
-      this.attributes[attribName as keyof TAttribs] = {
-        buffer,
-        location,
-      };
-      gl.bindBuffer(gl.ARRAY_BUFFER, null);
     });
 
     this.uniforms = {} as typeof this.uniforms;
@@ -135,6 +119,42 @@ export class Program<
     throw new Error("Failed to create shader");
   }
 
+  private createAttributeSetter(name: string): AttributeSetters {
+    // Initialization Time
+    const loc = this.gl.getAttribLocation(this.program, name);
+    const buf = this.gl.createBuffer();
+    return (...values) => {
+      // Render Time (saat memanggil setAttributes() pada render loop)
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buf);
+      const v = values[0];
+      if (v instanceof BufferAttribute) {
+        if (v.isDirty) {
+          // Data Changed Time (note that buffer is already binded)
+          this.gl.bufferData(this.gl.ARRAY_BUFFER, v.data, this.gl.STATIC_DRAW);
+          v.consume();
+        }
+        this.gl.enableVertexAttribArray(loc);
+        this.gl.vertexAttribPointer(
+          loc,
+          v.size,
+          v.dtype,
+          v.normalize,
+          v.stride,
+          v.offset
+        );
+      } else {
+        this.gl.disableVertexAttribArray(loc);
+        if (v instanceof Float32Array)
+          this.gl[`vertexAttrib${v.length}fv` as "vertexAttrib4fv"](loc, v);
+        else
+          this.gl[`vertexAttrib${values.length}f` as "vertexAttrib4f"](
+            loc,
+            ...(values as [number, number, number, number])
+          );
+      }
+    };
+  }
+
   /**
    * Set the uniforms in the shader
    * @param uniforms uniforms to set and the args to pass to the uniform
@@ -170,26 +190,14 @@ export class Program<
     );
   }
 
-  /**
-   * Bind the buffer to the shader
-   * @param targetBuffer buffer to bind
-   * @param bufferData data to bind to the buffer
-   *
-   * @example
-   * ```ts
-   * program.bindBufferStaticDraw(program.a.position.buffer, [25, 10, 5, 2, 3, 4.5])
-   * ```
-   */
-  bindBufferStaticDraw(targetBuffer: WebGLBuffer | null, bufferData: number[]) {
-    if (!targetBuffer) {
-      return;
-    }
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, targetBuffer);
-
-    this.gl.bufferData(
-      this.gl.ARRAY_BUFFER,
-      new Float32Array(bufferData),
-      this.gl.STATIC_DRAW
-    );
+  setAttributes(attributes: {
+    [K in TAttribs]?: AttributeSingleDataType;
+  }) {
+    Object.entries(attributes).forEach(([name, args]) => {
+      if (!args) {
+        return;
+      }
+      this.attributeSetters[name as  TAttribs](...args as any);
+    });
   }
 }

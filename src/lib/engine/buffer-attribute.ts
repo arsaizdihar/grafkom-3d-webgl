@@ -1,3 +1,5 @@
+import { WebGLType } from "../webgl/types";
+
 export type TypedArray =
   | Float32Array
   | Uint8Array
@@ -36,7 +38,7 @@ export class BufferAttribute {
   ) {
     this._data = data;
     this._size = size;
-    this._dtype = options.dtype || WebGLRenderingContext.FLOAT;
+    this._dtype = options.dtype || WebGLType.FLOAT;
     this._normalize = options.normalize || false;
     this._stride = options.stride || 0;
     this._offset = options.offset || 0;
@@ -118,16 +120,16 @@ export class BufferAttribute {
   set(index: number, data: number[]) {
     this._isDirty = true;
 
-    this._data.set(data, index * this._size);
+    this._data.set(data, this.offset + index * this.stride * this._size);
   }
 
   get(index: number, size?: number) {
-    index *= this._size;
+    index *= this._size * this.stride;
     if (!size) size = this._size;
     const data: number[] = [];
 
     for (let i = 0; i < size; i++) {
-      data.push(this._data[index + i]);
+      data.push(this._data[this.offset + index + i]);
     }
 
     return data;
