@@ -1,4 +1,4 @@
-import { Matrix4 } from "../m4";
+import { Matrix4 } from "../math/m4";
 import { Node } from "./node";
 
 export abstract class Camera extends Node {

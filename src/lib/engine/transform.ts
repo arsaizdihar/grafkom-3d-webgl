@@ -1,5 +1,5 @@
-import { Euler } from "./euler";
-import { Quaternion } from "./quaternion";
+import { Euler } from "../math/euler";
+import { Quaternion } from "../math/quaternion";
 import { Vector3 } from "./vector";
 
 export class Transform {

@@ -1,4 +1,4 @@
-import { Matrix4 } from "../m4";
+import { Matrix4 } from "./m4";
 import { Quaternion } from "./quaternion";
 
 // internal cache to minimize object creation

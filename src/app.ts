@@ -1,4 +1,4 @@
-import { Matrix4 } from "./lib/m4";
+import { Matrix4 } from "./lib/math/m4";
 import { Program } from "./lib/webgl/program";
 import fragmentShaderSource from "./shaders/fragment-shader.glsl";
 import vertexShaderSource from "./shaders/vertex-shader.glsl";

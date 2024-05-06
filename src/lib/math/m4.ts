@@ -1,9 +1,9 @@
 // source: https://github.com/mrdoob/three.js/blob/e1e2a22e6a2904fcf627cad39e3389dfa1101c07/src/math/Matrix4.js#L4
 
-import { Euler } from "./engine/euler";
-import { Quaternion } from "./engine/quaternion";
-import { Transform } from "./engine/transform";
-import { Vector3 } from "./engine/vector";
+import { Transform } from "../engine/transform";
+import { Vector3 } from "../engine/vector";
+import { Euler } from "./euler";
+import { Quaternion } from "./quaternion";
 
 // internal cache to minimize object creation
 const _transform = new Transform(

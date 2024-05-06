@@ -1,5 +1,5 @@
 import { Camera } from "../engine/camera";
-import { Matrix4 } from "../m4";
+import { Matrix4 } from "../math/m4";
 
 class OrthographicCamera extends Camera {
   top: number;
