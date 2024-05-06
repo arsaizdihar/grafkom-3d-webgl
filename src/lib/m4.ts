@@ -1,9 +1,22 @@
-// source: https://webglfundamentals.org/webgl/lessons/webgl-3d-orthographic.html
+// source: https://github.com/mrdoob/three.js/blob/e1e2a22e6a2904fcf627cad39e3389dfa1101c07/src/math/Matrix4.js#L4
 
 import { Euler } from "./engine/euler";
+import { Quaternion } from "./engine/quaternion";
 import { Transform } from "./engine/transform";
+import { Vector3 } from "./engine/vector";
 
-// column major matrix
+// internal cache to minimize object creation
+const _transform = new Transform(
+  new Vector3(0, 0, 0),
+  new Euler(),
+  new Vector3(1, 1, 1)
+);
+const _zeroPosition = _transform.position;
+const _oneScale = _transform.scaling;
+
+/**
+ * 4x4 column-major matrix
+ */
 export class Matrix4 {
   public el: number[];
 
@@ -17,6 +30,10 @@ export class Matrix4 {
 
   static identity() {
     return new Matrix4([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  }
+
+  static zero() {
+    return new Matrix4([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   }
 
   static translation(tx: number, ty: number, tz: number) {
@@ -55,8 +72,52 @@ export class Matrix4 {
     return new Matrix4([sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1]);
   }
 
+  static orthographic(
+    left: number,
+    right: number,
+    bottom: number,
+    top: number,
+    near: number,
+    far: number
+  ) {
+    return new Matrix4([
+      2 / (right - left),
+      0,
+      0,
+      (left + right) / (left - right),
+      0,
+      2 / (top - bottom),
+      0,
+      (top + bottom) / (bottom - top),
+      0,
+      0,
+      2 / (near - far),
+      (near + far) / (near - far),
+      0,
+      0,
+      0,
+      1,
+    ]);
+  }
+
+  /**
+   *
+   * @param aM left matrix
+   * @param bM right matrix
+   * @returns new matrix that is the product of the two input matrices
+   */
   static multiply(aM: Matrix4, bM: Matrix4) {
-    const a = aM.el;
+    return aM.clone().multiply(bM);
+  }
+
+  /**
+   * Mutates the matrix to its product with another matrix and returns it.
+   *
+   * @param bM right matrix
+   * @returns this
+   */
+  multiply(bM: Matrix4) {
+    const a = this.el;
     const b = bM.el;
 
     const b00 = b[0 * 4 + 0];
@@ -92,26 +153,26 @@ export class Matrix4 {
     const a32 = a[3 * 4 + 2];
     const a33 = a[3 * 4 + 3];
 
-    return new Matrix4([
-      b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30,
-      b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31,
-      b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32,
-      b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33,
-      b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30,
-      b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31,
-      b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32,
-      b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33,
-      b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30,
-      b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31,
-      b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32,
-      b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33,
-      b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30,
-      b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31,
-      b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32,
-      b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33,
-    ]);
+    a[0] = b00 * a00 + b01 * a10 + b02 * a20 + b03 * a30;
+    a[1] = b00 * a01 + b01 * a11 + b02 * a21 + b03 * a31;
+    a[2] = b00 * a02 + b01 * a12 + b02 * a22 + b03 * a32;
+    a[3] = b00 * a03 + b01 * a13 + b02 * a23 + b03 * a33;
+    a[4] = b10 * a00 + b11 * a10 + b12 * a20 + b13 * a30;
+    a[5] = b10 * a01 + b11 * a11 + b12 * a21 + b13 * a31;
+    a[6] = b10 * a02 + b11 * a12 + b12 * a22 + b13 * a32;
+    a[7] = b10 * a03 + b11 * a13 + b12 * a23 + b13 * a33;
+    a[8] = b20 * a00 + b21 * a10 + b22 * a20 + b23 * a30;
+    a[9] = b20 * a01 + b21 * a11 + b22 * a21 + b23 * a31;
+    a[10] = b20 * a02 + b21 * a12 + b22 * a22 + b23 * a32;
+    a[11] = b20 * a03 + b21 * a13 + b22 * a23 + b23 * a33;
+    a[12] = b30 * a00 + b31 * a10 + b32 * a20 + b33 * a30;
+    a[13] = b30 * a01 + b31 * a11 + b32 * a21 + b33 * a31;
+    a[14] = b30 * a02 + b31 * a12 + b32 * a22 + b33 * a32;
+    a[15] = b30 * a03 + b31 * a13 + b32 * a23 + b33 * a33;
+    return this;
   }
 
+  // create orthographic projection matrix
   static projection(width: number, height: number, depth: number) {
     return new Matrix4([
       2 / width,
@@ -136,48 +197,315 @@ export class Matrix4 {
   /**
    *
    * @param transform
+   * @param quaternion optional quaternion to use for rotation
    * @returns the computed matrix from the transform with formula M = T * Rz * Ry * Rx * S. Right now using euler angles.
    */
-  static compose(transform: Transform) {
-    // TODO: use quaternion instead of euler angles
-    return Matrix4.multiply(
-      Matrix4.translation(
-        transform.position.x,
-        transform.position.y,
-        transform.position.z
-      ),
-      Matrix4.multiply(
-        Matrix4.rotation(transform.rotation),
-        Matrix4.scaling(
-          transform.scaling.x,
-          transform.scaling.y,
-          transform.scaling.z
-        )
-      )
-    );
+  static compose(transform: Transform, quaternion?: Quaternion) {
+    const m = Matrix4.identity();
+    return m.compose(transform, quaternion);
   }
 
-  translate(tx: number, ty: number, tz: number) {
-    return Matrix4.multiply(this, Matrix4.translation(tx, ty, tz));
+  /**
+   * Mutates the matrix to its composed matrix with a transform and returns it.
+   *
+   * @param transform
+   * @param quaternion optional quaternion to use for rotation
+   * @returns this
+   */
+  compose(transform: Transform, quaternion?: Quaternion) {
+    const te = this.el;
+    const position = transform.position;
+    if (!quaternion) {
+      quaternion = transform.rotationQuaternion;
+    }
+    const scale = transform.scaling;
+    const x = quaternion.x,
+      y = quaternion.y,
+      z = quaternion.z,
+      w = quaternion.w;
+    const x2 = x + x,
+      y2 = y + y,
+      z2 = z + z;
+    const xx = x * x2,
+      xy = x * y2,
+      xz = x * z2;
+    const yy = y * y2,
+      yz = y * z2,
+      zz = z * z2;
+    const wx = w * x2,
+      wy = w * y2,
+      wz = w * z2;
+
+    const sx = scale.x,
+      sy = scale.y,
+      sz = scale.z;
+
+    te[0] = (1 - (yy + zz)) * sx;
+    te[1] = (xy + wz) * sx;
+    te[2] = (xz - wy) * sx;
+    te[3] = 0;
+
+    te[4] = (xy - wz) * sy;
+    te[5] = (1 - (xx + zz)) * sy;
+    te[6] = (yz + wx) * sy;
+    te[7] = 0;
+
+    te[8] = (xz + wy) * sz;
+    te[9] = (yz - wx) * sz;
+    te[10] = (1 - (xx + yy)) * sz;
+    te[11] = 0;
+
+    te[12] = position.x;
+    te[13] = position.y;
+    te[14] = position.z;
+    te[15] = 1;
+
+    return this;
   }
 
-  xRotate(angleInRadians: number) {
-    return Matrix4.multiply(this, Matrix4.xRotation(angleInRadians));
+  static translate(m: Matrix4, tx: number, ty: number, tz: number) {
+    return Matrix4.multiply(m, Matrix4.translation(tx, ty, tz));
   }
 
-  yRotate(angleInRadians: number) {
-    return Matrix4.multiply(this, Matrix4.yRotation(angleInRadians));
+  static xRotate(m: Matrix4, angleInRadians: number) {
+    return Matrix4.multiply(m, Matrix4.xRotation(angleInRadians));
   }
 
-  zRotate(angleInRadians: number) {
-    return Matrix4.multiply(this, Matrix4.zRotation(angleInRadians));
+  static yRotate(m: Matrix4, angleInRadians: number) {
+    return Matrix4.multiply(m, Matrix4.yRotation(angleInRadians));
   }
 
-  scale(sx: number, sy: number, sz: number) {
-    return Matrix4.multiply(this, Matrix4.scaling(sx, sy, sz));
+  static zRotate(m: Matrix4, angleInRadians: number) {
+    return Matrix4.multiply(m, Matrix4.zRotation(angleInRadians));
+  }
+
+  static scale(m: Matrix4, sx: number, sy: number, sz: number) {
+    return Matrix4.multiply(m, Matrix4.scaling(sx, sy, sz));
   }
 
   clone() {
     return new Matrix4([...this.el]);
+  }
+
+  /**
+   *
+   * @param m the matrix that will be inverted
+   * @returns new matrix that is the inverse of the input matrix
+   */
+  static invert(m: Matrix4) {
+    const copy = m.clone();
+    return copy.invert();
+  }
+
+  /**
+   * Mutates the matrix to its inverse and returns it.
+   * @returns this
+   */
+  invert(): this {
+    const te = this.el,
+      n11 = te[0],
+      n21 = te[1],
+      n31 = te[2],
+      n41 = te[3],
+      n12 = te[4],
+      n22 = te[5],
+      n32 = te[6],
+      n42 = te[7],
+      n13 = te[8],
+      n23 = te[9],
+      n33 = te[10],
+      n43 = te[11],
+      n14 = te[12],
+      n24 = te[13],
+      n34 = te[14],
+      n44 = te[15],
+      t11 =
+        n23 * n34 * n42 -
+        n24 * n33 * n42 +
+        n24 * n32 * n43 -
+        n22 * n34 * n43 -
+        n23 * n32 * n44 +
+        n22 * n33 * n44,
+      t12 =
+        n14 * n33 * n42 -
+        n13 * n34 * n42 -
+        n14 * n32 * n43 +
+        n12 * n34 * n43 +
+        n13 * n32 * n44 -
+        n12 * n33 * n44,
+      t13 =
+        n13 * n24 * n42 -
+        n14 * n23 * n42 +
+        n14 * n22 * n43 -
+        n12 * n24 * n43 -
+        n13 * n22 * n44 +
+        n12 * n23 * n44,
+      t14 =
+        n14 * n23 * n32 -
+        n13 * n24 * n32 -
+        n14 * n22 * n33 +
+        n12 * n24 * n33 +
+        n13 * n22 * n34 -
+        n12 * n23 * n34;
+
+    const det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
+
+    if (det === 0) {
+      this.el = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      return this;
+    }
+
+    const detInv = 1 / det;
+
+    te[0] = t11 * detInv;
+    te[1] =
+      (n24 * n33 * n41 -
+        n23 * n34 * n41 -
+        n24 * n31 * n43 +
+        n21 * n34 * n43 +
+        n23 * n31 * n44 -
+        n21 * n33 * n44) *
+      detInv;
+    te[2] =
+      (n22 * n34 * n41 -
+        n24 * n32 * n41 +
+        n24 * n31 * n42 -
+        n21 * n34 * n42 -
+        n22 * n31 * n44 +
+        n21 * n32 * n44) *
+      detInv;
+    te[3] =
+      (n23 * n32 * n41 -
+        n22 * n33 * n41 -
+        n23 * n31 * n42 +
+        n21 * n33 * n42 +
+        n22 * n31 * n43 -
+        n21 * n32 * n43) *
+      detInv;
+
+    te[4] = t12 * detInv;
+    te[5] =
+      (n13 * n34 * n41 -
+        n14 * n33 * n41 +
+        n14 * n31 * n43 -
+        n11 * n34 * n43 -
+        n13 * n31 * n44 +
+        n11 * n33 * n44) *
+      detInv;
+    te[6] =
+      (n14 * n32 * n41 -
+        n12 * n34 * n41 -
+        n14 * n31 * n42 +
+        n11 * n34 * n42 +
+        n12 * n31 * n44 -
+        n11 * n32 * n44) *
+      detInv;
+    te[7] =
+      (n12 * n33 * n41 -
+        n13 * n32 * n41 +
+        n13 * n31 * n42 -
+        n11 * n33 * n42 -
+        n12 * n31 * n43 +
+        n11 * n32 * n43) *
+      detInv;
+
+    te[8] = t13 * detInv;
+    te[9] =
+      (n14 * n23 * n41 -
+        n13 * n24 * n41 -
+        n14 * n21 * n43 +
+        n11 * n24 * n43 +
+        n13 * n21 * n44 -
+        n11 * n23 * n44) *
+      detInv;
+    te[10] =
+      (n12 * n24 * n41 -
+        n14 * n22 * n41 +
+        n14 * n21 * n42 -
+        n11 * n24 * n42 -
+        n12 * n21 * n44 +
+        n11 * n22 * n44) *
+      detInv;
+    te[11] =
+      (n13 * n22 * n41 -
+        n12 * n23 * n41 -
+        n13 * n21 * n42 +
+        n11 * n23 * n42 +
+        n12 * n21 * n43 -
+        n11 * n22 * n43) *
+      detInv;
+
+    te[12] = t14 * detInv;
+    te[13] =
+      (n13 * n24 * n31 -
+        n14 * n23 * n31 +
+        n14 * n21 * n33 -
+        n11 * n24 * n33 -
+        n13 * n21 * n34 +
+        n11 * n23 * n34) *
+      detInv;
+    te[14] =
+      (n14 * n22 * n31 -
+        n12 * n24 * n31 -
+        n14 * n21 * n32 +
+        n11 * n24 * n32 +
+        n12 * n21 * n34 -
+        n11 * n22 * n34) *
+      detInv;
+    te[15] =
+      (n12 * n23 * n31 -
+        n13 * n22 * n31 +
+        n13 * n21 * n32 -
+        n11 * n23 * n32 -
+        n12 * n21 * n33 +
+        n11 * n22 * n33) *
+      detInv;
+
+    return this;
+  }
+
+  /**
+   *
+   * @param m the matrix that will be transposed
+   * @returns new matrix that is the transpose of the input matrix
+   */
+  static transpose(m: Matrix4) {
+    const copy = m.clone();
+    return copy.transpose();
+  }
+
+  /**
+   * Mutates the matrix to its transpose and returns it.
+   * @returns this
+   */
+  transpose() {
+    const m = this.el;
+
+    this.el = [
+      m[0],
+      m[4],
+      m[8],
+      m[12],
+      m[1],
+      m[5],
+      m[9],
+      m[13],
+      m[2],
+      m[6],
+      m[10],
+      m[14],
+      m[3],
+      m[7],
+      m[11],
+      m[15],
+    ];
+    return this;
+  }
+
+  makeRotationFromQuaternion(q: Quaternion) {
+    _transform.position = _zeroPosition;
+    _transform.scaling = _oneScale;
+
+    return this.compose(_transform, q);
   }
 }
