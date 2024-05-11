@@ -172,26 +172,75 @@ export class Matrix4 {
     return this;
   }
 
-  // create orthographic projection matrix
-  static projection(width: number, height: number, depth: number) {
-    return new Matrix4([
-      2 / width,
-      0,
-      0,
-      0,
-      0,
-      -2 / height,
-      0,
-      0,
-      0,
-      0,
-      2 / depth,
-      0,
-      -1,
-      1,
-      0,
-      1,
-    ]);
+  static orthographicProjection(
+    left: number,
+    right: number,
+    top: number,
+    bottom: number,
+    near: number,
+    far: number
+  ) {
+    return Matrix4.zero().orthographicProjection(
+      left,
+      right,
+      top,
+      bottom,
+      near,
+      far
+    );
+  }
+
+  /**
+   * Mutates the matrix the orthographic projection matrix based on the input parameters and returns it.
+   * The initial matrix dont have any effect on the result.
+   *
+   * @param left
+   * @param right
+   * @param top
+   * @param bottom
+   * @param near
+   * @param far
+   * @returns
+   */
+  orthographicProjection(
+    left: number,
+    right: number,
+    top: number,
+    bottom: number,
+    near: number,
+    far: number
+  ) {
+    const te = this.el;
+    const w = 1.0 / (right - left);
+    const h = 1.0 / (top - bottom);
+    const p = 1.0 / (far - near);
+
+    const x = (right + left) * w;
+    const y = (top + bottom) * h;
+
+    let z, zInv;
+
+    z = (far + near) * p;
+    zInv = -2 * p;
+
+    te[0] = 2 * w;
+    te[4] = 0;
+    te[8] = 0;
+    te[12] = -x;
+    te[1] = 0;
+    te[5] = 2 * h;
+    te[9] = 0;
+    te[13] = -y;
+    te[2] = 0;
+    te[6] = 0;
+    te[10] = zInv;
+    te[14] = -z;
+    te[3] = 0;
+    te[7] = 0;
+    te[11] = 0;
+    te[15] = 1;
+
+    return this;
   }
 
   /**

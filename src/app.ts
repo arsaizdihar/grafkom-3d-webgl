@@ -1,4 +1,7 @@
-import { Matrix4 } from "./lib/math/m4";
+import { OrthographicCamera } from "./lib/camera/orthographic-camera";
+import { Camera } from "./lib/engine/camera";
+import { Node as GLNode } from "./lib/engine/node";
+import { Scene } from "./lib/engine/scene";
 import { Program } from "./lib/webgl/program";
 import fragmentShaderSource from "./shaders/fragment-shader.glsl";
 import vertexShaderSource from "./shaders/vertex-shader.glsl";
@@ -6,7 +9,8 @@ import vertexShaderSource from "./shaders/vertex-shader.glsl";
 export class Application {
   public gl;
   public program;
-  public projection;
+  public scene: Scene;
+  public camera: Camera;
 
   constructor(public canvas: HTMLCanvasElement) {
     const gl = canvas.getContext("webgl");
@@ -18,25 +22,30 @@ export class Application {
       gl,
       fragmentShaderSource,
       vertexShaderSource,
-      attributes: {
-        position: {
-          size: 3,
-        },
-        vertexColor: {
-          size: 4,
-        },
-      },
+      attributes: ["position", "vertexColor"],
       uniforms: {},
     });
-    this.projection = Matrix4.projection(
-      canvas.clientWidth,
-      canvas.clientHeight,
-      400
-    );
+    this.adjustCanvas();
+    const ro = new ResizeObserver(this.adjustCanvas.bind(this));
+    ro.observe(canvas, { box: "content-box" });
+    const rootNode = new GLNode();
+    this.scene = new Scene(rootNode);
+    this.camera = new OrthographicCamera(-1, 1, -1, 1, -1, 1);
+    rootNode.addChild(this.camera);
+  }
+
+  adjustCanvas() {
+    const dw = this.canvas.clientWidth;
+    const dh = this.canvas.clientHeight;
+    if (this.canvas.width !== dw || this.canvas.height !== dh) {
+      this.canvas.width = dw;
+      this.canvas.height = dh;
+      this.gl.viewport(0, 0, dw, dh);
+    }
   }
 
   draw() {
-    this.gl.clearColor(0, 0, 0, 1);
+    this.gl.clearColor(1, 1, 1, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
   }
 }

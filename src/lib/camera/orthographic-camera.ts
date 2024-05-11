@@ -1,7 +1,6 @@
 import { Camera } from "../engine/camera";
-import { Matrix4 } from "../math/m4";
 
-class OrthographicCamera extends Camera {
+export class OrthographicCamera extends Camera {
   top: number;
   bottom: number;
   left: number;
@@ -30,9 +29,7 @@ class OrthographicCamera extends Camera {
   }
 
   computeProjectionMatrix() {
-    // M4.orthographic() menghasilkan proyeksi matriks ortografik
-    // dengan 6 tupel left, right, bottom, top, near, dan far.
-    this._projectionMatrix = Matrix4.orthographic(
+    this._projectionMatrix.orthographicProjection(
       this.left,
       this.right,
       this.bottom,

@@ -1,3 +1,3 @@
-import { ShaderMaterial } from "./shader-material";
+import { Material } from "./material";
 
-export class BasicMaterial extends ShaderMaterial {}
+export class BasicMaterial extends Material {}

@@ -7,7 +7,7 @@ export abstract class Camera extends Node {
 
   computeWorldMatrix() {
     super.computeWorldMatrix();
-    this._invWorldMatrix = this.worldMatrix.inv();
+    this._invWorldMatrix = Matrix4.invert(this.worldMatrix);
   }
 
   get viewProjectionMatrix() {

@@ -197,7 +197,7 @@ export class Program<
       if (!args) {
         return;
       }
-      this.attributeSetters[name as  TAttribs](...args as any);
+      this.attributeSetters[name as TAttribs](...(args as any));
     });
   }
 }
