@@ -22,3 +22,5 @@ export const WebGLType = {
   SAMPLER_2D: WebGLRenderingContext.SAMPLER_2D,
   SAMPLER_CUBE: WebGLRenderingContext.SAMPLER_CUBE,
 };
+
+export type WebGLType = (typeof WebGLType)[keyof typeof WebGLType];

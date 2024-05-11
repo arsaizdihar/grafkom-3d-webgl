@@ -7,4 +7,4 @@ canvas.width = canvasContainer.clientWidth;
 canvas.height = canvasContainer.clientHeight;
 
 const app = new Application(canvas);
-app.draw();
+app.render();
