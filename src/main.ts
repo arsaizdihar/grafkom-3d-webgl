@@ -29,7 +29,10 @@ const camera = new OrthographicCamera(
 rootNode.addChild(camera);
 const image = new GLImage("/f-texture.png");
 await image.load();
-const texture = new Texture({ image, texture: app.gl.createTexture() });
+const texture = new Texture({
+  image,
+  texture: app.gl.createTexture(),
+});
 const geometry = new PlaneGeometry(50, 50);
 const material = new BasicMaterial({
   textures: [texture],
