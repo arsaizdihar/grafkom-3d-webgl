@@ -120,11 +120,11 @@ export class BufferAttribute {
   set(index: number, data: number[]) {
     this._isDirty = true;
 
-    this._data.set(data, this.offset + index * this.stride * this._size);
+    this._data.set(data, this.offset + index * (this.stride + this._size));
   }
 
   get(index: number, size?: number) {
-    index *= this._size * this.stride;
+    index *= this._size + this.stride;
     if (!size) size = this._size;
     const data: number[] = [];
 

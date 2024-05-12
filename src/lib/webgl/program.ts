@@ -181,11 +181,11 @@ export class Program<
     });
   }
 
-  bindIndexBuffer(bufferData: number[]) {
+  bindIndexBuffer(bufferData: BufferAttribute) {
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
     this.gl.bufferData(
       this.gl.ELEMENT_ARRAY_BUFFER,
-      new Uint16Array(bufferData),
+      bufferData.data,
       this.gl.STATIC_DRAW
     );
   }
@@ -193,11 +193,13 @@ export class Program<
   setAttributes(attributes: {
     [K in TAttribs]?: AttributeSingleDataType;
   }) {
-    Object.entries(attributes).forEach(([name, args]) => {
-      if (!args) {
-        return;
+    Object.entries<AttributeSingleDataType | undefined>(attributes).forEach(
+      ([name, args]) => {
+        if (!args) {
+          return;
+        }
+        this.attributeSetters[name as TAttribs](args);
       }
-      this.attributeSetters[name as TAttribs](...(args as any));
-    });
+    );
   }
 }

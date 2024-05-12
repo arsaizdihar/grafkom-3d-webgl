@@ -1,9 +1,9 @@
 import { Matrix4 } from "../math/m4";
 import { Transform } from "./transform";
 
-export class Node {
-  public children: Node[] = [];
-  protected parent: Node | null = null;
+export class GLNode {
+  public children: GLNode[] = [];
+  protected parent: GLNode | null = null;
   public transform: Transform;
 
   private _localMatrix: Matrix4;
@@ -22,21 +22,21 @@ export class Node {
     this._worldMatrix = matrix;
   }
 
-  constructor(transform?: Transform, parent?: Node) {
+  constructor(transform?: Transform, parent?: GLNode) {
     this.transform = transform || new Transform();
     this.parent = parent || null;
     this._localMatrix = Matrix4.compose(this.transform);
     this._worldMatrix = Matrix4.identity();
   }
 
-  addChild(node: Node) {
+  addChild(node: GLNode) {
     node.removeFromParent();
     this.children.push(node);
     node.parent = this;
     return this;
   }
 
-  removeChild(node: Node) {
+  removeChild(node: GLNode) {
     const index = this.children.indexOf(node);
     if (index !== -1) {
       this.children[index].parent = null;

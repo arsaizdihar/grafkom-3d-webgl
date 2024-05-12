@@ -1,8 +1,8 @@
 import { ShaderMaterial } from "../material/shader-material";
 import { BufferGeometry } from "./buffer-geometry";
-import { Node } from "./node";
+import { GLNode } from "./node";
 
-export class Mesh extends Node {
+export class Mesh extends GLNode {
   constructor(
     public geometry: BufferGeometry,
     public material: ShaderMaterial

@@ -1,7 +1,7 @@
 import { Matrix4 } from "../math/m4";
-import { Node } from "./node";
+import { GLNode } from "./node";
 
-export abstract class Camera extends Node {
+export abstract class Camera extends GLNode {
   protected _projectionMatrix = Matrix4.identity();
   private _invWorldMatrix = Matrix4.identity();
 

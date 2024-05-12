@@ -1,21 +1,21 @@
+import { Vector3 } from "../engine/vector";
 import { Matrix4 } from "./m4";
 import { Quaternion } from "./quaternion";
 
 // internal cache to minimize object creation
-const _matrix = Matrix4.zero();
+let _matrix: Matrix4 | undefined;
 
-export class Euler {
-  constructor(
-    public x: number = 0,
-    public y: number = 0,
-    public z: number = 0
-  ) {}
+export class Euler extends Vector3 {
+  constructor(x: number = 0, y: number = 0, z: number = 0) {
+    super(x, y, z);
+  }
 
   static fromQuaternion(q: Quaternion) {
     return new Euler().setFromQuaternion(q);
   }
 
   setFromQuaternion(q: Quaternion) {
+    if (_matrix === undefined) _matrix = Matrix4.zero();
     _matrix.makeRotationFromQuaternion(q);
 
     return this.setFromRotationMatrix(_matrix);

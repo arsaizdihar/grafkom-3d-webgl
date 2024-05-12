@@ -1,4 +1,6 @@
 import { Camera } from "./lib/engine/camera";
+import { Mesh } from "./lib/engine/mesh";
+import { GLNode } from "./lib/engine/node";
 import { Scene } from "./lib/engine/scene";
 import { Program } from "./lib/webgl/program";
 import fragmentShaderSource from "./shaders/fragment-shader.glsl";
@@ -18,11 +20,11 @@ export class Application {
       gl,
       fragmentShaderSource,
       vertexShaderSource,
-      attributes: ["position", "texcoord"],
+      // TODO: use normal for phong material
+      attributes: ["position"],
       uniforms: {
-        normal: { type: "uniform3f" },
         matrix: { type: "uniformMatrix4fv" },
-        normalMat: { type: "uniformMatrix3fv" },
+        normalMat: { type: "uniformMatrix4fv" },
         ambientColor: { type: "uniform4f" },
         diffuseColor: { type: "uniform4f" },
         specularColor: { type: "uniform4f" },
@@ -35,6 +37,7 @@ export class Application {
     });
 
     this.adjustCanvas();
+    this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     const ro = new ResizeObserver(this.adjustCanvas.bind(this));
     ro.observe(canvas, { box: "content-box" });
   }
@@ -50,7 +53,21 @@ export class Application {
   }
 
   render(scene: Scene, camera: Camera) {
-    this.gl.clearColor(1, 1, 1, 1);
+    this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    const nodes: GLNode[] = [scene.rootNode];
+    this.program.setUniforms({
+      normalMat: [false, camera.projectionMatrix.el],
+    });
+    while (nodes.length) {
+      const node = nodes.pop()!;
+      if (node instanceof Mesh) {
+        this.program.setUniforms(node.material.uniforms);
+        this.program.setUniforms({ matrix: [false, node.worldMatrix.el] });
+        this.program.setAttributes(node.geometry.attributes);
+        this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+      }
+      nodes.push(...node.children);
+    }
   }
 }

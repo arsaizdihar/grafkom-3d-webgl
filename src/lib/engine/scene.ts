@@ -1,11 +1,11 @@
 import { ShaderMaterial } from "../material/shader-material";
 import { BufferGeometry } from "./buffer-geometry";
-import { Node } from "./node";
+import { GLNode } from "./node";
 
 export class Scene {
   constructor(
-    public rootNode: Node,
-    public geometry: BufferGeometry,
-    public material: ShaderMaterial
+    public rootNode: GLNode,
+    public geometry?: BufferGeometry,
+    public material?: ShaderMaterial
   ) {}
 }

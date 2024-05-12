@@ -100,6 +100,14 @@ export class Matrix4 {
     ]);
   }
 
+  static multiplyVector(m: Matrix4, v: Vector3) {
+    return new Vector3(
+      m.el[0] * v.x + m.el[4] * v.y + m.el[8] * v.z + m.el[12],
+      m.el[1] * v.x + m.el[5] * v.y + m.el[9] * v.z + m.el[13],
+      m.el[2] * v.x + m.el[6] * v.y + m.el[10] * v.z + m.el[14]
+    );
+  }
+
   /**
    *
    * @param aM left matrix
@@ -556,5 +564,13 @@ export class Matrix4 {
     _transform.scaling = _oneScale;
 
     return this.compose(_transform, q);
+  }
+
+  toString() {
+    return `Matrix4
+    ${this.el[0]} ${this.el[4]} ${this.el[8]} ${this.el[12]}
+    ${this.el[1]} ${this.el[5]} ${this.el[9]} ${this.el[13]}
+    ${this.el[2]} ${this.el[6]} ${this.el[10]} ${this.el[14]}
+    ${this.el[3]} ${this.el[7]} ${this.el[11]} ${this.el[15]}`;
   }
 }
