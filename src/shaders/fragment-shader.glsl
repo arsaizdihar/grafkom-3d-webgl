@@ -1,11 +1,11 @@
-// fragment shaders don't have a default precision so we need
-// to pick one. mediump is a good default
 precision mediump float;
 
-varying lowp vec4 v_color;
+varying vec2 v_texcoord;
+varying vec4 v_color;
+
+uniform sampler2D u_texture;
 
 void main() {
-  // gl_FragColor is a special variable a fragment shader
-  // is responsible for setting
-  gl_FragColor = v_color;
+
+  gl_FragColor = v_color * texture2D(u_texture, v_texcoord);
 }

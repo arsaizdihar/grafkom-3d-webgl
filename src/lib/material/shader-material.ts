@@ -18,4 +18,10 @@ export class ShaderMaterial {
     this.id = options.id;
     this.textures = options.textures;
   }
+
+  public get uniforms() {
+    return {
+      materialType: [this.materialType],
+    };
+  }
 }

@@ -26,4 +26,14 @@ export class PhongMaterial extends ShaderMaterial {
   public get materialType() {
     return MATERIAL_TYPE.PHONG;
   }
+
+  public get uniforms() {
+    return {
+      ...super.uniforms,
+      ambientColor: this.ambient.value,
+      diffuseColor: this.diffuse.value,
+      specular: this.specular.value,
+      shininess: [this.shininess],
+    };
+  }
 }

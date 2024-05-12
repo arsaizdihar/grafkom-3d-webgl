@@ -18,9 +18,22 @@ export class Application {
       gl,
       fragmentShaderSource,
       vertexShaderSource,
-      attributes: ["position", "vertexColor"],
-      uniforms: {},
+      attributes: ["position", "texcoord"],
+      uniforms: {
+        normal: { type: "uniform3f" },
+        matrix: { type: "uniformMatrix4fv" },
+        normalMat: { type: "uniformMatrix3fv" },
+        ambientColor: { type: "uniform4f" },
+        diffuseColor: { type: "uniform4f" },
+        specularColor: { type: "uniform4f" },
+        shininess: { type: "uniform1f" },
+        materialType: { type: "uniform1i" },
+        lightDirection: { type: "uniform3f" },
+        color: { type: "uniform4f" },
+        texture: { type: "uniform1i" },
+      },
     });
+
     this.adjustCanvas();
     const ro = new ResizeObserver(this.adjustCanvas.bind(this));
     ro.observe(canvas, { box: "content-box" });

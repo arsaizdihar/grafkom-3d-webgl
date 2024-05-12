@@ -17,4 +17,11 @@ export class BasicMaterial extends ShaderMaterial {
   public get materialType() {
     return MATERIAL_TYPE.BASIC;
   }
+
+  public get uniforms() {
+    return {
+      ...super.uniforms,
+      color: this.color.value,
+    };
+  }
 }
