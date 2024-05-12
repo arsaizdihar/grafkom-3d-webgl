@@ -7,6 +7,13 @@ export class Vector3 {
     public z: number = 0
   ) {}
 
+  set(x: number, y: number, z: number): this {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    return this;
+  }
+
   cross(v: Vector3): this {
     const x = this.x;
     const y = this.y;

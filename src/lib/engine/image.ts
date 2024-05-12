@@ -1,15 +1,23 @@
 export class GLImage {
   public image: HTMLImageElement;
-  public isLoaded = false;
-  public onload: () => void = () => {};
+  private promise: Promise<HTMLImageElement> | null;
   constructor(public src: string) {
     const image = new Image();
     this.image = image;
     image.src = src;
-    image.onload = () => {
-      this.isLoaded = true;
-      this.onload();
-    };
+    this.promise = new Promise((resolve) => {
+      image.onload = () => {
+        resolve(image);
+      };
+    });
+  }
+
+  async load() {
+    if (this.promise) {
+      this.image = await this.promise;
+      this.promise = null;
+    }
+    return this;
   }
 
   get width() {

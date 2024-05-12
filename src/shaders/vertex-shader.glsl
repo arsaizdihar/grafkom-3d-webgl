@@ -1,6 +1,6 @@
 attribute vec3 a_position;
 // attribute vec3 a_normal;
-// attribute vec2 a_texcoord;
+attribute vec2 a_texcoord;
 
 uniform mat4 u_matrix, u_normalMat;
 // uniform vec4 u_ambientColor;
@@ -11,7 +11,7 @@ uniform mat4 u_matrix, u_normalMat;
 // uniform vec3 u_lightDirection;
 uniform vec4 u_color;
 
-// varying vec2 v_texcoord;
+varying vec2 v_texcoord;
 varying vec4 v_color;
 
 void main() {
@@ -43,6 +43,6 @@ void main() {
   //   }
   //   v_color = ambient + diffuse + specular;
   // }
-  // TODO: texture
-  // v_texcoord = a_texcoord;
+
+  v_texcoord = a_texcoord;
 }

@@ -27,7 +27,9 @@ const camera = new OrthographicCamera(
   10
 );
 rootNode.addChild(camera);
-const texture = new Texture({ image: new GLImage("/f-texture.png") }, app.gl);
+const image = new GLImage("/f-texture.png");
+await image.load();
+const texture = new Texture({ image, texture: app.gl.createTexture() });
 const geometry = new PlaneGeometry(50, 50);
 const material = new BasicMaterial({
   textures: [texture],
@@ -39,6 +41,7 @@ mesh.transform.rotation.x = Math.PI / 2;
 mesh.transform.position.y = 25;
 mesh.transform.position.x = 25;
 mesh.transform.position.z = 0;
+mesh.transform.scaling.set(3, 3, 3);
 mesh.computeLocalMatrix();
 mesh.computeWorldMatrix();
 rootNode.addChild(mesh);

@@ -21,7 +21,7 @@ export class Application {
       fragmentShaderSource,
       vertexShaderSource,
       // TODO: use normal for phong material
-      attributes: ["position"],
+      attributes: ["position", "texcoord"],
       uniforms: {
         matrix: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
@@ -65,6 +65,17 @@ export class Application {
         this.program.setUniforms(node.material.uniforms);
         this.program.setUniforms({ matrix: [false, node.worldMatrix.el] });
         this.program.setAttributes(node.geometry.attributes);
+        const texture = node.material.textures[0];
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture.texture);
+        this.gl.texImage2D(
+          this.gl.TEXTURE_2D,
+          0,
+          this.gl.RGBA,
+          this.gl.RGBA,
+          this.gl.UNSIGNED_BYTE,
+          texture.image.image
+        );
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
       }
       nodes.push(...node.children);
