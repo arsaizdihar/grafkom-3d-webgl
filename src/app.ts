@@ -54,9 +54,14 @@ export class Application {
   }
 
   render(scene: Scene, camera: Camera) {
-    this.gl.clearColor(0, 0, 0, 1);
+    this.gl.clearColor(
+      scene.background.value[0],
+      scene.background.value[1],
+      scene.background.value[2],
+      scene.background.value[3]
+    );
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-    const nodes: GLNode[] = [scene.rootNode];
+    const nodes: GLNode[] = [...scene.children];
     this.program.setUniforms({
       normalMat: [false, camera.projectionMatrix.el],
     });

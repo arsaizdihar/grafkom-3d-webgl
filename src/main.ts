@@ -3,7 +3,6 @@ import { PerspectiveCamera } from "./lib/camera/perspective-camera";
 import { Color } from "./lib/engine/color";
 import { GLImage } from "./lib/engine/image";
 import { Mesh } from "./lib/engine/mesh";
-import { GLNode } from "./lib/engine/node";
 import { Scene } from "./lib/engine/scene";
 import { Texture } from "./lib/engine/texture";
 import { Vector3 } from "./lib/engine/vector";
@@ -19,8 +18,7 @@ canvas.width = canvasContainer.clientWidth;
 canvas.height = canvasContainer.clientHeight;
 
 const app = new Application(canvas);
-const rootNode = new GLNode();
-const scene = new Scene(rootNode);
+const scene = new Scene(Color.hex(0x000000));
 
 /* Projection */
 const left = canvas.width * -0.5;
@@ -118,7 +116,7 @@ const eye = new Vector3(0, 0, -params.cameraRadius);
 
 const camera = new PerspectiveCamera(fovy, aspect, near, far);
 
-rootNode.addChild(camera);
+scene.addChild(camera);
 
 camera.transform.rotation.set(degToRad(0), degToRad(0), degToRad(0));
 camera.transform.position = eye;
@@ -143,12 +141,12 @@ const mesh = new Mesh(geometry, material);
 // mesh.transform.rotation.y = degToRad(-90);
 // mesh.transform.rotation.x = degToRad(-90);
 mesh.transform.position.y = 0;
-mesh.transform.position.x = 25;
+mesh.transform.position.x = 0;
 mesh.transform.position.z = -250;
-mesh.transform.scaling.set(3, 3, 3);
+mesh.transform.scale.set(3, 3, 3);
 mesh.computeLocalMatrix();
 mesh.computeWorldMatrix();
-rootNode.addChild(mesh);
+scene.addChild(mesh);
 
 app.render(scene, camera);
 
@@ -163,3 +161,13 @@ setInterval(() => {
   camera.computeProjectionMatrix();
   app.render(scene, camera);
 }, 1000 / 30);
+
+// async function fromGLTF() {
+//   const json = await fetch("/scenes/cube.json").then((res) => res.json());
+//   const [scene, camera] = await loadGLTF(json, app);
+//   scene.computeWorldMatrix(false, true);
+//   app.render(scene, camera);
+//   console.log(scene);
+// }
+
+// fromGLTF();

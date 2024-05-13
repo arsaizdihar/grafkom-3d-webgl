@@ -7,6 +7,14 @@ export class Vector3 {
     public z: number = 0
   ) {}
 
+  static fromArray(array: number[]): Vector3 {
+    return new Vector3(array[0], array[1], array[2]);
+  }
+
+  toArray(): number[] {
+    return [this.x, this.y, this.z];
+  }
+
   set(x: number, y: number, z: number): this {
     this.x = x;
     this.y = y;
@@ -25,14 +33,18 @@ export class Vector3 {
   }
 
   crossVectors(a: Vector3, b: Vector3): this {
-    const ax = a.x, ay = a.y, az = a.z;
-		const bx = b.x, by = b.y, bz = b.z;
+    const ax = a.x,
+      ay = a.y,
+      az = a.z;
+    const bx = b.x,
+      by = b.y,
+      bz = b.z;
 
-		this.x = ay * bz - az * by;
-		this.y = az * bx - ax * bz;
-		this.z = ax * by - ay * bx;
+    this.x = ay * bz - az * by;
+    this.y = az * bx - ax * bz;
+    this.z = ax * by - ay * bx;
 
-		return this;
+    return this;
   }
 
   add(v: Vector3): this {

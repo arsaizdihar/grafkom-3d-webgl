@@ -19,4 +19,8 @@ export class Color {
     const b = hex & 255;
     return new Color([r / 255, g / 255, b / 255, 1]);
   }
+
+  public static fromArray255(arr: number[]) {
+    return new Color(arr.map((v) => v / 255));
+  }
 }

@@ -1,0 +1,70 @@
+{
+  "scene": 0,
+  "nodes": [
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [1, 2],
+      "name": "root"
+    },
+    {
+      "name": "cube",
+      "translation": [0, 0, -250],
+      "rotation": [0, 0.35, 0],
+      "scale": [2, 2, 2],
+      "children": [],
+      "mesh": 0
+    },
+    {
+      "name": "camera",
+      "translation": [0, 0, -50],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [],
+      "camera": 0,
+      "activeCamera": true
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": "cube",
+        "cube": {
+          "size": 50
+        },
+        "material": 0
+      }
+    }
+  ],
+  "cameras": [
+    {
+      "type": "perspective",
+      "perspective": {
+        "fovy": 0.785398,
+        "near": 10,
+        "far": 2000
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/f-texture.png"
+    }
+  ],
+  "materials": [
+    {
+      "type": "basic",
+      "basic": {
+        "color": "0xffffff"
+      },
+      "textures": [0]
+    }
+  ],
+  "textures": [
+    {
+      "source": 0
+    }
+  ],
+  "animations": []
+}
