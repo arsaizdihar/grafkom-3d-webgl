@@ -61,7 +61,7 @@ export class GLNode {
       this.parent.computeWorldMatrix(true, false);
     }
 
-    // this.computeLocalMatrix();
+    this.computeLocalMatrix();
 
     if (this.parent) {
       this._worldMatrix = Matrix4.multiply(

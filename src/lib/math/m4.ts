@@ -12,7 +12,7 @@ const _transform = new Transform(
   new Vector3(1, 1, 1)
 );
 const _zeroPosition = _transform.position;
-const _oneScale = _transform.scaling;
+const _oneScale = _transform.scale;
 
 const _x = new Vector3();
 const _y = new Vector3();
@@ -354,7 +354,7 @@ export class Matrix4 {
     if (!quaternion) {
       quaternion = transform.rotationQuaternion;
     }
-    const scale = transform.scaling;
+    const scale = transform.scale;
     const x = quaternion.x,
       y = quaternion.y,
       z = quaternion.z,
@@ -664,7 +664,7 @@ export class Matrix4 {
 
   makeRotationFromQuaternion(q: Quaternion) {
     _transform.position = _zeroPosition;
-    _transform.scaling = _oneScale;
+    _transform.scale = _oneScale;
 
     return this.compose(_transform, q);
   }

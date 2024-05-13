@@ -6,7 +6,7 @@ export class Transform {
   constructor(
     public position: Vector3 = new Vector3(),
     public rotation: Euler = new Euler(),
-    public scaling: Vector3 = new Vector3(1, 1, 1)
+    public scale: Vector3 = new Vector3(1, 1, 1)
   ) {}
 
   get rotationQuaternion() {

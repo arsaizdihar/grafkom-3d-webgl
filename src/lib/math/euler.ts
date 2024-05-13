@@ -14,6 +14,10 @@ export class Euler extends Vector3 {
     return new Euler().setFromQuaternion(q);
   }
 
+  static fromArray(array: number[]): Euler {
+    return new Euler(array[0], array[1], array[2]);
+  }
+
   setFromQuaternion(q: Quaternion) {
     if (_matrix === undefined) _matrix = Matrix4.zero();
     _matrix.makeRotationFromQuaternion(q);

@@ -1,11 +1,8 @@
-import { ShaderMaterial } from "../material/shader-material";
-import { BufferGeometry } from "./buffer-geometry";
+import { Color } from "./color";
 import { GLNode } from "./node";
 
-export class Scene {
-  constructor(
-    public rootNode: GLNode,
-    public geometry?: BufferGeometry,
-    public material?: ShaderMaterial
-  ) {}
+export class Scene extends GLNode {
+  constructor(public background: Color) {
+    super();
+  }
 }
