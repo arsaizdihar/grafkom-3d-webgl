@@ -1,26 +1,20 @@
 import { Camera } from "../engine/camera";
 
-export class OrthographicCamera extends Camera {
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
+export class PerspectiveCamera extends Camera {
+  fovy: number;
+  aspect: number;
   near: number;
   far: number;
 
   constructor(
-    left: number,
-    right: number,
-    bottom: number,
-    top: number,
+    fovy: number,
+    aspect: number,
     near: number,
     far: number
   ) {
     super(); // Setup Node
-    this.left = left;
-    this.right = right;
-    this.top = top;
-    this.bottom = bottom;
+    this.fovy = fovy;
+    this.aspect = aspect;
     this.near = near;
     this.far = far;
     // Jangan lupa untuk panggil computeProjectionMatrix() setiap
@@ -29,11 +23,9 @@ export class OrthographicCamera extends Camera {
   }
 
   computeProjectionMatrix() {
-    this._projectionMatrix.orthographicProjection(
-      this.left,
-      this.right,
-      this.bottom,
-      this.top,
+    this._projectionMatrix.perspectiveProjection(
+      this.fovy,
+      this.aspect,
       this.near,
       this.far
     );
