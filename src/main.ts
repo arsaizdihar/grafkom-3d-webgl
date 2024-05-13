@@ -18,7 +18,7 @@ canvas.width = canvasContainer.clientWidth;
 canvas.height = canvasContainer.clientHeight;
 
 const app = new Application(canvas);
-const scene = new Scene(Color.hex(0x000000));
+const scene = new Scene(Color.hex(0xf9f9f9));
 
 /* Projection */
 const left = canvas.width * -0.5;
@@ -50,45 +50,22 @@ const fovy = degToRad(45);
 //   45
 // );
 
-var radio = {
-  orthographic: document.getElementById("ortographic") as HTMLInputElement,
-  perspective: document.getElementById("perspective") as HTMLInputElement,
-  oblique: document.getElementById("oblique") as HTMLInputElement
-}
-
-var slider = {
-  slider_camera: document.querySelector("#slider-camera") as HTMLInputElement,
-  slider_cameraR: document.querySelector("#slider-cameraR") as HTMLInputElement,
-  slider_fov: document.querySelector("#slider-fov") as HTMLInputElement,
-}
-
-var value = {
-  value_camera: document.querySelector("#value-camera") as HTMLElement,
-  value_cameraR: document.querySelector("#value-cameraR") as HTMLElement,
-  value_fov: document.querySelector("#value-fov") as HTMLElement,
-}
-
-// if (slider.value_fov) {
-//   (slider.value_fov as HTMLInputElement).oninput = updateFov();
-// }
-
 var params = {
+  projection: "perspective", // ni keknya bisa gausah pake string
   cameraAngleRadians: degToRad(0),
   cameraRadius: 300,
 }
 
-radio.perspective.checked = true;
-
-value.value_camera.innerHTML = params.cameraAngleRadians.toString();
-slider.slider_camera.value = radToDeg(params.cameraAngleRadians).toString();
-
-value.value_cameraR.innerHTML = params.cameraRadius.toString();
-slider.slider_cameraR.value = params.cameraRadius.toString();
+const updateProjection = () => {
+  return function(event: any) {
+    params.projection = event.target.value;
+  }
+};
 
 const updateCameraAngle = () => {
-  return function(event) {
-    var angleInDegrees = event.target.value;
-    var angleInRadians = degToRad(angleInDegrees);
+  return function(event: any) {
+    const angleInDegrees = event.target.value;
+    const angleInRadians = degToRad(angleInDegrees);
     if (value.value_camera) {
       value.value_camera.innerHTML = angleInDegrees;
     }
@@ -102,11 +79,46 @@ const updateCameraAngle = () => {
     camera.computeProjectionMatrix();
     app.render(scene, camera);
   };
-}
+};
 
-if (slider.slider_camera) {
-  (slider.slider_camera as HTMLInputElement).oninput = updateCameraAngle();
-}
+// Value
+var value = {
+  value_camera: document.querySelector("#value-camera") as HTMLElement,
+  value_cameraR: document.querySelector("#value-cameraR") as HTMLElement,
+  value_fov: document.querySelector("#value-fov") as HTMLElement,
+};
+
+// Radio
+var radio = {
+  orthographic: document.getElementById("orthographic") as HTMLInputElement,
+  perspective: document.getElementById("perspective") as HTMLInputElement,
+  oblique: document.getElementById("oblique") as HTMLInputElement
+};
+
+radio.orthographic.onclick = updateProjection();
+radio.perspective.onclick = updateProjection();
+radio.oblique.onclick = updateProjection();
+
+// Slider
+var slider = {
+  slider_camera: document.querySelector("#slider-camera") as HTMLInputElement,
+  slider_cameraR: document.querySelector("#slider-cameraR") as HTMLInputElement,
+  slider_fov: document.querySelector("#slider-fov") as HTMLInputElement,
+};
+
+(slider.slider_camera as HTMLInputElement).oninput = updateCameraAngle();
+
+// if (slider.value_fov) {
+//   (slider.value_fov as HTMLInputElement).oninput = updateFov();
+// }
+
+radio.perspective.checked = true;
+
+value.value_camera.innerHTML = params.cameraAngleRadians.toString();
+slider.slider_camera.value = radToDeg(params.cameraAngleRadians).toString();
+
+value.value_cameraR.innerHTML = params.cameraRadius.toString();
+slider.slider_cameraR.value = params.cameraRadius.toString();
 
 // if (slider.slider_cameraR) {
 //   (slider.slider_cameraR as HTMLInputElement).oninput = updateCameraR();
