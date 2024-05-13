@@ -9,7 +9,8 @@ import { Texture } from "./lib/engine/texture";
 import { Vector3 } from "./lib/engine/vector";
 import { CubeGeometry } from "./lib/geometry/cube-geometry";
 import { BasicMaterial } from "./lib/material/basic-material";
-import { degToRad } from "./lib/math/math-utils";
+import { Matrix4 } from "./lib/math/m4";
+import { degToRad, radToDeg } from "./lib/math/math-utils";
 import "./style.css";
 
 const canvasContainer = document.querySelector(".canvas-container")!;
@@ -30,6 +31,7 @@ const near = 10;
 const far = 2000;
 
 const aspect = canvas.clientWidth / canvas.clientHeight;
+const fovy = degToRad(45);
 
 // const camera = new OrthographicCamera(
 //   canvas.width * -0.5,
@@ -51,28 +53,40 @@ const aspect = canvas.clientWidth / canvas.clientHeight;
 // );
 
 var radio = {
-  orthographic: document.getElementById("ortographic"),
-  perspective: document.getElementById("perspective"),
-  oblique: document.getElementById("oblique")
+  orthographic: document.getElementById("ortographic") as HTMLInputElement,
+  perspective: document.getElementById("perspective") as HTMLInputElement,
+  oblique: document.getElementById("oblique") as HTMLInputElement
 }
 
 var slider = {
-  slider_camera: document.querySelector("#slider-camera"),
-  slider_cameraR: document.querySelector("#slider-cameraR"),
-  slider_fov: document.querySelector("#slider-fov"),
+  slider_camera: document.querySelector("#slider-camera") as HTMLInputElement,
+  slider_cameraR: document.querySelector("#slider-cameraR") as HTMLInputElement,
+  slider_fov: document.querySelector("#slider-fov") as HTMLInputElement,
 }
 
 var value = {
-  value_camera: document.querySelector("#value-camera"),
-  value_cameraR: document.querySelector("#value-cameraR"),
-  value_fov: document.querySelector("#value-fov"),
+  value_camera: document.querySelector("#value-camera") as HTMLElement,
+  value_cameraR: document.querySelector("#value-cameraR") as HTMLElement,
+  value_fov: document.querySelector("#value-fov") as HTMLElement,
 }
 
 // if (slider.value_fov) {
 //   (slider.value_fov as HTMLInputElement).oninput = updateFov();
 // }
 
-let fovy = degToRad(45);
+var params = {
+  cameraAngleRadians: degToRad(0),
+  cameraRadius: 300,
+}
+
+radio.perspective.checked = true;
+
+value.value_camera.innerHTML = params.cameraAngleRadians.toString();
+slider.slider_camera.value = radToDeg(params.cameraAngleRadians).toString();
+
+value.value_cameraR.innerHTML = params.cameraRadius.toString();
+slider.slider_cameraR.value = params.cameraRadius.toString();
+
 const updateCameraAngle = () => {
   return function(event) {
     var angleInDegrees = event.target.value;
@@ -81,7 +95,8 @@ const updateCameraAngle = () => {
       value.value_camera.innerHTML = angleInDegrees;
     }
 
-    const eye = new Vector3(0, 0, -radius);
+    const eye = new Vector3(0, 0, -params.cameraRadius);
+
     camera.transform.rotation.y = angleInRadians;
     camera.transform.position = eye;
     camera.computeLocalMatrix();
@@ -99,12 +114,10 @@ if (slider.slider_camera) {
 //   (slider.slider_cameraR as HTMLInputElement).oninput = updateCameraR();
 // }
 
-const cameraAngleRadians = degToRad(12);
-const radius = 50;
-
-const eye = new Vector3(0, 0, -radius);
+const eye = new Vector3(0, 0, -params.cameraRadius);
 
 const camera = new PerspectiveCamera(fovy, aspect, near, far);
+
 rootNode.addChild(camera);
 
 camera.transform.rotation.set(degToRad(0), degToRad(0), degToRad(0));
@@ -120,7 +133,7 @@ const texture = new Texture({
   texture: app.gl.createTexture(),
 });
 // const geometry = new PlaneGeometry(50, 50);
-const geometry = new CubeGeometry(50);
+const geometry = new CubeGeometry(30);
 const material = new BasicMaterial({
   textures: [texture],
   color: Color.hex(0xffffff),
@@ -139,14 +152,14 @@ rootNode.addChild(mesh);
 
 app.render(scene, camera);
 
-// setInterval(() => {
-//   // mesh.transform.rotation.y += 0.03;
-//   // mesh.transform.rotation.z += 0.1;
-//   // mesh.computeLocalMatrix();
-//   // mesh.computeWorldMatrix();
-//   // camera.transform.rotation.y += 0.01;
-//   camera.computeLocalMatrix();
-//   camera.computeWorldMatrix();
-//   camera.computeProjectionMatrix();
-//   app.render(scene, camera);
-// }, 1000 / 30);
+setInterval(() => {
+  // mesh.transform.rotation.y += 0.03;
+  // mesh.transform.rotation.z += 0.1;
+  // mesh.computeLocalMatrix();
+  // mesh.computeWorldMatrix();
+  // camera.transform.rotation.y += 0.01;
+  camera.computeLocalMatrix();
+  camera.computeWorldMatrix();
+  camera.computeProjectionMatrix();
+  app.render(scene, camera);
+}, 1000 / 30);
