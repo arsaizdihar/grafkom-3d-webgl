@@ -14,23 +14,26 @@ export class PlaneGeometry extends BufferGeometry {
     const vertices = new Float32Array([
       -hw,
       0,
-      -hh,
+      -hh, // back left
       hw,
       0,
-      -hh,
+      -hh, // back right
       hw,
       0,
-      hh,
+      hh, // front right
       -hw,
       0,
-      hh,
-      -hw,
-      0,
-      -hh,
-      hw,
-      0,
-      hh,
+      hh, // front left
+      // -hw, // use indices instead
+      // 0,
+      // -hh, // back left
+      // hw,
+      // 0,
+      // hh, // front right
     ]);
+    this.setIndices(
+      new BufferAttribute(new Uint16Array([0, 1, 2, 3, 0, 2]), 1)
+    );
     this.setAttribute("position", new BufferAttribute(vertices, 3));
     this.setAttribute(
       "texcoord",

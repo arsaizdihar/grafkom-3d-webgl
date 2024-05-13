@@ -64,7 +64,8 @@ export class Application {
       if (node instanceof Mesh) {
         this.program.setUniforms(node.material.uniforms);
         this.program.setUniforms({ matrix: [false, node.worldMatrix.el] });
-        this.program.setAttributes(node.geometry.attributes);
+        const geometry = node.geometry;
+        this.program.setAttributes(geometry.attributes);
         const texture = node.material.textures[0];
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture.texture);
         this.gl.texImage2D(
@@ -76,7 +77,18 @@ export class Application {
           texture.image.image
         );
         this.gl.generateMipmap(this.gl.TEXTURE_2D);
-        this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
+        if (geometry.indices) {
+          this.program.bindIndexBuffer(geometry.indices);
+          this.gl.drawElements(
+            this.gl.TRIANGLES,
+            geometry.indices.data.length,
+            this.gl.UNSIGNED_SHORT,
+            0
+          );
+        } else {
+          const position = geometry.attributes.position;
+          this.gl.drawArrays(this.gl.TRIANGLES, 0, position.count);
+        }
       }
       nodes.push(...node.children);
     }
