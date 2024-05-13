@@ -8,7 +8,8 @@ import { Texture } from "./lib/engine/texture";
 import { Vector3 } from "./lib/engine/vector";
 import { CubeGeometry } from "./lib/geometry/cube-geometry";
 import { BasicMaterial } from "./lib/material/basic-material";
-import { degToRad } from "./lib/math/math-utils";
+import { Matrix4 } from "./lib/math/m4";
+import { degToRad, radToDeg } from "./lib/math/math-utils";
 import "./style.css";
 
 const canvasContainer = document.querySelector(".canvas-container")!;
@@ -17,7 +18,7 @@ canvas.width = canvasContainer.clientWidth;
 canvas.height = canvasContainer.clientHeight;
 
 const app = new Application(canvas);
-const scene = new Scene(Color.hex(0x000000));
+const scene = new Scene(Color.hex(0xf9f9f9));
 
 /* Projection */
 const left = canvas.width * -0.5;
@@ -49,11 +50,84 @@ const fovy = degToRad(45);
 //   45
 // );
 
-const radius = 50;
+var params = {
+  projection: "perspective", // ni keknya bisa gausah pake string
+  cameraAngleRadians: degToRad(0),
+  cameraRadius: 300,
+}
 
-const eye = new Vector3(0, 0, -radius);
+const updateProjection = () => {
+  return function(event: any) {
+    params.projection = event.target.value;
+  }
+};
+
+const updateCameraAngle = () => {
+  return function(event: any) {
+    const angleInDegrees = event.target.value;
+    const angleInRadians = degToRad(angleInDegrees);
+    if (value.value_camera) {
+      value.value_camera.innerHTML = angleInDegrees;
+    }
+
+    const eye = new Vector3(0, 0, -params.cameraRadius);
+
+    camera.transform.rotation.y = angleInRadians;
+    camera.transform.position = eye;
+    camera.computeLocalMatrix();
+    camera.computeWorldMatrix();
+    camera.computeProjectionMatrix();
+    app.render(scene, camera);
+  };
+};
+
+// Value
+var value = {
+  value_camera: document.querySelector("#value-camera") as HTMLElement,
+  value_cameraR: document.querySelector("#value-cameraR") as HTMLElement,
+  value_fov: document.querySelector("#value-fov") as HTMLElement,
+};
+
+// Radio
+var radio = {
+  orthographic: document.getElementById("orthographic") as HTMLInputElement,
+  perspective: document.getElementById("perspective") as HTMLInputElement,
+  oblique: document.getElementById("oblique") as HTMLInputElement
+};
+
+radio.orthographic.onclick = updateProjection();
+radio.perspective.onclick = updateProjection();
+radio.oblique.onclick = updateProjection();
+
+// Slider
+var slider = {
+  slider_camera: document.querySelector("#slider-camera") as HTMLInputElement,
+  slider_cameraR: document.querySelector("#slider-cameraR") as HTMLInputElement,
+  slider_fov: document.querySelector("#slider-fov") as HTMLInputElement,
+};
+
+(slider.slider_camera as HTMLInputElement).oninput = updateCameraAngle();
+
+// if (slider.value_fov) {
+//   (slider.value_fov as HTMLInputElement).oninput = updateFov();
+// }
+
+radio.perspective.checked = true;
+
+value.value_camera.innerHTML = params.cameraAngleRadians.toString();
+slider.slider_camera.value = radToDeg(params.cameraAngleRadians).toString();
+
+value.value_cameraR.innerHTML = params.cameraRadius.toString();
+slider.slider_cameraR.value = params.cameraRadius.toString();
+
+// if (slider.slider_cameraR) {
+//   (slider.slider_cameraR as HTMLInputElement).oninput = updateCameraR();
+// }
+
+const eye = new Vector3(0, 0, -params.cameraRadius);
 
 const camera = new PerspectiveCamera(fovy, aspect, near, far);
+
 scene.addChild(camera);
 
 camera.transform.rotation.set(degToRad(0), degToRad(0), degToRad(0));
@@ -69,7 +143,7 @@ const texture = new Texture({
   texture: app.gl.createTexture(),
 });
 // const geometry = new PlaneGeometry(50, 50);
-const geometry = new CubeGeometry(50);
+const geometry = new CubeGeometry(30);
 const material = new BasicMaterial({
   textures: [texture],
   color: Color.hex(0xffffff),
@@ -89,14 +163,14 @@ scene.addChild(mesh);
 app.render(scene, camera);
 
 setInterval(() => {
-  mesh.transform.rotation.y += 0.03;
-  mesh.transform.rotation.x -= 0.01;
-  mesh.transform.rotation.z += 0.015;
-  mesh.computeLocalMatrix();
-  mesh.computeWorldMatrix();
-  // camera.computeLocalMatrix();
-  // camera.computeWorldMatrix();
-  // camera.computeProjectionMatrix();
+  // mesh.transform.rotation.y += 0.03;
+  // mesh.transform.rotation.z += 0.1;
+  // mesh.computeLocalMatrix();
+  // mesh.computeWorldMatrix();
+  // camera.transform.rotation.y += 0.01;
+  camera.computeLocalMatrix();
+  camera.computeWorldMatrix();
+  camera.computeProjectionMatrix();
   app.render(scene, camera);
 }, 1000 / 30);
 
