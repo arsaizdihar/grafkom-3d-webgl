@@ -9,7 +9,6 @@ import { Texture } from "./lib/engine/texture";
 import { Vector3 } from "./lib/engine/vector";
 import { PlaneGeometry } from "./lib/geometry/plane-geometry";
 import { BasicMaterial } from "./lib/material/basic-material";
-import { Matrix4 } from "./lib/math/m4";
 import { degToRad } from "./lib/math/math-utils";
 import "./style.css";
 
@@ -51,53 +50,22 @@ const fovy = degToRad(45);
 //   0,
 //   45
 // );
-const camera = new PerspectiveCamera(
-  fovy,
-  aspect,
-  near,
-  far
-);
 
 const radius = 200;
- 
-const cameraAngleRadians = degToRad(10);
 
-const eye = new Vector3(0, 0, radius);
-const target = new Vector3(0, 0, 0);
-const up = new Vector3(0, 1, 0);
+const cameraAngleRadians = degToRad(12);
 
-// Compute a matrix for the camera
-let cameraMatrix = Matrix4.identity();
+const eye = new Vector3(0, 0, -radius);
 
-console.log(cameraMatrix);
-console.log(Matrix4.yRotation(cameraAngleRadians).el);
-cameraMatrix = cameraMatrix.multiply(Matrix4.yRotation(cameraAngleRadians));
-console.log(cameraMatrix.el)
+const camera = new PerspectiveCamera(fovy, aspect, near, far);
+rootNode.addChild(camera);
 
-cameraMatrix = Matrix4.translate(cameraMatrix, eye.x, eye.y, eye.z);
-
-const cameraPos = new Vector3(
-  cameraMatrix.el[12],
-  cameraMatrix.el[13],
-  cameraMatrix.el[14]
-);
-
-cameraMatrix.lookAt(cameraPos, target, up);
-
-// // Make a view matrix from the camera matrix
-// const viewMatrix = Matrix4.invert(cameraMatrix);
-
-// // Compute a view projection matrix
-// const viewProjectionMatrix = Matrix4.multiply(camera.projectionMatrix, viewMatrix);
-
-// camera.viewProjectionMatrix = viewProjectionMatrix;
-
-// camera.projectionMatrix = camera
+camera.transform.rotation.y = cameraAngleRadians;
+camera.transform.position = eye;
 camera.computeLocalMatrix();
 camera.computeWorldMatrix();
 camera.computeProjectionMatrix();
 
-rootNode.addChild(camera);
 const image = new GLImage("/f-texture.png");
 await image.load();
 const texture = new Texture({
@@ -122,10 +90,14 @@ rootNode.addChild(mesh);
 
 app.render(scene, camera);
 
-// setInterval(() => {
-//   mesh.transform.rotation.y += 0.03;
-//   mesh.transform.rotation.z += 0.1;
-//   mesh.computeLocalMatrix();
-//   mesh.computeWorldMatrix();
-//   app.render(scene, camera);
-// }, 1000 / 30);
+setInterval(() => {
+  // mesh.transform.rotation.y += 0.03;
+  // mesh.transform.rotation.z += 0.1;
+  // mesh.computeLocalMatrix();
+  // mesh.computeWorldMatrix();
+  camera.transform.rotation.y += 0.01;
+  camera.computeLocalMatrix();
+  camera.computeWorldMatrix();
+  camera.computeProjectionMatrix();
+  app.render(scene, camera);
+}, 1000 / 30);

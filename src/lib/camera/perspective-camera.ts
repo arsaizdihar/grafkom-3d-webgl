@@ -6,12 +6,7 @@ export class PerspectiveCamera extends Camera {
   near: number;
   far: number;
 
-  constructor(
-    fovy: number,
-    aspect: number,
-    near: number,
-    far: number
-  ) {
+  constructor(fovy: number, aspect: number, near: number, far: number) {
     super(); // Setup Node
     this.fovy = fovy;
     this.aspect = aspect;
@@ -23,11 +18,8 @@ export class PerspectiveCamera extends Camera {
   }
 
   computeProjectionMatrix() {
-    this._projectionMatrix.perspectiveProjection(
-      this.fovy,
-      this.aspect,
-      this.near,
-      this.far
-    );
+    this._projectionMatrix
+      .perspectiveProjection(this.fovy, this.aspect, this.near, this.far)
+      .multiply(this.worldMatrix);
   }
 }

@@ -263,19 +263,28 @@ export class Matrix4 {
    * @param phi
    * @returns
    */
-  obliqueProjection(
-    theta: number,
-    phi: number,
-  ) {
+  obliqueProjection(theta: number, phi: number) {
     const te = this.el;
 
     const cotTheta = 1 / Math.tan(theta);
     const cotPhi = 1 / Math.tan(phi);
 
-    te[0] = 1; te[4] = 0; te[8] = cotTheta; te[12] = 0;
-    te[1] = 0; te[5] = 1; te[9] = cotPhi; te[13] = 0;
-    te[2] = 0; te[6] = 0; te[10] = 1; te[14] = 0;
-    te[3] = 0; te[7] = 0; te[11] = 0; te[15] = 1;
+    te[0] = 1;
+    te[4] = 0;
+    te[8] = cotTheta;
+    te[12] = 0;
+    te[1] = 0;
+    te[5] = 1;
+    te[9] = cotPhi;
+    te[13] = 0;
+    te[2] = 0;
+    te[6] = 0;
+    te[10] = 1;
+    te[14] = 0;
+    te[3] = 0;
+    te[7] = 0;
+    te[11] = 0;
+    te[15] = 1;
 
     return this;
   }
@@ -301,10 +310,22 @@ export class Matrix4 {
     const f = Math.tan(Math.PI / 2 - fovy / 2);
     const rangeInv = 1 / (near - far);
 
-    te[0] = f / aspect; te[4] = 0; te[8] = 0; te[12] = 0;
-    te[1] = 0; te[5] = f; te[9] = 0; te[13] = 0;
-    te[2] = 0; te[6] = 0; te[10] = (near + far) * rangeInv; te[14] = near * far * rangeInv * 2;
-    te[3] = 0; te[7] = 0; te[11] = -1; te[15] = 0;
+    te[0] = f / aspect;
+    te[4] = 0;
+    te[8] = 0;
+    te[12] = 0;
+    te[1] = 0;
+    te[5] = f;
+    te[9] = 0;
+    te[13] = 0;
+    te[2] = 0;
+    te[6] = 0;
+    te[10] = (near + far) * rangeInv;
+    te[14] = near * far * rangeInv * 2;
+    te[3] = 0;
+    te[7] = 0;
+    te[11] = -1;
+    te[15] = 0;
 
     return this;
   }
@@ -400,6 +421,30 @@ export class Matrix4 {
 
   clone() {
     return new Matrix4([...this.el]);
+  }
+
+  copy(m: Matrix4) {
+    const el1 = this.el;
+    const el2 = m.el;
+
+    el1[0] = el2[0];
+    el1[1] = el2[1];
+    el1[2] = el2[2];
+    el1[3] = el2[3];
+    el1[4] = el2[4];
+    el1[5] = el2[5];
+    el1[6] = el2[6];
+    el1[7] = el2[7];
+    el1[8] = el2[8];
+    el1[9] = el2[9];
+    el1[10] = el2[10];
+    el1[11] = el2[11];
+    el1[12] = el2[12];
+    el1[13] = el2[13];
+    el1[14] = el2[14];
+    el1[15] = el2[15];
+
+    return this;
   }
 
   /**
@@ -631,10 +676,22 @@ export class Matrix4 {
     const x = _y.crossVectors(up, z).normalize();
     const y = _z.crossVectors(z, x).normalize();
 
-    te[0] = x.x; te[4] = y.x; te[8] = z.x; te[12] = eye.x;
-		te[1] = x.y; te[5] = y.y; te[9] = z.y; te[13] = eye.y;
-		te[2] = x.z; te[6] = y.z; te[10] = z.z; te[14] = eye.z;
-    te[3] = 0; te[7] = 0; te[11] = 0; te[15] = 1;
+    te[0] = x.x;
+    te[4] = y.x;
+    te[8] = z.x;
+    te[12] = eye.x;
+    te[1] = x.y;
+    te[5] = y.y;
+    te[9] = z.y;
+    te[13] = eye.y;
+    te[2] = x.z;
+    te[6] = y.z;
+    te[10] = z.z;
+    te[14] = eye.z;
+    te[3] = 0;
+    te[7] = 0;
+    te[11] = 0;
+    te[15] = 1;
 
     return this;
   }
