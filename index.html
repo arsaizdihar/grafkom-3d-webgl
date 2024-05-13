@@ -4,14 +4,42 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <title>3D WebGL Articulated Model</title>
+
+    <script type="module" src="/src/main.ts"></script>
   </head>
   <body class="flex-1 flex flex-col">
     <div id="app" class="flex-1 flex">
-      <div class="flex-1 canvas-container max-w-full overflow-hidden">
+      <div class="flex-1 canvas-container max-w-3/4 overflow-hidden">
         <canvas></canvas>
       </div>
+      <div class="bg-slate-200 w-1/4 flex flex-col p-4">
+        <div class="flex flex-col gap-2 text-sm">
+          <p>Select camera:</p>
+          <div class="flex flex-row gap-2">
+            <input id="orthographic" type="radio" name="camera" value="orthographic">
+            <label for="orthographic">Orthographic</label>
+
+            <input id="perspective" type="radio" name="camera" value="perspective">
+            <label for="perspective">Perspective</label>
+
+            <input id="oblique" type="radio" name="camera" value="oblique">
+            <label for="oblique">Oblique</label>
+          </div>
+
+          <p>camera</p>
+          <div id="value-camera"></div>
+          <input id="slider-camera" type="range" min="0" max="360" step="1">
+
+          <p>camera radius</p>
+          <div id="value-cameraR"></div>
+          <input id="slider-cameraR" type="range" min="1" max="360" step="1">
+
+          <p>FOV</p>
+          <div id="value-fov"></div>
+          <input id="slider-fov" type="range" min="0" max="5" step="0.1">
+        </div>
+      </div>
     </div>
-    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
