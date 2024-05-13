@@ -24,6 +24,17 @@ export class Vector3 {
     return this;
   }
 
+  crossVectors(a: Vector3, b: Vector3): this {
+    const ax = a.x, ay = a.y, az = a.z;
+		const bx = b.x, by = b.y, bz = b.z;
+
+		this.x = ay * bz - az * by;
+		this.y = az * bx - ax * bz;
+		this.z = ax * by - ay * bx;
+
+		return this;
+  }
+
   add(v: Vector3): this {
     this.x += v.x;
     this.y += v.y;

@@ -14,6 +14,10 @@ const _transform = new Transform(
 const _zeroPosition = _transform.position;
 const _oneScale = _transform.scaling;
 
+const _x = new Vector3();
+const _y = new Vector3();
+const _z = new Vector3();
+
 /**
  * 4x4 column-major matrix
  */
@@ -247,6 +251,60 @@ export class Matrix4 {
     te[7] = 0;
     te[11] = 0;
     te[15] = 1;
+
+    return this;
+  }
+
+  /**
+   * Mutates the matrix the oblique projection matrix based on the input parameters and returns it.
+   * The initial matrix dont have any effect on the result.
+   *
+   * @param theta
+   * @param phi
+   * @returns
+   */
+  obliqueProjection(
+    theta: number,
+    phi: number,
+  ) {
+    const te = this.el;
+
+    const cotTheta = 1 / Math.tan(theta);
+    const cotPhi = 1 / Math.tan(phi);
+
+    te[0] = 1; te[4] = 0; te[8] = cotTheta; te[12] = 0;
+    te[1] = 0; te[5] = 1; te[9] = cotPhi; te[13] = 0;
+    te[2] = 0; te[6] = 0; te[10] = 1; te[14] = 0;
+    te[3] = 0; te[7] = 0; te[11] = 0; te[15] = 1;
+
+    return this;
+  }
+
+  /**
+   * Mutates the matrix the perspective projection matrix based on the input parameters and returns it.
+   * The initial matrix dont have any effect on the result.
+   *
+   * @param fovy // in radians
+   * @param aspect // aspect ratio
+   * @param near
+   * @param far
+   * @returns
+   */
+  perspectiveProjection(
+    fovy: number,
+    aspect: number,
+    near: number,
+    far: number
+  ) {
+    const te = this.el;
+
+    const f = Math.tan(Math.PI / 2 - fovy / 2);
+    const rangeInv = 1 / (near - far);
+
+    te[0] = f / aspect; te[4] = 0; te[8] = 0; te[12] = 0;
+    te[1] = 0; te[5] = f; te[9] = 0; te[13] = 0;
+    te[2] = 0; te[6] = 0; te[10] = (near + far) * rangeInv; te[14] = near * far * rangeInv * 2;
+    te[3] = 0; te[7] = 0; te[11] = -1; te[15] = 0;
 
     return this;
   }
@@ -564,6 +622,21 @@ export class Matrix4 {
     _transform.scaling = _oneScale;
 
     return this.compose(_transform, q);
+  }
+
+  lookAt(eye: Vector3, target: Vector3, up: Vector3) {
+    const te = this.el;
+
+    const z = _x.subVectors(eye, target).normalize();
+    const x = _y.crossVectors(up, z).normalize();
+    const y = _z.crossVectors(z, x).normalize();
+
+    te[0] = x.x; te[4] = y.x; te[8] = z.x; te[12] = eye.x;
+		te[1] = x.y; te[5] = y.y; te[9] = z.y; te[13] = eye.y;
+		te[2] = x.z; te[6] = y.z; te[10] = z.z; te[14] = eye.z;
+    te[3] = 0; te[7] = 0; te[11] = 0; te[15] = 1;
+
+    return this;
   }
 
   toString() {
