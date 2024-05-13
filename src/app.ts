@@ -38,6 +38,7 @@ export class Application {
 
     this.adjustCanvas();
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    this.gl.enable(this.gl.CULL_FACE);
     const ro = new ResizeObserver(this.adjustCanvas.bind(this));
     ro.observe(canvas, { box: "content-box" });
   }

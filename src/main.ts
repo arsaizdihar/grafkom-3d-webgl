@@ -7,7 +7,7 @@ import { GLNode } from "./lib/engine/node";
 import { Scene } from "./lib/engine/scene";
 import { Texture } from "./lib/engine/texture";
 import { Vector3 } from "./lib/engine/vector";
-import { PlaneGeometry } from "./lib/geometry/plane-geometry";
+import { CubeGeometry } from "./lib/geometry/cube-geometry";
 import { BasicMaterial } from "./lib/material/basic-material";
 import { degToRad } from "./lib/math/math-utils";
 import "./style.css";
@@ -51,16 +51,14 @@ const fovy = degToRad(45);
 //   45
 // );
 
-const radius = 200;
-
-const cameraAngleRadians = degToRad(12);
+const radius = 50;
 
 const eye = new Vector3(0, 0, -radius);
 
 const camera = new PerspectiveCamera(fovy, aspect, near, far);
 rootNode.addChild(camera);
 
-camera.transform.rotation.y = cameraAngleRadians;
+camera.transform.rotation.set(degToRad(0), degToRad(0), degToRad(0));
 camera.transform.position = eye;
 camera.computeLocalMatrix();
 camera.computeWorldMatrix();
@@ -72,17 +70,19 @@ const texture = new Texture({
   image,
   texture: app.gl.createTexture(),
 });
-const geometry = new PlaneGeometry(50, 50);
+// const geometry = new PlaneGeometry(50, 50);
+const geometry = new CubeGeometry(50);
 const material = new BasicMaterial({
   textures: [texture],
   color: Color.hex(0xffffff),
   id: "basic",
 });
 const mesh = new Mesh(geometry, material);
-mesh.transform.rotation.x = Math.PI / 2;
-mesh.transform.position.y = 25;
+// mesh.transform.rotation.y = degToRad(-90);
+// mesh.transform.rotation.x = degToRad(-90);
+mesh.transform.position.y = 0;
 mesh.transform.position.x = 25;
-mesh.transform.position.z = -100;
+mesh.transform.position.z = -250;
 mesh.transform.scaling.set(3, 3, 3);
 mesh.computeLocalMatrix();
 mesh.computeWorldMatrix();
@@ -91,13 +91,13 @@ rootNode.addChild(mesh);
 app.render(scene, camera);
 
 setInterval(() => {
-  // mesh.transform.rotation.y += 0.03;
-  // mesh.transform.rotation.z += 0.1;
-  // mesh.computeLocalMatrix();
-  // mesh.computeWorldMatrix();
-  camera.transform.rotation.y += 0.01;
-  camera.computeLocalMatrix();
-  camera.computeWorldMatrix();
-  camera.computeProjectionMatrix();
+  mesh.transform.rotation.y += 0.03;
+  mesh.transform.rotation.x -= 0.01;
+  mesh.transform.rotation.z += 0.015;
+  mesh.computeLocalMatrix();
+  mesh.computeWorldMatrix();
+  // camera.computeLocalMatrix();
+  // camera.computeWorldMatrix();
+  // camera.computeProjectionMatrix();
   app.render(scene, camera);
 }, 1000 / 30);
