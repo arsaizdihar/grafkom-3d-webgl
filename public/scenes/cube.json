@@ -6,7 +6,8 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "children": [1, 2],
-      "background": [1, 1, 1, 1]
+      "background": [1, 1, 1, 1],
+      "name": "scene"
     },
     {
       "translation": [0, 0, -200],
@@ -14,14 +15,24 @@
       "scale": [1, 1, 1],
       "children": [],
       "camera": 0,
-      "activeCamera": true
+      "activeCamera": true,
+      "name": "perspective camera"
     },
     {
       "translation": [0, 0, -250],
       "rotation": [-0.7853981633974483, 0, 0],
       "scale": [3, 3, 3],
+      "children": [3],
+      "mesh": 0,
+      "name": "cube"
+    },
+    {
+      "translation": [50, 20, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
       "children": [],
-      "mesh": 0
+      "mesh": 0,
+      "name": "cube2"
     }
   ],
   "meshes": [

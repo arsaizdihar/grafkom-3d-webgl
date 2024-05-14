@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Matrix4 } from "../math/m4";
 import { Transform } from "./transform";
 
@@ -5,8 +6,9 @@ export class GLNode {
   public children: GLNode[] = [];
   protected parent: GLNode | null = null;
   public transform: Transform;
-  private _isParentDirty = false;
+  public id;
   public isDirty = true;
+  public name: string = "GLNode";
 
   private _localMatrix: Matrix4;
   set localMatrix(matrix: Matrix4) {
@@ -24,11 +26,11 @@ export class GLNode {
     this._worldMatrix = matrix;
   }
 
-  constructor(transform?: Transform, parent?: GLNode) {
+  constructor(transform?: Transform) {
     this.transform = transform || new Transform();
-    this.parent = parent || null;
     this._localMatrix = Matrix4.compose(this.transform);
     this._worldMatrix = Matrix4.identity();
+    this.id = uuidv4();
   }
 
   addChild(node: GLNode) {

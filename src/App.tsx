@@ -1,18 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { ComponentTree } from "./components/component-tree";
+import { NodeEdits } from "./components/node-edits";
 import { Application } from "./lib/engine/application";
-import { Camera } from "./lib/engine/camera";
-import { Scene } from "./lib/engine/scene";
-import { loadGLTF, saveGLTF } from "./lib/gltf/loader";
+import { loadGLTF } from "./lib/gltf/loader";
+import { useApp } from "./state/app-store";
 
 const GLTF_FILE = "/scenes/cube.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [app, setApp] = useState<Application | null>();
-  const [scene, setScene] = useState<Scene | null>(null);
-  const [camera, setCamera] = useState<Camera | null>(null);
+  const { app, setApp, scene, setScene, currentCamera, setCurrentCamera } =
+    useApp();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,7 +31,7 @@ function App() {
     }
 
     setApp(new Application(canvas, containterRef.current));
-  }, [app]);
+  }, [app, setApp]);
 
   useEffect(() => {
     async function load() {
@@ -45,23 +44,23 @@ function App() {
       );
       // const [scene, camera] = await debugApp(app);
       setScene(scene);
-      setCamera(camera);
+      setCurrentCamera(camera);
     }
     load();
-  }, [app]);
+  }, [app, setCurrentCamera, setScene]);
 
   useEffect(() => {
-    if (!app || !scene || !camera) {
+    if (!app || !scene || !currentCamera) {
       return;
     }
     const interval = setInterval(() => {
       scene.computeWorldMatrix(false, true);
-      camera.computeProjectionMatrix();
-      app.render(scene, camera);
+      currentCamera.computeProjectionMatrix();
+      app.render(scene, currentCamera);
     }, 1000 / 30);
 
     return () => clearInterval(interval);
-  }, [app, scene, camera]);
+  }, [app, scene, currentCamera]);
 
   return (
     <>
@@ -72,7 +71,9 @@ function App() {
         <canvas ref={canvasRef}></canvas>
       </div>
       <div className="bg-slate-200 w-64 flex flex-col p-4">
-        <div className="flex flex-col gap-2 text-sm">
+        <ComponentTree />
+        <NodeEdits />
+        {/* <div className="flex flex-col gap-2 text-sm">
           <p>Select camera:</p>
           <div className="flex flex-row gap-2 flex-wrap">
             <div className="flex gap-2">
@@ -118,17 +119,17 @@ function App() {
           <input id="slider-fov" type="range" min="1" max="179" step="1" />
           <Button
             onClick={() => {
-              if (!app || !scene || !camera) {
+              if (!app || !scene || !currentCamera) {
                 return;
               }
-              saveGLTF(scene, camera).then((res) => {
+              saveGLTF(scene, currentCamera).then((res) => {
                 console.log(res);
               });
             }}
           >
             save
           </Button>
-        </div>
+        </div> */}
       </div>
     </>
   );

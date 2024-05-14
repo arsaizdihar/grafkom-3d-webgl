@@ -1,5 +1,5 @@
+import { Application } from "@/lib/engine/application";
 import z from "zod";
-import { Application } from "../../app";
 import { PerspectiveCamera } from "../camera/perspective-camera";
 import { BufferGeometry } from "../engine/buffer-geometry";
 import { Camera } from "../engine/camera";
@@ -203,6 +203,9 @@ export async function loadGLTF(data: unknown, app: Application) {
       }
       const meshGL = new Mesh(geometry, material);
       meshGL.transform = transform;
+      if (node.name) {
+        meshGL.name = node.name;
+      }
       return meshGL;
     } else if (node.camera !== undefined) {
       let camera: Camera;
@@ -225,12 +228,18 @@ export async function loadGLTF(data: unknown, app: Application) {
           break;
       }
       camera.transform = transform;
+      if (node.name) {
+        camera.name = node.name;
+      }
       if (node.activeCamera) {
         activeCamera = camera;
       }
       return camera;
     } else {
       const nodeGL = new GLNode(transform);
+      if (node.name) {
+        nodeGL.name = node.name;
+      }
       return nodeGL;
     }
   });
@@ -289,6 +298,7 @@ export async function saveGLTF(scene: Scene, activeCamera: Camera) {
       scale: node.transform.scale.toArray(),
       children: [],
     };
+    nodeData.name = node.name;
 
     if (node instanceof Mesh) {
       nodeData.mesh = processMesh(node);
