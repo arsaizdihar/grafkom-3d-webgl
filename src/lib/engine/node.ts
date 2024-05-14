@@ -29,11 +29,16 @@ export class GLNode {
   private set worldMatrix(matrix: Matrix4) {
     this._worldMatrix = matrix;
   }
+  private _worldInvTransposeMatrix: Matrix4;
+  get worldInvTransposeMatrix(): Matrix4 {
+    return this._worldInvTransposeMatrix;
+  }
 
   constructor(transform?: Transform) {
     this.transform = transform || new Transform();
     this._localMatrix = Matrix4.compose(this.transform);
     this._worldMatrix = Matrix4.identity();
+    this._worldInvTransposeMatrix = Matrix4.identity();
     this.id = uuidv4();
   }
 
@@ -88,6 +93,7 @@ export class GLNode {
     } else {
       this._worldMatrix = this.localMatrix.clone();
     }
+    this._worldInvTransposeMatrix.copy(this._worldMatrix).invert().transpose();
     this.onWorldMatrixChange();
 
     if (updateChildren) {

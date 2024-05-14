@@ -13,8 +13,8 @@ export class PyramidHollowGeometry extends BufferGeometry {
     const ht = this.thickness / 2;
 
     // bottom front and back
-    for (let i = 0; i < 2; i++) {
-      const z = i === 0 ? -hs : hs;
+    for (let i = 0; i < 1; i++) {
+      const z = i === 0 ? hs : -hs;
       const front = z + ht;
       const back = z - ht;
       const top = -hs + ht;
@@ -28,7 +28,7 @@ export class PyramidHollowGeometry extends BufferGeometry {
     }
 
     // left and right
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       const x = i === 0 ? -hs : hs;
       let front = hs + ht;
       let back = -hs - ht;
@@ -36,18 +36,18 @@ export class PyramidHollowGeometry extends BufferGeometry {
       const bottom = -hs - ht;
       const left = x - ht;
       const right = x + ht;
-      addCube(
-        vertices,
-        front,
-        back,
-        top,
-        bottom,
-        left,
-        right,
-        i === 0 ? ["right"] : ["left"]
-      );
-      front -= this.thickness;
-      back += this.thickness;
+      // addCube(
+      //   vertices,
+      //   front,
+      //   back,
+      //   top,
+      //   bottom,
+      //   left,
+      //   right,
+      //   i === 0 ? ["right"] : ["left"]
+      // );
+      // front -= this.thickness;
+      // back += this.thickness;
       const all: CubeFace[] = [
         "front",
         "back",
@@ -57,7 +57,7 @@ export class PyramidHollowGeometry extends BufferGeometry {
         "right",
       ];
       if (i === 0) {
-        all.splice(all.indexOf("right"), 1);
+        all.splice(all.indexOf("front"), 1);
       } else {
         all.splice(all.indexOf("left"), 1);
       }
@@ -65,37 +65,37 @@ export class PyramidHollowGeometry extends BufferGeometry {
     }
 
     // front left to top
-    let front = hs + ht;
-    let back = hs - ht;
-    let top = hs + ht;
-    let bottom = -hs + ht;
-    let left = -hs - ht;
-    let right = -hs + ht;
+    // let front = hs + ht;
+    // let back = hs - ht;
+    // let top = hs + ht;
+    // let bottom = -hs + ht;
+    // let left = -hs - ht;
+    // let right = -hs + ht;
 
-    addCubeShear(vertices, front, back, top, bottom, left, right, hs, [
-      "bottom",
-    ]);
+    // addCubeShear(vertices, front, back, top, bottom, left, right, hs, [
+    //   "bottom",
+    // ]);
 
-    // front right to top
-    left = hs - ht;
-    right = hs + ht;
-    addCubeShear(vertices, front, back, top, bottom, left, right, -hs, [
-      "bottom",
-    ]);
+    // // front right to top
+    // left = hs - ht;
+    // right = hs + ht;
+    // addCubeShear(vertices, front, back, top, bottom, left, right, -hs, [
+    //   "bottom",
+    // ]);
 
-    // back right to top
-    front = -hs + ht;
-    back = -hs - ht;
-    addCubeShear(vertices, front, back, top, bottom, left, right, -hs, [
-      "bottom",
-    ]);
+    // // back right to top
+    // front = -hs + ht;
+    // back = -hs - ht;
+    // addCubeShear(vertices, front, back, top, bottom, left, right, -hs, [
+    //   "bottom",
+    // ]);
 
-    // back left to top
-    left = -hs - ht;
-    right = -hs + ht;
-    addCubeShear(vertices, front, back, top, bottom, left, right, hs, [
-      "bottom",
-    ]);
+    // // back left to top
+    // left = -hs - ht;
+    // right = -hs + ht;
+    // addCubeShear(vertices, front, back, top, bottom, left, right, hs, [
+    //   "bottom",
+    // ]);
 
     this.setAttribute(
       "position",
@@ -105,12 +105,14 @@ export class PyramidHollowGeometry extends BufferGeometry {
       "texcoord",
       new BufferAttribute(
         new Float32Array(
-          Array.from<number>({ length: (vertices.length / 3) * 2 }).fill(0)
+          Array.from<number>({ length: (vertices.length / 3) * 2 }).fill(0.5)
         ),
         2
       )
     );
     this.calculateNormals();
+    console.log(this.attributes.normal);
+    console.log(this.attributes.texcoord);
   }
 }
 

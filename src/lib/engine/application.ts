@@ -33,7 +33,7 @@ export class Application {
         color: { type: "uniform4f" },
         texture: { type: "uniform1i" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
-        projectionMat: { type: "uniformMatrix4fv" },
+        normalMat: { type: "uniformMatrix4fv" },
       },
     });
 
@@ -66,17 +66,21 @@ export class Application {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     const nodes: GLNode[] = [...scene.children];
     this.program.setUniforms({
-      projectionMat: [false, camera.projectionMatrix.el],
       viewProjectionMat: [false, camera.viewProjectionMatrix.el],
     });
     this.program.setUniforms({
-      lightPos: [0, 50, 0],
+      lightPos: [0, 100, 50],
     });
+
+    // set point thickness
     while (nodes.length) {
       const node = nodes.pop()!;
       if (node instanceof Mesh) {
         this.program.setUniforms(node.material.uniforms);
-        this.program.setUniforms({ matrix: [false, node.worldMatrix.el] });
+        this.program.setUniforms({
+          matrix: [false, node.worldMatrix.el],
+          normalMat: [false, node.worldInvTransposeMatrix.el],
+        });
         const geometry = node.geometry;
         this.program.setAttributes(geometry.attributes);
         const texture = node.material.textures[0];

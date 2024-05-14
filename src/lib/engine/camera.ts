@@ -20,7 +20,7 @@ export abstract class Camera extends GLNode {
 
   computeWorldMatrix() {
     super.computeWorldMatrix();
-    this._invWorldMatrix = Matrix4.invert(this.worldMatrix);
+    this._invWorldMatrix.copy(this.worldInvTransposeMatrix).transpose();
   }
 
   get viewProjectionMatrix() {

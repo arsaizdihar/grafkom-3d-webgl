@@ -12,13 +12,13 @@
     {
       "translation": [0, 0, 0],
       "rotation": [25, 0, 0],
-      "scale": [3, 3, 3],
+      "scale": [2, 2, 2],
       "children": [2],
       "mesh": 0,
       "name": "cube"
     },
     {
-      "translation": [50, 20, 0],
+      "translation": [50, 0, 0],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "children": [],
@@ -47,22 +47,22 @@
   ],
   "materials": [
     {
-      "type": "basic",
+      "type": "phong",
       "textures": [0],
       "basic": {
         "color": [1, 1, 1, 1]
       },
       "phong": {
         "ambient": [0, 0, 0, 1],
-        "diffuse": [1, 1, 0.5, 1],
-        "specular": [1, 1, 0.5, 1],
+        "diffuse": [0.8, 0.4, 0, 1],
+        "specular": [1, 1, 1, 1],
         "shininess": 100
       }
     }
   ],
   "textures": [
     {
-      "source": 1,
+      "source": 0,
       "generateMipmaps": true
     }
   ]
