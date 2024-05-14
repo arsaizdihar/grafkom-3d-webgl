@@ -10,8 +10,8 @@ import { Scene } from "./lib/engine/scene";
 import { Texture } from "./lib/engine/texture";
 import { Vector3 } from "./lib/engine/vector";
 import { CubeGeometry } from "./lib/geometry/cube-geometry";
+import { loadGLTF, saveGLTF } from "./lib/gltf/loader";
 import { BasicMaterial } from "./lib/material/basic-material";
-import { Matrix4 } from "./lib/math/m4";
 import { degToRad, radToDeg } from "./lib/math/math-utils";
 import "./style.css";
 
@@ -33,33 +33,32 @@ const far = 2000;
 
 const aspect = canvas.clientWidth / canvas.clientHeight;
 
-var params = {
+const params = {
   projection: "perspective", // ni keknya bisa gausah pake string
   cameraAngleRadians: degToRad(0),
   cameraRadius: 200,
-  
+
   fovy: 45, // in degrees
-}
+};
 
 const updateProjection = () => {
-  return function(event: any) {
+  return function (event: any) {
     params.projection = event.target.value;
 
     if (params.projection === "perspective") {
       camera = cameraPerspective;
-    } 
-    else if (params.projection === "orthographic") {
+    } else if (params.projection === "orthographic") {
       camera = cameraOrthographic;
     } else if (params.projection === "oblique") {
       camera = cameraOblique;
     }
 
     scene.addChild(camera);
-  }
+  };
 };
 
 const updateCameraAngle = () => {
-  return function(event: any) {
+  return function (event: any) {
     const angleInDegrees = event.target.value;
     const angleInRadians = degToRad(angleInDegrees);
     value.value_camera.innerHTML = angleInDegrees;
@@ -69,15 +68,15 @@ const updateCameraAngle = () => {
 
     camera.transform.rotation.y = angleInRadians;
     camera.transform.position = eye;
-    camera.computeLocalMatrix();
-    camera.computeWorldMatrix();
-    camera.computeProjectionMatrix();
-    app.render(scene, camera);
+    // camera.computeLocalMatrix();
+    // camera.computeWorldMatrix();
+    // camera.computeProjectionMatrix();
+    // app.render(scene, camera);
   };
 };
 
 const updateCameraRadius = () => {
-  return function(event: any) {
+  return function (event: any) {
     params.cameraRadius = event.target.value;
     value.value_cameraRadius.innerHTML = params.cameraRadius.toString();
 
@@ -89,10 +88,12 @@ const updateCameraRadius = () => {
     camera.computeProjectionMatrix();
     app.render(scene, camera);
   };
-}
+};
 
 const updateFov = () => {
-  return function(event: any) {
+  return function (event: any) {
+    if (!(camera instanceof PerspectiveCamera))
+      return console.error("Not a perspective camera");
     params.fovy = event.target.value;
     value.value_fov.innerHTML = params.fovy.toString();
 
@@ -103,20 +104,22 @@ const updateFov = () => {
     camera.computeProjectionMatrix();
     app.render(scene, camera);
   };
-}
+};
 
 // Value
-var value = {
+const value = {
   value_camera: document.querySelector("#value-camera") as HTMLElement,
-  value_cameraRadius: document.querySelector("#value-camera-radius") as HTMLElement,
+  value_cameraRadius: document.querySelector(
+    "#value-camera-radius"
+  ) as HTMLElement,
   value_fov: document.querySelector("#value-fov") as HTMLElement,
 };
 
 // Radio
-var radio = {
+const radio = {
   orthographic: document.getElementById("orthographic") as HTMLInputElement,
   perspective: document.getElementById("perspective") as HTMLInputElement,
-  oblique: document.getElementById("oblique") as HTMLInputElement
+  oblique: document.getElementById("oblique") as HTMLInputElement,
 };
 
 radio.orthographic.onclick = updateProjection();
@@ -124,9 +127,11 @@ radio.perspective.onclick = updateProjection();
 radio.oblique.onclick = updateProjection();
 
 // Slider
-var slider = {
+const slider = {
   slider_camera: document.querySelector("#slider-camera") as HTMLInputElement,
-  slider_cameraRadius: document.querySelector("#slider-camera-radius") as HTMLInputElement,
+  slider_cameraRadius: document.querySelector(
+    "#slider-camera-radius"
+  ) as HTMLInputElement,
   slider_fov: document.querySelector("#slider-fov") as HTMLInputElement,
 };
 
@@ -147,7 +152,12 @@ slider.slider_fov.value = params.fovy.toString();
 
 const eye = new Vector3(0, 0, -params.cameraRadius);
 
-const cameraPerspective = new PerspectiveCamera(degToRad(params.fovy), aspect, near, far);
+const cameraPerspective = new PerspectiveCamera(
+  degToRad(params.fovy),
+  aspect,
+  near,
+  far
+);
 const cameraOrthographic = new OrthographicCamera(
   canvas.width * -0.5,
   canvas.width * 0.5,
@@ -167,15 +177,15 @@ const cameraOblique = new ObliqueCamera(
   45
 );
 
-let camera = cameraPerspective;
+let camera: Camera = cameraPerspective;
 
 scene.addChild(camera);
 
 camera.transform.rotation.set(degToRad(0), degToRad(0), degToRad(0));
 camera.transform.position = eye;
-camera.computeLocalMatrix();
-camera.computeWorldMatrix();
-camera.computeProjectionMatrix();
+// camera.computeLocalMatrix();
+// camera.computeWorldMatrix();
+// camera.computeProjectionMatrix();
 
 const image = new GLImage("/f-texture.png");
 await image.load();
@@ -199,9 +209,11 @@ mesh.transform.position.z = -250;
 mesh.transform.scale.set(3, 3, 3);
 mesh.computeLocalMatrix();
 mesh.computeWorldMatrix();
+
+// mesh2.addChild(camera);
 scene.addChild(mesh);
 
-app.render(scene, camera);
+// app.render(scene, camera);
 
 setInterval(() => {
   // mesh.transform.rotation.y += 0.03;
@@ -209,18 +221,25 @@ setInterval(() => {
   // mesh.computeLocalMatrix();
   // mesh.computeWorldMatrix();
   // camera.transform.rotation.y += 0.01;
+  scene.computeWorldMatrix(false, true);
   camera.computeLocalMatrix();
   camera.computeWorldMatrix();
   camera.computeProjectionMatrix();
   app.render(scene, camera);
 }, 1000 / 30);
 
-// async function fromGLTF() {
-//   const json = await fetch("/scenes/cube.json").then((res) => res.json());
-//   const [scene, camera] = await loadGLTF(json, app);
-//   scene.computeWorldMatrix(false, true);
-//   app.render(scene, camera);
-//   console.log(scene);
-// }
+async function save() {
+  console.log("GLTF RESULT", await saveGLTF(scene, camera, app));
+}
+
+// window.save = save;
+
+async function fromGLTF() {
+  const json = await fetch("/scenes/cube2.json").then((res) => res.json());
+  const [scene, camera] = await loadGLTF(json, app);
+  scene.computeWorldMatrix(false, true);
+  app.render(scene, camera);
+  console.log(scene);
+}
 
 // fromGLTF();

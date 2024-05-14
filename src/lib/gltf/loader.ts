@@ -306,6 +306,11 @@ export async function saveGLTF(
           size: mesh.geometry.size,
         };
       } else if (mesh.geometry instanceof PlaneGeometry) {
+        meshData.primitive.geometry = "plane";
+        meshData.primitive.plane = {
+          width: mesh.geometry.width,
+          height: mesh.geometry.height,
+        };
       }
 
       const material = mesh.material;
@@ -370,4 +375,6 @@ export async function saveGLTF(
   }
 
   traverseNode(scene);
+
+  return result;
 }

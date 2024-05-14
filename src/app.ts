@@ -73,16 +73,7 @@ export class Application {
         const geometry = node.geometry;
         this.program.setAttributes(geometry.attributes);
         const texture = node.material.textures[0];
-        this.gl.bindTexture(this.gl.TEXTURE_2D, texture.texture);
-        this.gl.texImage2D(
-          this.gl.TEXTURE_2D,
-          0,
-          this.gl.RGBA,
-          this.gl.RGBA,
-          this.gl.UNSIGNED_BYTE,
-          texture.image.image
-        );
-        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        texture.bind(this.gl);
         if (geometry.indices) {
           this.program.bindIndexBuffer(geometry.indices);
           this.gl.drawElements(
