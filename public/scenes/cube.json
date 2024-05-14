@@ -6,34 +6,32 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "children": [1, 2],
-      "name": "root"
+      "background": [1, 1, 1, 1]
     },
     {
-      "name": "cube",
-      "translation": [0, 0, -250],
-      "rotation": [0, 0.35, 0],
-      "scale": [2, 2, 2],
-      "children": [],
-      "mesh": 0
-    },
-    {
-      "name": "camera",
-      "translation": [0, 0, -50],
+      "translation": [0, 0, -200],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "children": [],
       "camera": 0,
       "activeCamera": true
+    },
+    {
+      "translation": [0, 0, -250],
+      "rotation": [-0.7853981633974483, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "mesh": 0
     }
   ],
   "meshes": [
     {
       "primitive": {
         "geometry": "cube",
+        "material": 0,
         "cube": {
-          "size": 50
-        },
-        "material": 0
+          "size": 30
+        }
       }
     }
   ],
@@ -41,7 +39,7 @@
     {
       "type": "perspective",
       "perspective": {
-        "fovy": 0.785398,
+        "fovy": 0.7853981633974483,
         "near": 10,
         "far": 2000
       }
@@ -55,16 +53,16 @@
   "materials": [
     {
       "type": "basic",
+      "textures": [0],
       "basic": {
-        "color": "0xffffff"
-      },
-      "textures": [0]
+        "color": [1, 1, 1, 1]
+      }
     }
   ],
   "textures": [
     {
-      "source": 0
+      "source": 0,
+      "generateMipmaps": true
     }
-  ],
-  "animations": []
+  ]
 }

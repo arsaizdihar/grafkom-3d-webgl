@@ -23,8 +23,36 @@ export class Texture {
     return this.options.texture;
   }
 
+  get wrapS() {
+    return this.options.wrapS;
+  }
+
+  get wrapT() {
+    return this.options.wrapT;
+  }
+
+  get magFilter() {
+    return this.options.magFilter;
+  }
+
+  get minFilter() {
+    return this.options.minFilter;
+  }
+
+  get generateMipmaps() {
+    return this.options.generateMipmaps;
+  }
+
   bind(gl: WebGLRenderingContext) {
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      this.image.image
+    );
     if (this.options.generateMipmaps) {
       gl.generateMipmap(gl.TEXTURE_2D);
     }

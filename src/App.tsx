@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Application } from "./app";
 import { Camera } from "./lib/engine/camera";
 import { Scene } from "./lib/engine/scene";
-import { loadGLTF } from "./lib/gltf/loader";
+import { loadGLTF, saveGLTF } from "./lib/gltf/loader";
 
 const GLTF_FILE = "/scenes/cube.json";
 
@@ -42,6 +42,7 @@ function App() {
         await fetch(GLTF_FILE).then((res) => res.json()),
         app
       );
+      // const [scene, camera] = await debugApp(app);
       setScene(scene);
       setCamera(camera);
     }
@@ -54,6 +55,7 @@ function App() {
     }
     const interval = setInterval(() => {
       scene.computeWorldMatrix(false, true);
+      camera.computeProjectionMatrix();
       app.render(scene, camera);
     }, 1000 / 30);
 
@@ -67,6 +69,61 @@ function App() {
         ref={containterRef}
       >
         <canvas ref={canvasRef}></canvas>
+      </div>
+      <div className="bg-slate-200 w-1/4 flex flex-col p-4">
+        <div className="flex flex-col gap-2 text-sm">
+          <p>Select camera:</p>
+          <div className="flex flex-row gap-2">
+            <input
+              id="orthographic"
+              type="radio"
+              name="camera"
+              value="orthographic"
+            />
+            <label htmlFor="orthographic">Orthographic</label>
+
+            <input
+              id="perspective"
+              type="radio"
+              name="camera"
+              value="perspective"
+            />
+            <label htmlFor="perspective">Perspective</label>
+
+            <input id="oblique" type="radio" name="camera" value="oblique" />
+            <label htmlFor="oblique">Oblique</label>
+          </div>
+
+          <p>camera</p>
+          <div id="value-camera"></div>
+          <input id="slider-camera" type="range" min="0" max="360" step="1" />
+
+          <p>camera radius</p>
+          <div id="value-camera-radius"></div>
+          <input
+            id="slider-camera-radius"
+            type="range"
+            min="0"
+            max="360"
+            step="1"
+          />
+
+          <p>FOV</p>
+          <div id="value-fov"></div>
+          <input id="slider-fov" type="range" min="1" max="179" step="1" />
+          <button
+            onClick={() => {
+              if (!app || !scene || !camera) {
+                return;
+              }
+              saveGLTF(scene, camera).then((res) => {
+                console.log(res);
+              });
+            }}
+          >
+            save
+          </button>
+        </div>
       </div>
     </>
   );

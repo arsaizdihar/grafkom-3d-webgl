@@ -75,7 +75,16 @@ const GLTFSchema = z.object({
         .optional(),
     })
   ),
-  textures: z.array(z.object({ source: arrayIndex() })),
+  textures: z.array(
+    z.object({
+      source: arrayIndex(),
+      wrapS: z.number().optional(),
+      wrapT: z.number().optional(),
+      magFilter: z.number().optional(),
+      minFilter: z.number().optional(),
+      generateMipmaps: z.boolean().optional(),
+    })
+  ),
   images: z.array(z.object({ uri: z.string() })),
   cameras: z.array(
     z.object({
@@ -93,7 +102,7 @@ const GLTFSchema = z.object({
 
 function parseColor(color: string | number[]) {
   return Array.isArray(color)
-    ? Color.fromArray255(color)
+    ? Color.fromArray(color)
     : Color.hex(Number(color));
 }
 
@@ -114,6 +123,7 @@ export async function loadGLTF(data: unknown, app: Application) {
     return new Texture({
       image,
       texture: app.gl.createTexture(),
+      ...texture,
     });
   });
 
@@ -251,12 +261,9 @@ type GLTF = z.infer<typeof GLTFSchema>;
 type GLTFNode = GLTF["nodes"][number];
 type GLTFMesh = GLTF["meshes"][number];
 type GLTFMaterial = GLTF["materials"][number];
+type GLTFCamera = GLTF["cameras"][number];
 
-export async function saveGLTF(
-  scene: Scene,
-  activeCamera: Camera,
-  app: Application
-) {
+export async function saveGLTF(scene: Scene, activeCamera: Camera) {
   const result: GLTF = {
     scene: 0,
     nodes: [],
@@ -272,6 +279,7 @@ export async function saveGLTF(
   const materialRefs: ShaderMaterial[] = [];
   const textureRefs: Texture[] = [];
   const imageRefs: GLImage[] = [];
+  const cameraRefs: Camera[] = [];
 
   function traverseNode(node: GLNode) {
     if (nodeRefs.includes(node)) return;
@@ -284,11 +292,38 @@ export async function saveGLTF(
 
     if (node instanceof Mesh) {
       nodeData.mesh = processMesh(node);
+    } else if (node instanceof Camera) {
+      nodeData.camera = processCamera(node);
+      if (node === activeCamera) {
+        nodeData.activeCamera = true;
+      }
+    } else if (node instanceof Scene) {
+      nodeData.background = node.background.value;
     }
     result.nodes.push(nodeData);
     nodeRefs.push(node);
     node.children.forEach((child) => traverseNode(child));
     nodeData.children = node.children.map((child) => nodeRefs.indexOf(child));
+  }
+
+  function processCamera(camera: Camera) {
+    let index = cameraRefs.indexOf(camera);
+    if (index === -1) {
+      const cameraData: GLTFCamera = {
+        type: "perspective",
+      };
+      if (camera instanceof PerspectiveCamera) {
+        cameraData.perspective = {
+          fovy: camera.fovy,
+          near: camera.near,
+          far: camera.far,
+        };
+      }
+      cameraRefs.push(camera);
+      index = cameraRefs.length - 1;
+      result.cameras.push(cameraData);
+    }
+    return index;
   }
 
   function processMesh(mesh: Mesh) {
@@ -360,7 +395,14 @@ export async function saveGLTF(
 
       const image = texture.image;
       const imageIndex = processImage(image);
-      result.textures.push({ source: imageIndex });
+      result.textures.push({
+        source: imageIndex,
+        generateMipmaps: texture.generateMipmaps,
+        wrapS: texture.wrapS,
+        wrapT: texture.wrapT,
+        magFilter: texture.magFilter,
+        minFilter: texture.minFilter,
+      });
     }
     return index;
   }
