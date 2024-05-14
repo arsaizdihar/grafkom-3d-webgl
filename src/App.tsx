@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { ComponentTree } from "./components/component-tree";
 import { NodeEdits } from "./components/node-edits";
 import { Application } from "./lib/engine/application";
-import { Camera } from "./lib/engine/camera";
 import { GLNode } from "./lib/engine/node";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
@@ -13,9 +12,6 @@ function recomputeIfDirty(node: GLNode) {
   if (node.isDirty) {
     node.computeWorldMatrix(false, true);
     node.clean();
-    if (node instanceof Camera) {
-      node.computeProjectionMatrix();
-    }
   } else {
     node.children.forEach(recomputeIfDirty);
   }

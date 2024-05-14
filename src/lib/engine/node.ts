@@ -88,6 +88,7 @@ export class GLNode {
     } else {
       this._worldMatrix = this.localMatrix.clone();
     }
+    this.onWorldMatrixChange();
 
     if (updateChildren) {
       this.children.forEach((child) => {
@@ -95,4 +96,6 @@ export class GLNode {
       });
     }
   }
+
+  onWorldMatrixChange() {}
 }
