@@ -2,10 +2,10 @@ import { Camera } from "../engine/camera";
 import { Matrix4 } from "../math/m4";
 
 export class ObliqueCamera extends Camera {
-  top: number;
-  bottom: number;
   left: number;
   right: number;
+  top: number;
+  bottom: number;
   near: number;
   far: number;
 
@@ -15,8 +15,8 @@ export class ObliqueCamera extends Camera {
   constructor(
     left: number,
     right: number,
-    bottom: number,
     top: number,
+    bottom: number,
     near: number,
     far: number,
 
@@ -40,20 +40,20 @@ export class ObliqueCamera extends Camera {
   }
 
   computeProjectionMatrix() {
-    Matrix4.multiply(
-      this._projectionMatrix.orthographicProjection(
-        this.left,
-        this.right,
-        this.bottom,
-        this.top,
-        this.near,
-        this.far
-      ),
-      this.projectionMatrix.obliqueProjection(this.theta, this.phi)
+    const orthoMatrix = new Matrix4([]);
+    orthoMatrix.orthographicProjection(
+      this.left,
+      this.right,
+      this.top,
+      this.bottom,
+      this.near,
+      this.far
     );
-    // this._projectionMatrix.obliqueProjection(
-    //   this.theta,
-    //   this.phi
-    // );
+
+    const obliqueMatrix = new Matrix4([]);
+    obliqueMatrix.obliqueProjection(this.theta, this.phi);
+
+    this._projectionMatrix = orthoMatrix.multiply(obliqueMatrix);
+    this.cameraClean();
   }
 }

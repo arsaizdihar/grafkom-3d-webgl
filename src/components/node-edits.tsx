@@ -3,13 +3,15 @@ import { useApp } from "@/state/app-store";
 import { MeshEdits } from "./mesh-edits";
 import { TransformEdit } from "./transform-edit";
 import { Input } from "./ui/input";
+import { CameraEdits } from "./camera-edits";
+import { Button } from "./ui/button";
 
 export function NodeEdits() {
   const node = useApp((state) => state.focusedNode);
   const rerender = useApp((state) => state.rerenderReact);
 
   if (!node) {
-    return null;
+    return <CameraEdits />;
   }
 
   return (

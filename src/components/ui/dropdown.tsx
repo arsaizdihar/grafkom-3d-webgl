@@ -23,7 +23,7 @@ export const Dropdown = React.forwardRef<HTMLButtonElement, DropdownProps>(
           {selectedVal}
         </button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+      <DropdownMenu.Content className="z-10 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
         {list.map((item) => (
           <DropdownMenu.Item
             key={item.value}

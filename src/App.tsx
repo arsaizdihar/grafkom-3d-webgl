@@ -8,8 +8,9 @@ import { GLNode } from "./lib/engine/node";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
 import { CameraEdits } from "./components/camera-edits";
+import { degToRad } from "./lib/math/math-utils";
 
-const GLTF_FILE = "/scenes/cube.json";
+const GLTF_FILE = "/scenes/1-cube.json";
 
 function recomputeIfDirty(node: GLNode) {
   if (node.isDirty) {
@@ -71,12 +72,12 @@ function App() {
       //   -100
       // );
       const camera = new PerspectiveCamera(
-        1,
+        degToRad(60),
         app.canvas.width / app.canvas.height,
         1,
         2000
       );
-      camera.transform.position.z = 200;
+      camera.transform.position.z = 500;
       camera.dirty();
       setScene(scene);
       setCurrentCamera(camera);
@@ -112,7 +113,6 @@ function App() {
       <div className="bg-slate-200 w-64 flex flex-col p-4">
         <ComponentTree />
         <NodeEdits />
-        <CameraEdits />
         <Load />
         {/* <div className="flex flex-col gap-2 text-sm">
           <p>Select camera:</p>
