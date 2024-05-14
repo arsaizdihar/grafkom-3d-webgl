@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useRef, useState } from "react";
-import { Application } from "./app";
+import { useEffect, useRef, useState } from "react";
+import { Application } from "./lib/engine/application";
 import { Camera } from "./lib/engine/camera";
 import { Scene } from "./lib/engine/scene";
 import { loadGLTF, saveGLTF } from "./lib/gltf/loader";

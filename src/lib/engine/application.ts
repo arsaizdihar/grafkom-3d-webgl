@@ -1,8 +1,8 @@
-import { Camera } from "./lib/engine/camera";
-import { Mesh } from "./lib/engine/mesh";
-import { GLNode } from "./lib/engine/node";
-import { Scene } from "./lib/engine/scene";
-import { Program } from "./lib/webgl/program";
+import { Program } from "../webgl/program";
+import { Camera } from "./camera";
+import { Mesh } from "./mesh";
+import { GLNode } from "./node";
+import { Scene } from "./scene";
 import fragmentShaderSource from "./shaders/fragment-shader.glsl";
 import vertexShaderSource from "./shaders/vertex-shader.glsl";
 
