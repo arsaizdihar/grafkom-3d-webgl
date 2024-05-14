@@ -1,5 +1,7 @@
+import { Mesh } from "@/lib/engine/mesh";
 import { useApp } from "@/state/app-store";
 import { useEffect, useRef } from "react";
+import { MeshEdits } from "./mesh-edits";
 import { TransformEdit } from "./transform-edit";
 
 export function NodeEdits() {
@@ -37,6 +39,7 @@ export function NodeEdits() {
           node.dirty();
         }}
       />
+      {node instanceof Mesh && <MeshEdits mesh={node} />}
     </div>
   );
 }

@@ -8,5 +8,5 @@ export function TransformEdit({
   triggerChange: () => void;
 }) {
   // edit transform here
-  return <div>transform</div>;
+  return <div>transform edit</div>;
 }
