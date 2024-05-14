@@ -28,6 +28,7 @@
     "vite-plugin-plain-text": "^1.4.2"
   },
   "dependencies": {
+    "@radix-ui/react-context-menu": "^2.1.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-slider": "^1.1.2",
