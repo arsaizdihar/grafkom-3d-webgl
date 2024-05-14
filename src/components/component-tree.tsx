@@ -20,10 +20,19 @@ function Node({ node }: { node: GLNode }) {
     rerender: state._rerender,
   }));
 
+  const handleClick = () => {
+    // If the node is already focused, set the focused node to null
+    if (focusNode === node) {
+      setFocusedNode(null);
+    } else {
+      setFocusedNode(node);
+    }
+  };
+
   return (
     <Button
       size={"sm"}
-      onClick={() => setFocusedNode(node)}
+      onClick={handleClick}
       variant={focusNode === node ? "default" : "outline"}
       className="w-full text-left justify-start"
     >

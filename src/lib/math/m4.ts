@@ -79,8 +79,8 @@ export class Matrix4 {
   static orthographic(
     left: number,
     right: number,
-    bottom: number,
     top: number,
+    bottom: number,
     near: number,
     far: number
   ) {

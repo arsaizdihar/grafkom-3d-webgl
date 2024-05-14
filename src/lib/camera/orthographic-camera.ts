@@ -1,18 +1,18 @@
 import { Camera } from "../engine/camera";
 
 export class OrthographicCamera extends Camera {
-  top: number;
-  bottom: number;
   left: number;
   right: number;
+  top: number;
+  bottom: number;
   near: number;
   far: number;
 
   constructor(
     left: number,
     right: number,
-    bottom: number,
     top: number,
+    bottom: number,
     near: number,
     far: number
   ) {
@@ -32,10 +32,11 @@ export class OrthographicCamera extends Camera {
     this._projectionMatrix.orthographicProjection(
       this.left,
       this.right,
-      this.bottom,
       this.top,
+      this.bottom,
       this.near,
       this.far
     );
+    this.cameraClean();
   }
 }

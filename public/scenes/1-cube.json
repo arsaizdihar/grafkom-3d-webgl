@@ -1,0 +1,61 @@
+{
+  "scene": 0,
+  "nodes": [
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [1],
+      "background": [1, 1, 1, 1],
+      "name": "scene"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [25, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "mesh": 0,
+      "name": "cube"
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": "cube",
+        "material": 0,
+        "cube": {
+          "size": 30
+        }
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/red.png"
+    },
+    {
+      "uri": "/f-texture.png"
+    }
+  ],
+  "materials": [
+    {
+      "type": "basic",
+      "textures": [0],
+      "basic": {
+        "color": [1, 1, 1, 1]
+      },
+      "phong": {
+        "ambient": [0, 0, 0, 1],
+        "diffuse": [1, 1, 0.5, 1],
+        "specular": [1, 1, 0.5, 1],
+        "shininess": 100
+      }
+    }
+  ],
+  "textures": [
+    {
+      "source": 1,
+      "generateMipmaps": true
+    }
+  ]
+}
