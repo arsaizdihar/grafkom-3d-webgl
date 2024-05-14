@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { ComponentTree } from "./components/component-tree";
 import { Load } from "./components/load";
 import { NodeEdits } from "./components/node-edits";
-import { OrthographicCamera } from "./lib/camera/orthographic-camera";
+import { PerspectiveCamera } from "./lib/camera/perspective-camera";
 import { Application } from "./lib/engine/application";
 import { GLNode } from "./lib/engine/node";
 import { loadGLTF } from "./lib/gltf/loader";
@@ -23,8 +23,15 @@ function recomputeIfDirty(node: GLNode) {
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { app, setApp, scene, setScene, currentCamera, setCurrentCamera } =
-    useApp();
+  const {
+    app,
+    setApp,
+    scene,
+    setScene,
+    currentCamera,
+    setCurrentCamera,
+    setFocusedNode,
+  } = useApp();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -55,19 +62,28 @@ function App() {
         await fetch(GLTF_FILE).then((res) => res.json()),
         app
       );
-      const camera = new OrthographicCamera(
-        app.canvas.width / -2,
-        app.canvas.width / 2,
-        -app.canvas.height / 2,
-        app.canvas.height / 2,
-        100,
-        -100
+      // const camera = new OrthographicCamera(
+      //   app.canvas.width / -2,
+      //   app.canvas.width / 2,
+      //   -app.canvas.height / 2,
+      //   app.canvas.height / 2,
+      //   100,
+      //   -100
+      // );
+      const camera = new PerspectiveCamera(
+        1,
+        app.canvas.width / app.canvas.height,
+        1,
+        2000
       );
+      camera.transform.position.z = 200;
+      camera.dirty();
       setScene(scene);
       setCurrentCamera(camera);
+      setFocusedNode(null);
     }
     load();
-  }, [app, setCurrentCamera, setScene]);
+  }, [app, setCurrentCamera, setScene, setFocusedNode]);
 
   useEffect(() => {
     if (!app || !scene || !currentCamera) {
@@ -75,11 +91,9 @@ function App() {
     }
     const interval = setInterval(() => {
       recomputeIfDirty(scene);
-      if (currentCamera.isDirty) {
-        currentCamera.computeWorldMatrix();
-      }
       if (currentCamera.isCameraDirty) {
         currentCamera.computeProjectionMatrix();
+        currentCamera.cameraClean();
       }
       app.render(scene, currentCamera);
     }, 1000 / 30);

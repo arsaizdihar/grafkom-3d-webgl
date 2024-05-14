@@ -12,7 +12,7 @@ type AppStore = {
   currentCamera: Camera | null;
   setCurrentCamera: (camera: Camera) => void;
   focusedNode: GLNode | null;
-  setFocusedNode: (node: GLNode) => void;
+  setFocusedNode: (node: GLNode | null) => void;
   _rerender: boolean;
   rerenderReact: () => void;
 };
