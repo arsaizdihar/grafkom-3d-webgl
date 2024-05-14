@@ -11,7 +11,7 @@ export function TransformEdits({
 
   return (
     <div>
-      <h3>Edit Transform</h3>
+      <h3>Transform</h3>
       <InputDrag
         getValue={() => transform.rotation.x}
         onChange={(value) => {

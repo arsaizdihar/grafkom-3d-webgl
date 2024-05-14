@@ -63,7 +63,7 @@ function App() {
       }
       const [scene, animations] = await loadGLTF(
         await fetch(GLTF_FILE).then((res) => res.json()),
-        app
+        app,
       );
       // const camera = new OrthographicCamera(
       //   app.canvas.width / -2,
@@ -77,7 +77,7 @@ function App() {
         degToRad(60),
         app.canvas.width / app.canvas.height,
         1,
-        2000
+        2000,
       );
       camera.transform.position.z = 500;
       camera.dirty();
@@ -86,6 +86,7 @@ function App() {
       setAnimations(animations);
       setFocusedNode(null);
     }
+
     load();
   }, [app, setCurrentCamera, setScene, setFocusedNode, setAnimations]);
 
@@ -107,6 +108,9 @@ function App() {
 
   return (
     <>
+      <div className="bg-slate-200 w-64 flex flex-col p-4">
+        <ComponentTree />
+      </div>
       <div
         className="flex-1 canvas-container max-w-3/4 overflow-hidden"
         ref={containterRef}
@@ -114,13 +118,12 @@ function App() {
         <canvas ref={canvasRef}></canvas>
       </div>
       <div className="bg-slate-200 w-72">
-        <Tabs defaultValue="component-tree" className="h-full flex flex-col">
+        <Tabs defaultValue="edit" className="h-full flex flex-col">
           <TabsList>
-            <TabsTrigger value="component-tree">Tree</TabsTrigger>
+            <TabsTrigger value="edit">Edit</TabsTrigger>
             <TabsTrigger value="animations">Animations</TabsTrigger>
           </TabsList>
-          <TabsContent value="component-tree" className="px-4 pb-4 flex-1">
-            <ComponentTree />
+          <TabsContent value="edit" className="px-4 pb-4 flex-1">
             <NodeEdits />
             <Load />
           </TabsContent>

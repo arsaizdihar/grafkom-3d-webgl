@@ -1,10 +1,9 @@
 import { Mesh } from "@/lib/engine/mesh";
 import { useApp } from "@/state/app-store";
 import { MeshEdits } from "./mesh-edits";
-import { TransformEdit } from "./transform-edit";
+import { TransformEdits } from "./transform-edits.tsx";
 import { Input } from "./ui/input";
 import { CameraEdits } from "./camera-edits";
-import { Button } from "./ui/button";
 
 export function NodeEdits() {
   const node = useApp((state) => state.focusedNode);
@@ -28,7 +27,7 @@ export function NodeEdits() {
           }}
         />
       </div>
-      <TransformEdit
+      <TransformEdits
         key={node.id + "transform"}
         transform={node.transform}
         triggerChange={() => {
