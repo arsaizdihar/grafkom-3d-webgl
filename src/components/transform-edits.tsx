@@ -1,17 +1,17 @@
 import { Transform } from "@/lib/engine/transform";
 import { InputDrag } from "./ui/input-drag";
 
-export function TransformEdit({
+export function TransformEdits({
   transform,
   triggerChange,
 }: {
   transform: Transform;
   triggerChange: () => void;
 }) {
-  // edit transform here
+
   return (
     <div>
-      <h3>transform edit</h3>
+      <h3>Edit Transform</h3>
       <InputDrag
         getValue={() => transform.rotation.x}
         onChange={(value) => {
