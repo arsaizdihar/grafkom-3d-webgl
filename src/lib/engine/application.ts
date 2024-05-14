@@ -109,8 +109,4 @@ export class Application {
       nodes.push(...node.children);
     }
   }
-
-  runAnimFrame(runner: AnimationRunner, frame: number) {
-    runner.updateSceneGraph(runner.getFrameAt(frame));
-  }
 }

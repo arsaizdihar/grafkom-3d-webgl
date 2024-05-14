@@ -29,12 +29,14 @@ export const AnimationClipSchema = z.object({
 export type AnimationClip = z.infer<typeof AnimationClipSchema>;
 
 export class AnimationRunner {
-  isPlaying: boolean = true;
+  isPlaying: boolean = false;
   fps: number = 30;
   private root: GLNode;
-  private currentFrame: number = 0;
+  private _currentFrame: number = 0;
   private deltaFrame: number = 0;
   private currentAnimation: AnimationClip;
+  private _onFrameChange: ((frame: number) => void) | null = null;
+  public reverse: boolean = false;
 
   constructor(animClip: AnimationClip, root: GLNode, { fps = 30 } = {}) {
     this.currentAnimation = animClip;
@@ -42,27 +44,58 @@ export class AnimationRunner {
     this.root = root;
   }
 
-  get CurrentFrame() {
-    return this.currentFrame;
+  get currentFrame() {
+    return this._currentFrame;
+  }
+
+  set currentFrame(frame: number) {
+    frame = ((frame % this.length) + this.length) % this.length;
+    this._currentFrame = frame;
+    this.updateSceneGraph();
+    this._onFrameChange?.(frame);
   }
 
   get length() {
     return this.currentAnimation.frames.length;
   }
 
+  get name() {
+    return this.currentAnimation.name;
+  }
+
+  set onFrameChange(cb: ((frame: number) => void) | null) {
+    this._onFrameChange = cb;
+  }
+
   private get frame() {
-    return this.currentAnimation.frames[this.currentFrame];
+    return this.currentAnimation.frames[this._currentFrame];
+  }
+
+  nextFrame() {
+    this.currentFrame += 1;
+  }
+
+  prevFrame() {
+    this.currentFrame -= 1;
+  }
+
+  lastFrame() {
+    this.currentFrame = this.length - 1;
+  }
+
+  firstFrame() {
+    this.currentFrame = 0;
   }
 
   update(deltaSecond: number) {
     if (this.isPlaying) {
       this.deltaFrame += deltaSecond * this.fps;
       if (this.deltaFrame >= 1) {
+        const multiplier = this.reverse ? -1 : 1;
         // 1 frame
         this.currentFrame =
-          (this.currentFrame + Math.floor(this.deltaFrame)) % this.length;
+          this.currentFrame + Math.floor(this.deltaFrame) * multiplier;
         this.deltaFrame = this.deltaFrame % 1;
-        this.updateSceneGraph();
       }
     }
   }
@@ -105,9 +138,5 @@ export class AnimationRunner {
       node.transform.scale.set(scale[0], scale[1], scale[2]);
       node.dirty();
     }
-  }
-
-  getFrameAt(frame: number) {
-    return this.currentAnimation.frames[frame % this.length];
   }
 }

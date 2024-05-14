@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Animations } from "./components/animations";
 import { ComponentTree } from "./components/component-tree";
 import { Load } from "./components/load";
 import { NodeEdits } from "./components/node-edits";
@@ -10,7 +11,7 @@ import { loadGLTF } from "./lib/gltf/loader";
 import { degToRad } from "./lib/math/math-utils";
 import { useApp } from "./state/app-store";
 
-const GLTF_FILE = "/scenes/1-cube.json";
+const GLTF_FILE = "/scenes/pyramid.json";
 
 function recomputeIfDirty(node: GLNode) {
   if (node.isDirty) {
@@ -128,7 +129,7 @@ function App() {
             <Load />
           </TabsContent>
           <TabsContent value="animations" className="px-4 pb-4 flex-1">
-            Animations
+            <Animations />
           </TabsContent>
         </Tabs>
       </div>
