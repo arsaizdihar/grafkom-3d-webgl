@@ -7,7 +7,7 @@ export class GLNode {
   protected parent: GLNode | null = null;
   public transform: Transform;
   public id;
-  public isDirty = true;
+  private _isDirty = true;
   public name: string = "GLNode";
 
   private _localMatrix: Matrix4;
@@ -16,6 +16,10 @@ export class GLNode {
   }
   get localMatrix(): Matrix4 {
     return this._localMatrix;
+  }
+
+  get isDirty() {
+    return this._isDirty;
   }
 
   private _worldMatrix: Matrix4;
@@ -31,6 +35,14 @@ export class GLNode {
     this._localMatrix = Matrix4.compose(this.transform);
     this._worldMatrix = Matrix4.identity();
     this.id = uuidv4();
+  }
+
+  dirty() {
+    this._isDirty = true;
+  }
+
+  clean() {
+    this._isDirty = false;
   }
 
   addChild(node: GLNode) {
@@ -64,8 +76,9 @@ export class GLNode {
     if (updateParent && this.parent) {
       this.parent.computeWorldMatrix(true, false);
     }
-
-    this.computeLocalMatrix();
+    if (this._isDirty) {
+      this.computeLocalMatrix();
+    }
 
     if (this.parent) {
       this._worldMatrix = Matrix4.multiply(

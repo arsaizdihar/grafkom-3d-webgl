@@ -1,5 +1,6 @@
 import { useApp } from "@/state/app-store";
 import { useEffect, useRef } from "react";
+import { TransformEdit } from "./transform-edit";
 
 export function NodeEdits() {
   const node = useApp((state) => state.focusedNode);
@@ -30,6 +31,12 @@ export function NodeEdits() {
           }}
         />
       </div>
+      <TransformEdit
+        transform={node.transform}
+        triggerChange={() => {
+          node.dirty();
+        }}
+      />
     </div>
   );
 }
