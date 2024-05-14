@@ -21,5 +21,10 @@ export class PerspectiveCamera extends Camera {
     this._projectionMatrix
       .perspectiveProjection(this.fovy, this.aspect, this.near, this.far)
       .multiply(this.worldMatrix);
+    this.cameraClean();
+  }
+
+  onWorldMatrixChange(): void {
+    this.computeProjectionMatrix();
   }
 }

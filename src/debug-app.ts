@@ -1,7 +1,7 @@
-import { Application } from "./app";
 import { ObliqueCamera } from "./lib/camera/oblique-camera";
 import { OrthographicCamera } from "./lib/camera/orthographic-camera";
 import { PerspectiveCamera } from "./lib/camera/perspective-camera";
+import { Application } from "./lib/engine/application";
 import { Camera } from "./lib/engine/camera";
 import { Color } from "./lib/engine/color";
 import { GLImage } from "./lib/engine/image";

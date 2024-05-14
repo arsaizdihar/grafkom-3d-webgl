@@ -1,16 +1,12 @@
+import { Mesh } from "@/lib/engine/mesh";
 import { useApp } from "@/state/app-store";
-import { useEffect, useRef } from "react";
+import { MeshEdits } from "./mesh-edits";
+import { TransformEdit } from "./transform-edit";
+import { Input } from "./ui/input";
 
 export function NodeEdits() {
   const node = useApp((state) => state.focusedNode);
   const rerender = useApp((state) => state.rerenderReact);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (node && inputRef.current) {
-      inputRef.current.value = node.name;
-    }
-  }, [node]);
 
   if (!node) {
     return null;
@@ -20,9 +16,9 @@ export function NodeEdits() {
     <div>
       <div>
         <label className="block">Name</label>
-        <input
+        <Input
+          key={node.id}
           type="text"
-          ref={inputRef}
           defaultValue={node.name}
           onChange={(e) => {
             node.name = e.target.value;
@@ -30,6 +26,14 @@ export function NodeEdits() {
           }}
         />
       </div>
+      <TransformEdit
+        key={node.id + "transform"}
+        transform={node.transform}
+        triggerChange={() => {
+          node.dirty();
+        }}
+      />
+      {node instanceof Mesh && <MeshEdits mesh={node} key={node.id + "mesh"} />}
     </div>
   );
 }

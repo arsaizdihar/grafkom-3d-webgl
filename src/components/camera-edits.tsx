@@ -15,95 +15,72 @@ export function CameraEdits() {
     rerender: state._rerender,
   }));
 
+  // console.log(app?.canvas.width)
+  const [params, setParams] = useState({
+    fovy: 0,
+    aspect: 0,
+    near: 100,
+    far: -100,
+
+    left: app?.canvas.width,
+    right: app?.canvas.width,
+    bottom: app?.canvas.height,
+    top: app?.canvas.height,
+    
+    theta: degToRad(75),
+    phi: degToRad(75),
+
+    cameraAngleRadians: degToRad(0),
+    cameraRadius: 200,
+  });
+
   const cameraTypes = [
     { value: "perspective", label: "Perspective" },
     { value: "orthographic", label: "Orthographic" },
     { value: "oblique", label: "Oblique" },
   ];
 
-  const [params, setParams] = useState({
-    fovy: 0,
-    aspect: 0,
-    near: 0,
-    far: 0,
-
-    left: app?.canvas.width ? app.canvas.width * -0.5 : 0,
-    right: app?.canvas.width ? app.canvas.width * 0.5 : 0,
-    top: app?.canvas.height ? app.canvas.height * 0.5 : 0,
-    bottom: app?.canvas.height ? app.canvas.height * -0.5 : 0,
-
-    theta: 0,
-    phi: 0,
-
-    cameraAngleRadians: degToRad(0),
-    cameraRadius: 200,
-  });
-
-  const cameraPerspective = new PerspectiveCamera(
-    degToRad(params.fovy),
-    params.aspect,
-    params.near,
-    params.far
-  );
-  const cameraOrthographic = new OrthographicCamera(
-    params.left,
-    params.right,
-    params.top,
-    params.bottom,
-    params.near,
-    params.far
-  );
-  const cameraOblique = new ObliqueCamera(
-    params.left,
-    params.right,
-    params.top,
-    params.bottom,
-    params.near,
-    params.far,
-    params.theta,
-    params.phi
-  );
-
-  useEffect(() => {
-    if (currentCamera instanceof PerspectiveCamera) {
-      setParams((prevParams) => ({
-        ...prevParams,
-        fovy: currentCamera.fovy,
-        aspect: currentCamera.aspect,
-        near: currentCamera.near,
-        far: currentCamera.far,
-      }));
-    } else if (currentCamera instanceof OrthographicCamera) {
-      setParams((prevParams) => ({
-        ...prevParams,
-        left: currentCamera.left,
-        right: currentCamera.right,
-        top: currentCamera.top,
-        bottom: currentCamera.bottom,
-        near: currentCamera.near,
-        far: currentCamera.far,
-      }));
-    } else if (currentCamera instanceof ObliqueCamera) {
-      setParams((prevParams) => ({
-        ...prevParams,
-        left: currentCamera.left,
-        right: currentCamera.right,
-        top: currentCamera.top,
-        bottom: currentCamera.bottom,
-        near: currentCamera.near,
-        far: currentCamera.far,
-        theta: currentCamera.theta,
-        phi: currentCamera.phi
-      }));
-    }
-  }, [currentCamera]);
-
   const handleChange = (value: string | number) => {
     if (value === "perspective") {
+      const cameraPerspective = new PerspectiveCamera(
+        degToRad(params.fovy),
+        params.aspect,
+        params.near,
+        params.far
+      );
       setCurrentCamera(cameraPerspective);
     } else if (value === "orthographic") {
-      setCurrentCamera(cameraOrthographic);
+      const cameraOrthographic = new OrthographicCamera(
+        params.left,
+        params.right,
+        params.bottom,
+        params.top,
+        params.near,
+        params.far
+      );
+      console.log(params);
+
+      const camera = new OrthographicCamera(
+        app?.canvas.width ? app.canvas.width * -0.5 : 0,
+        app?.canvas.width ? app.canvas.width * 0.5 : 0,
+        app?.canvas.height ? app.canvas.height * -0.5 : 0,
+        app?.canvas.height ? app.canvas.height * 0.5 : 0,
+        100,
+        -100
+      );
+      setCurrentCamera(camera);
+      // setCurrentCamera(cameraOrthographic);
     } else if (value === "oblique") {
+      const cameraOblique = new ObliqueCamera(
+        params.left,
+        params.right,
+        params.top,
+        params.bottom,
+        params.near,
+        params.far,
+        params.theta,
+        params.phi
+      );
       setCurrentCamera(cameraOblique);
     }
   };

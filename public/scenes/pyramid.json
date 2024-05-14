@@ -5,34 +5,27 @@
       "translation": [0, 0, 0],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
-      "children": [1, 2],
+      "children": [1],
       "background": [1, 1, 1, 1],
       "name": "scene"
     },
     {
       "translation": [0, 0, 0],
-      "rotation": [25, 0, 0],
+      "rotation": [25, 180, 0],
       "scale": [3, 3, 3],
-      "children": [2],
-      "mesh": 0,
-      "name": "cube"
-    },
-    {
-      "translation": [50, 20, 0],
-      "rotation": [0, 0, 0],
-      "scale": [1, 1, 1],
       "children": [],
       "mesh": 0,
-      "name": "cube2"
+      "name": "pyramid"
     }
   ],
   "meshes": [
     {
       "primitive": {
-        "geometry": "cube",
+        "geometry": "pyramidhollow",
         "material": 0,
-        "cube": {
-          "size": 30
+        "pyramidhollow": {
+          "size": 20,
+          "thickness": 4
         }
       }
     }
@@ -40,14 +33,11 @@
   "images": [
     {
       "uri": "/red.png"
-    },
-    {
-      "uri": "/f-texture.png"
     }
   ],
   "materials": [
     {
-      "type": "basic",
+      "type": "phong",
       "textures": [0],
       "basic": {
         "color": [1, 1, 1, 1]
@@ -62,7 +52,7 @@
   ],
   "textures": [
     {
-      "source": 1,
+      "source": 0,
       "generateMipmaps": true
     }
   ]

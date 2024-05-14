@@ -86,4 +86,9 @@ export class Vector3 {
     }
     return this;
   }
+
+  copy(v: Vector3) {
+    this.set(v.x, v.y, v.z);
+    return this;
+  }
 }

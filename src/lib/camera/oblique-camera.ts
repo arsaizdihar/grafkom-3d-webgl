@@ -41,7 +41,6 @@ export class ObliqueCamera extends Camera {
 
   computeProjectionMatrix() {
     Matrix4.multiply(
-      this.projectionMatrix.obliqueProjection(this.theta, this.phi),
       this._projectionMatrix.orthographicProjection(
         this.left,
         this.right,
@@ -49,7 +48,8 @@ export class ObliqueCamera extends Camera {
         this.top,
         this.near,
         this.far
-      )
+      ),
+      this.projectionMatrix.obliqueProjection(this.theta, this.phi)
     );
     // this._projectionMatrix.obliqueProjection(
     //   this.theta,
