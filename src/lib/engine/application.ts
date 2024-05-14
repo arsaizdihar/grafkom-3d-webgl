@@ -21,7 +21,7 @@ export class Application {
       fragmentShaderSource,
       vertexShaderSource,
       // TODO: use normal for phong material
-      attributes: ["position", "texcoord"],
+      attributes: ["position", "texcoord", "normal"],
       uniforms: {
         matrix: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
@@ -30,7 +30,7 @@ export class Application {
         specularColor: { type: "uniform4f" },
         shininess: { type: "uniform1f" },
         materialType: { type: "uniform1i" },
-        lightDirection: { type: "uniform3f" },
+        lightPos: { type: "uniform3f" },
         color: { type: "uniform4f" },
         texture: { type: "uniform1i" },
       },
@@ -65,6 +65,9 @@ export class Application {
     const nodes: GLNode[] = [...scene.children];
     this.program.setUniforms({
       normalMat: [false, camera.projectionMatrix.el],
+    });
+    this.program.setUniforms({
+      lightPos: [0, 100, 0],
     });
     while (nodes.length) {
       const node = nodes.pop()!;

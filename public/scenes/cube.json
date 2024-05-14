@@ -10,7 +10,7 @@
       "name": "scene"
     },
     {
-      "translation": [0, 0, -200],
+      "translation": [0, 0, -500],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "children": [],
@@ -19,8 +19,8 @@
       "name": "perspective camera"
     },
     {
-      "translation": [0, 0, -250],
-      "rotation": [-0.785, 0, 0],
+      "translation": [0, 0, 0],
+      "rotation": [25, 0, 0],
       "scale": [3, 3, 3],
       "children": [3],
       "mesh": 0,
@@ -58,15 +58,21 @@
   ],
   "images": [
     {
-      "uri": "/f-texture.png"
+      "uri": "/red.png"
     }
   ],
   "materials": [
     {
-      "type": "basic",
+      "type": "phong",
       "textures": [0],
       "basic": {
         "color": [1, 1, 1, 1]
+      },
+      "phong": {
+        "ambient": [0, 0, 0, 1],
+        "diffuse": [1, 1, 0.5, 1],
+        "specular": [1, 1, 0.5, 1],
+        "shininess": 100
       }
     }
   ],

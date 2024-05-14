@@ -106,6 +106,6 @@ export class BufferGeometry {
       }
     }
 
-    // this.setAttribute("normal", normal);
+    this.setAttribute("normal", normal);
   }
 }
