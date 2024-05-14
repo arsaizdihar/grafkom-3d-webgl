@@ -65,6 +65,10 @@ function App() {
     }
     const interval = setInterval(() => {
       recomputeIfDirty(scene);
+      if (currentCamera.isCameraDirty) {
+        currentCamera.computeProjectionMatrix();
+        currentCamera.cameraClean();
+      }
       app.render(scene, currentCamera);
     }, 1000 / 30);
 
