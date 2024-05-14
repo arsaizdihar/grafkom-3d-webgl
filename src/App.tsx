@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import { ComponentTree } from "./components/component-tree";
-import { NodeEdits } from "./components/node-edits";
 import { Load } from "./components/load";
+import { NodeEdits } from "./components/node-edits";
 import { Application } from "./lib/engine/application";
 import { GLNode } from "./lib/engine/node";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
 
-const GLTF_FILE = "/scenes/cube.json";
+const GLTF_FILE = "/scenes/pyramid.json";
 
 function recomputeIfDirty(node: GLNode) {
   if (node.isDirty) {

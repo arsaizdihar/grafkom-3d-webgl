@@ -1,0 +1,106 @@
+{
+  "scene": 0,
+  "nodes": [
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [1, 2, 3],
+      "background": [1, 1, 1, 1],
+      "name": "scene"
+    },
+    {
+      "translation": [0, 0, -500],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [],
+      "camera": 0,
+      "activeCamera": true,
+      "name": "perspective camera"
+    },
+    {
+      "translation": [0, 0, -500],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [],
+      "camera": 1,
+      "name": "orthographic camera"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [25, 180, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "mesh": 0,
+      "name": "pyramid"
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": "pyramidhollow",
+        "material": 0,
+        "pyramidhollow": {
+          "size": 20,
+          "thickness": 4
+        }
+      }
+    }
+  ],
+  "cameras": [
+    {
+      "type": "perspective",
+      "perspective": {
+        "fovy": 0.7853981633974483,
+        "near": 10,
+        "far": 2000
+      },
+      "orthographic": {
+        "left": -200,
+        "top": 200,
+        "near": 10,
+        "far": 2000
+      }
+    },
+    {
+      "type": "orthographic",
+      "perspective": {
+        "fovy": 0.7853981633974483,
+        "near": 10,
+        "far": 2000
+      },
+      "orthographic": {
+        "left": -200,
+        "top": 200,
+        "near": 10,
+        "far": 2000
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/red.png"
+    }
+  ],
+  "materials": [
+    {
+      "type": "phong",
+      "textures": [0],
+      "basic": {
+        "color": [1, 1, 1, 1]
+      },
+      "phong": {
+        "ambient": [0, 0, 0, 1],
+        "diffuse": [1, 1, 0.5, 1],
+        "specular": [1, 1, 0.5, 1],
+        "shininess": 100
+      }
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "generateMipmaps": true
+    }
+  ]
+}
