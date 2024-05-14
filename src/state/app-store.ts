@@ -1,3 +1,4 @@
+import { AnimationRunner } from "@/lib/engine/animation";
 import { Application } from "@/lib/engine/application";
 import { Camera } from "@/lib/engine/camera";
 import { GLNode } from "@/lib/engine/node";
@@ -15,6 +16,8 @@ type AppStore = {
   setFocusedNode: (node: GLNode | null) => void;
   _rerender: boolean;
   rerenderReact: () => void;
+  animations: AnimationRunner[];
+  setAnimations: (animations: AnimationRunner[]) => void;
 };
 
 export const useApp = create<AppStore>()((set) => ({
@@ -28,4 +31,6 @@ export const useApp = create<AppStore>()((set) => ({
   setFocusedNode: (node) => set({ focusedNode: node }),
   _rerender: false,
   rerenderReact: () => set((state) => ({ _rerender: !state._rerender })),
+  animations: [],
+  setAnimations: (animations) => set({ animations }),
 }));

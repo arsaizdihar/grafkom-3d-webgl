@@ -1,4 +1,5 @@
 import { Application } from "@/lib/engine/application";
+import { AnimationRunner } from "../engine/animation";
 import { BufferGeometry } from "../engine/buffer-geometry";
 import { Color } from "../engine/color";
 import { GLImage } from "../engine/image";
@@ -149,9 +150,20 @@ export async function loadGLTF(data: unknown, app: Application) {
       node.addChild(child);
     });
   });
+
+  const animations = gltf.animations.map((animation) => {
+    const root = nodes[animation.root];
+    if (!root) {
+      throw new Error(
+        `Root node animation not found for index ${animation.root}`
+      );
+    }
+    return new AnimationRunner(animation.clip, root, { fps: animation.fps });
+  });
+
   const scene = nodes[gltf.scene];
   if (!scene || !(scene instanceof Scene)) {
     throw new Error("Scene not found");
   }
-  return scene;
+  return [scene, animations] as const;
 }

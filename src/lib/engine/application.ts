@@ -1,6 +1,7 @@
 import fragmentShaderSource from "@/shaders/fragment-shader.glsl";
 import vertexShaderSource from "@/shaders/vertex-shader.glsl";
 import { Program } from "../webgl/program";
+import { AnimationRunner } from "./animation";
 import { Camera } from "./camera";
 import { Mesh } from "./mesh";
 import { GLNode } from "./node";
@@ -9,6 +10,7 @@ import { Scene } from "./scene";
 export class Application {
   public gl;
   public program;
+  private time = Date.now();
 
   constructor(public canvas: HTMLCanvasElement, private container: Element) {
     const gl = canvas.getContext("webgl");
@@ -56,7 +58,7 @@ export class Application {
     }
   }
 
-  render(scene: Scene, camera: Camera) {
+  render(scene: Scene, camera: Camera, animations: AnimationRunner[] = []) {
     this.gl.clearColor(
       scene.background.value[0],
       scene.background.value[1],
@@ -71,6 +73,12 @@ export class Application {
     this.program.setUniforms({
       lightPos: [0, 100, 50],
     });
+    const now = Date.now();
+    const delta = now - this.time;
+    animations.forEach((runner) => {
+      runner.update(delta / 1000);
+    });
+    this.time = now;
 
     // set point thickness
     while (nodes.length) {
@@ -100,5 +108,9 @@ export class Application {
       }
       nodes.push(...node.children);
     }
+  }
+
+  runAnimFrame(runner: AnimationRunner, frame: number) {
+    runner.updateSceneGraph(runner.getFrameAt(frame));
   }
 }
