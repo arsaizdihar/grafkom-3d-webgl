@@ -13,7 +13,7 @@ export class PyramidHollowGeometry extends BufferGeometry {
     const ht = this.thickness / 2;
 
     // bottom front and back
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 2; i++) {
       const z = i === 0 ? hs : -hs;
       const front = z + ht;
       const back = z - ht;
@@ -21,14 +21,11 @@ export class PyramidHollowGeometry extends BufferGeometry {
       const bottom = -hs - ht;
       const left = -hs - ht;
       const right = hs + ht;
-      addCube(vertices, front, back, top, bottom, left, right, [
-        "left",
-        "right",
-      ]);
+      addCube(vertices, front, back, top, bottom, left, right);
     }
 
     // left and right
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 2; i++) {
       const x = i === 0 ? -hs : hs;
       let front = hs + ht;
       let back = -hs - ht;
@@ -36,66 +33,72 @@ export class PyramidHollowGeometry extends BufferGeometry {
       const bottom = -hs - ht;
       const left = x - ht;
       const right = x + ht;
-      // addCube(
-      //   vertices,
-      //   front,
-      //   back,
-      //   top,
-      //   bottom,
-      //   left,
-      //   right,
-      //   i === 0 ? ["right"] : ["left"]
-      // );
-      // front -= this.thickness;
-      // back += this.thickness;
-      const all: CubeFace[] = [
-        "front",
-        "back",
-        "top",
-        "bottom",
-        "left",
-        "right",
-      ];
-      if (i === 0) {
-        all.splice(all.indexOf("front"), 1);
-      } else {
-        all.splice(all.indexOf("left"), 1);
-      }
-      addCube(vertices, front, back, top, bottom, left, right, all);
+      addCube(vertices, front, back, top, bottom, left, right);
     }
 
     // front left to top
-    // let front = hs + ht;
-    // let back = hs - ht;
-    // let top = hs + ht;
-    // let bottom = -hs + ht;
-    // let left = -hs - ht;
-    // let right = -hs + ht;
+    let front = hs + ht;
+    let back = hs - ht;
+    let top = hs + ht;
+    let bottom = -hs + ht;
+    let left = -hs - ht;
+    let right = -hs + ht;
 
-    // addCubeShear(vertices, front, back, top, bottom, left, right, hs, [
-    //   "bottom",
-    // ]);
+    addCube(vertices, front, back, top, bottom, left, right, hs, -hs);
 
-    // // front right to top
-    // left = hs - ht;
-    // right = hs + ht;
-    // addCubeShear(vertices, front, back, top, bottom, left, right, -hs, [
-    //   "bottom",
-    // ]);
+    // front right to top
+    left = hs - ht;
+    right = hs + ht;
+    addCube(vertices, front, back, top, bottom, left, right, -hs, -hs);
 
-    // // back right to top
-    // front = -hs + ht;
-    // back = -hs - ht;
-    // addCubeShear(vertices, front, back, top, bottom, left, right, -hs, [
-    //   "bottom",
-    // ]);
+    // back right to top
+    front = -hs + ht;
+    back = -hs - ht;
+    addCube(vertices, front, back, top, bottom, left, right, -hs, hs);
 
-    // // back left to top
-    // left = -hs - ht;
-    // right = -hs + ht;
-    // addCubeShear(vertices, front, back, top, bottom, left, right, hs, [
-    //   "bottom",
-    // ]);
+    // back left to top
+    left = -hs - ht;
+    right = -hs + ht;
+    addCube(vertices, front, back, top, bottom, left, right, hs, hs);
+
+    // top triangles
+    front = ht;
+    back = -ht;
+    top = hs + this.thickness + ht;
+    bottom = hs + ht;
+    left = -ht;
+    right = +ht;
+    const topVert = [0, top, 0];
+    vertices.push(
+      left,
+      bottom,
+      front,
+      right,
+      bottom,
+      front,
+      ...topVert,
+      right,
+      bottom,
+      back,
+      ...topVert,
+      right,
+      bottom,
+      front,
+      left,
+      bottom,
+      back,
+      ...topVert,
+      right,
+      bottom,
+      back,
+      left,
+      bottom,
+      front,
+      ...topVert,
+      left,
+      bottom,
+      back
+    );
 
     this.setAttribute(
       "position",
@@ -116,8 +119,6 @@ export class PyramidHollowGeometry extends BufferGeometry {
   }
 }
 
-type CubeFace = "front" | "back" | "top" | "bottom" | "left" | "right";
-
 function addCube(
   vertices: number[],
   front: number,
@@ -126,295 +127,132 @@ function addCube(
   bottom: number,
   left: number,
   right: number,
-  excludes: CubeFace[] = []
+  shearX: number = 0,
+  shearZ: number = 0
 ) {
-  // back
-  if (!excludes.includes("back")) {
-    vertices.push(
-      left,
-      bottom,
-      back, // back left bottom
-      left,
-      top,
-      back, // back left top
-      right,
-      bottom,
-      back, // back right bottom
-      left,
-      top,
-      back, // back left top
-      right,
-      top,
-      back, // back right top
-      right,
-      bottom,
-      back // back right bottom
-    );
-  }
-  if (!excludes.includes("front")) {
-    // front
-    vertices.push(
-      left,
-      bottom,
-      front, // front left bottom
-      right,
-      bottom,
-      front, // front right bottom
-      left,
-      top,
-      front, // front left top
-      left,
-      top,
-      front, // front left top
-      right,
-      bottom,
-      front, // front right bottom
-      right,
-      top,
-      front // front right top
-    );
-  }
-  if (!excludes.includes("top")) {
-    // top
-    vertices.push(
-      left,
-      top,
-      back, // back left top
-      left,
-      top,
-      front, // front left top
-      right,
-      top,
-      back, // back right top
-      left,
-      top,
-      front, // front left top
-      right,
-      top,
-      front, // front right top
-      right,
-      top,
-      back // back right top
-    );
-  }
-  if (!excludes.includes("bottom")) {
-    // bottom
-    vertices.push(
-      left,
-      bottom,
-      back, // back left bottom
-      right,
-      bottom,
-      back, // back right bottom
-      left,
-      bottom,
-      front, // front left bottom
-      left,
-      bottom,
-      front, // front left bottom
-      right,
-      bottom,
-      back, // back right bottom
-      right,
-      bottom,
-      front // front right bottom
-    );
-  }
-  if (!excludes.includes("left")) {
-    // left
-    vertices.push(
-      left,
-      bottom,
-      back, // back left bottom
-      left,
-      bottom,
-      front, // front left bottom
-      left,
-      top,
-      back, // back left top
-      left,
-      bottom,
-      front, // front left bottom
-      left,
-      top,
-      front, // front left top
-      left,
-      top,
-      back // back left top
-    );
-  }
-  if (!excludes.includes("right")) {
-    // right
-    vertices.push(
-      right,
-      bottom,
-      back, // back right bottom
-      right,
-      top,
-      back, // back right top
-      right,
-      bottom,
-      front, // front right bottom
-      right,
-      bottom,
-      front, // front right bottom
-      right,
-      top,
-      back, // back right top
-      right,
-      top,
-      front // front right top
-    );
-  }
-}
-
-function addCubeShear(
-  vertices: number[],
-  front: number,
-  back: number,
-  top: number,
-  bottom: number,
-  left: number,
-  right: number,
-  shear: number,
-  excludes: CubeFace[] = []
-) {
-  // back
-  if (!excludes.includes("back")) {
-    vertices.push(
-      left,
-      bottom,
-      back, // back left bottom
-      left + shear,
-      top,
-      back, // back left top
-      right,
-      bottom,
-      back, // back right bottom
-      left + shear,
-      top,
-      back, // back left top
-      right + shear,
-      top,
-      back, // back right top
-      right,
-      bottom,
-      back // back right bottom
-    );
-  }
-  if (!excludes.includes("front")) {
-    // front
-    vertices.push(
-      left,
-      bottom,
-      front, // front left bottom
-      right,
-      bottom,
-      front, // front right bottom
-      left + shear,
-      top,
-      front, // front left top
-      left + shear,
-      top,
-      front, // front left top
-      right,
-      bottom,
-      front, // front right bottom
-      right + shear,
-      top,
-      front // front right top
-    );
-  }
-  if (!excludes.includes("top")) {
-    // top
-    vertices.push(
-      left + shear,
-      top,
-      back, // back left top
-      left + shear,
-      top,
-      front, // front left top
-      right + shear,
-      top,
-      back, // back right top
-      left + shear,
-      top,
-      front, // front left top
-      right + shear,
-      top,
-      front, // front right top
-      right + shear,
-      top,
-      back // back right top
-    );
-  }
-  if (!excludes.includes("bottom")) {
-    // bottom
-    vertices.push(
-      left,
-      bottom,
-      back, // back left bottom
-      right,
-      bottom,
-      back, // back right bottom
-      left,
-      bottom,
-      front, // front left bottom
-      left,
-      bottom,
-      front, // front left bottom
-      right,
-      bottom,
-      back, // back right bottom
-      right,
-      bottom,
-      front // front right bottom
-    );
-  }
-  if (!excludes.includes("left")) {
-    // left
-    vertices.push(
-      left,
-      bottom,
-      back, // back left bottom
-      left,
-      bottom,
-      front, // front left bottom
-      left + shear,
-      top,
-      back, // back left top
-      left,
-      bottom,
-      front, // front left bottom
-      left + shear,
-      top,
-      front, // front left top
-      left + shear,
-      top,
-      back // back left top
-    );
-  }
-  if (!excludes.includes("right")) {
-    // right
-    vertices.push(
-      right,
-      bottom,
-      back, // back right bottom
-      right + shear,
-      top,
-      back, // back right top
-      right,
-      bottom,
-      front, // front right bottom
-      right,
-      bottom,
-      front, // front right bottom
-      right + shear,
-      top,
-      back, // back right top
-      right + shear,
-      top,
-      front // front right top
-    );
-  }
+  vertices.push(
+    left,
+    bottom,
+    back, // back left bottom
+    left + shearX,
+    top,
+    back + shearZ, // back left top
+    right,
+    bottom,
+    back, // back right bottom
+    left + shearX,
+    top,
+    back + shearZ, // back left top
+    right + shearX,
+    top,
+    back + shearZ, // back right top
+    right,
+    bottom,
+    back // back right bottom
+  );
+  // front
+  vertices.push(
+    left,
+    bottom,
+    front, // front left bottom
+    right,
+    bottom,
+    front, // front right bottom
+    left + shearX,
+    top,
+    front + shearZ, // front left top
+    left + shearX,
+    top,
+    front + shearZ, // front left top
+    right,
+    bottom,
+    front, // front right bottom
+    right + shearX,
+    top,
+    front + shearZ // front right top
+  );
+  // top
+  vertices.push(
+    left + shearX,
+    top,
+    back + shearZ, // back left top
+    left + shearX,
+    top,
+    front + shearZ, // front left top
+    right + shearX,
+    top,
+    back + shearZ, // back right top
+    left + shearX,
+    top,
+    front + shearZ, // front left top
+    right + shearX,
+    top,
+    front + shearZ, // front right top
+    right + shearX,
+    top,
+    back + shearZ // back right top
+  );
+  // bottom
+  vertices.push(
+    left,
+    bottom,
+    back, // back left bottom
+    right,
+    bottom,
+    back, // back right bottom
+    left,
+    bottom,
+    front, // front left bottom
+    left,
+    bottom,
+    front, // front left bottom
+    right,
+    bottom,
+    back, // back right bottom
+    right,
+    bottom,
+    front // front right bottom
+  );
+  // left
+  vertices.push(
+    left,
+    bottom,
+    back, // back left bottom
+    left,
+    bottom,
+    front, // front left bottom
+    left + shearX,
+    top,
+    back + shearZ, // back left top
+    left,
+    bottom,
+    front, // front left bottom
+    left + shearX,
+    top,
+    front + shearZ, // front left top
+    left + shearX,
+    top,
+    back + shearZ // back left top
+  );
+  // right
+  vertices.push(
+    right,
+    bottom,
+    back, // back right bottom
+    right + shearX,
+    top,
+    back + shearZ, // back right top
+    right,
+    bottom,
+    front, // front right bottom
+    right,
+    bottom,
+    front, // front right bottom
+    right + shearX,
+    top,
+    back + shearZ, // back right top
+    right + shearX,
+    top,
+    front + shearZ // front right top
+  );
 }

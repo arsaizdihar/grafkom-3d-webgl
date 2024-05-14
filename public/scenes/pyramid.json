@@ -12,7 +12,7 @@
     {
       "translation": [0, 0, 0],
       "rotation": [15, 0, 0],
-      "scale": [8, 8, 8],
+      "scale": [3, 3, 3],
       "children": [],
       "mesh": 0,
       "name": "pyramid"
@@ -37,7 +37,7 @@
   ],
   "materials": [
     {
-      "type": "basic",
+      "type": "phong",
       "textures": [0],
       "basic": {
         "color": [1, 1, 1, 1]
