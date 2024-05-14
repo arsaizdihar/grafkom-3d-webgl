@@ -89,6 +89,9 @@ export function Animations() {
                 focusedAnimation === animation ? "destructive" : "outline"
               }
               onClick={() => {
+                if (focusedAnimation) {
+                  focusedAnimation.isPlaying = false;
+                }
                 setFocusedAnimation(animation);
                 setIsPlaying(animation.isPlaying);
                 setFrame(animation.currentFrame);
