@@ -20,7 +20,7 @@ const canvas = canvasContainer.querySelector("canvas")!;
 canvas.width = canvasContainer.clientWidth;
 canvas.height = canvasContainer.clientHeight;
 
-const app = new Application(canvas);
+const app = new Application(canvas, canvasContainer);
 const scene = new Scene(Color.hex(0xf9f9f9));
 
 /* Projection */

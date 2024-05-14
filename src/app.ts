@@ -10,7 +10,7 @@ export class Application {
   public gl;
   public program;
 
-  constructor(public canvas: HTMLCanvasElement) {
+  constructor(public canvas: HTMLCanvasElement, private container: Element) {
     const gl = canvas.getContext("webgl");
     if (!gl) {
       throw new Error("WebGL not supported");
@@ -39,13 +39,14 @@ export class Application {
     this.adjustCanvas();
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     this.gl.enable(this.gl.CULL_FACE);
+
     const ro = new ResizeObserver(this.adjustCanvas.bind(this));
-    ro.observe(canvas, { box: "content-box" });
+    ro.observe(container, { box: "content-box" });
   }
 
   adjustCanvas() {
-    const dw = this.canvas.clientWidth;
-    const dh = this.canvas.clientHeight;
+    const dw = this.container.clientWidth;
+    const dh = this.container.clientHeight;
     if (this.canvas.width !== dw || this.canvas.height !== dh) {
       this.canvas.width = dw;
       this.canvas.height = dh;
