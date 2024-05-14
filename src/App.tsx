@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ComponentTree } from "./components/component-tree";
 import { NodeEdits } from "./components/node-edits";
+import { Load } from "./components/load";
 import { Application } from "./lib/engine/application";
 import { GLNode } from "./lib/engine/node";
 import { loadGLTF } from "./lib/gltf/loader";
@@ -86,6 +87,7 @@ function App() {
       <div className="bg-slate-200 w-64 flex flex-col p-4">
         <ComponentTree />
         <NodeEdits />
+        <Load />
         {/* <div className="flex flex-col gap-2 text-sm">
           <p>Select camera:</p>
           <div className="flex flex-row gap-2 flex-wrap">
