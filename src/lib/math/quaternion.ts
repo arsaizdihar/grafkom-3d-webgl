@@ -1,6 +1,7 @@
 // source: https://github.com/mrdoob/three.js/blob/e1e2a22e6a2904fcf627cad39e3389dfa1101c07/src/math/Quaternion.js
 
 import { Euler } from "./euler";
+import { degToRad } from "./math-utils";
 
 export class Quaternion {
   constructor(
@@ -51,9 +52,9 @@ export class Quaternion {
   }
 
   static fromEuler(euler: Euler) {
-    let x = euler.x,
-      y = euler.y,
-      z = euler.z;
+    let x = degToRad(euler.x),
+      y = degToRad(euler.y),
+      z = degToRad(euler.z);
 
     const cos = Math.cos;
     const sin = Math.sin;

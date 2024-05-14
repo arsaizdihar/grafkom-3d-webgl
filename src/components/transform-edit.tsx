@@ -1,4 +1,5 @@
 import { Transform } from "@/lib/engine/transform";
+import { InputDrag } from "./ui/input-drag";
 
 export function TransformEdit({
   transform,
@@ -8,5 +9,17 @@ export function TransformEdit({
   triggerChange: () => void;
 }) {
   // edit transform here
-  return <div>transform edit</div>;
+  return (
+    <div>
+      <h3>transform edit</h3>
+      <InputDrag
+        getValue={() => transform.rotation.x}
+        onChange={(value) => {
+          transform.rotation.x = value;
+          triggerChange();
+        }}
+        step={0.1}
+      />
+    </div>
+  );
 }
