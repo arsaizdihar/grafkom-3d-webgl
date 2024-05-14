@@ -20,7 +20,7 @@
     },
     {
       "translation": [0, 0, -250],
-      "rotation": [-0.7853981633974483, 0, 0],
+      "rotation": [-0.785, 0, 0],
       "scale": [3, 3, 3],
       "children": [3],
       "mesh": 0,

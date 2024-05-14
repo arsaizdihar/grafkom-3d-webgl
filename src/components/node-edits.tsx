@@ -2,6 +2,7 @@ import { Mesh } from "@/lib/engine/mesh";
 import { useApp } from "@/state/app-store";
 import { MeshEdits } from "./mesh-edits";
 import { TransformEdit } from "./transform-edit";
+import { Input } from "./ui/input";
 
 export function NodeEdits() {
   const node = useApp((state) => state.focusedNode);
@@ -15,7 +16,7 @@ export function NodeEdits() {
     <div>
       <div>
         <label className="block">Name</label>
-        <input
+        <Input
           key={node.id}
           type="text"
           defaultValue={node.name}
