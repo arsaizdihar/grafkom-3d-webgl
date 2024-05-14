@@ -71,28 +71,32 @@ function App() {
       >
         <canvas ref={canvasRef}></canvas>
       </div>
-      <div className="bg-slate-200 w-1/4 flex flex-col p-4">
+      <div className="bg-slate-200 w-64 flex flex-col p-4">
         <div className="flex flex-col gap-2 text-sm">
           <p>Select camera:</p>
-          <div className="flex flex-row gap-2">
-            <input
-              id="orthographic"
-              type="radio"
-              name="camera"
-              value="orthographic"
-            />
-            <label htmlFor="orthographic">Orthographic</label>
-
-            <input
-              id="perspective"
-              type="radio"
-              name="camera"
-              value="perspective"
-            />
-            <label htmlFor="perspective">Perspective</label>
-
-            <input id="oblique" type="radio" name="camera" value="oblique" />
-            <label htmlFor="oblique">Oblique</label>
+          <div className="flex flex-row gap-2 flex-wrap">
+            <div className="flex gap-2">
+              <input
+                id="orthographic"
+                type="radio"
+                name="camera"
+                value="orthographic"
+              />
+              <label htmlFor="orthographic">Orthographic</label>
+            </div>
+            <div className="flex gap-2">
+              <input
+                id="perspective"
+                type="radio"
+                name="camera"
+                value="perspective"
+              />
+              <label htmlFor="perspective">Perspective</label>
+            </div>
+            <div className="flex gap-2">
+              <input id="oblique" type="radio" name="camera" value="oblique" />
+              <label htmlFor="oblique">Oblique</label>
+            </div>
           </div>
 
           <p>camera</p>
