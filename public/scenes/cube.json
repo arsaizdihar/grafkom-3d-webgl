@@ -10,19 +10,10 @@
       "name": "scene"
     },
     {
-      "translation": [0, 0, -500],
-      "rotation": [0, 0, 0],
-      "scale": [1, 1, 1],
-      "children": [],
-      "camera": 0,
-      "activeCamera": true,
-      "name": "perspective camera"
-    },
-    {
       "translation": [0, 0, 0],
       "rotation": [25, 0, 0],
       "scale": [3, 3, 3],
-      "children": [3],
+      "children": [2],
       "mesh": 0,
       "name": "cube"
     },
@@ -46,24 +37,17 @@
       }
     }
   ],
-  "cameras": [
-    {
-      "type": "perspective",
-      "perspective": {
-        "fovy": 0.7853981633974483,
-        "near": 10,
-        "far": 2000
-      }
-    }
-  ],
   "images": [
     {
       "uri": "/red.png"
+    },
+    {
+      "uri": "/f-texture.png"
     }
   ],
   "materials": [
     {
-      "type": "phong",
+      "type": "basic",
       "textures": [0],
       "basic": {
         "color": [1, 1, 1, 1]
@@ -78,7 +62,7 @@
   ],
   "textures": [
     {
-      "source": 0,
+      "source": 1,
       "generateMipmaps": true
     }
   ]

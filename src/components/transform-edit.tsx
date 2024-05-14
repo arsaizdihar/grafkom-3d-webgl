@@ -20,6 +20,14 @@ export function TransformEdit({
         }}
         step={0.1}
       />
+      <InputDrag
+        getValue={() => transform.rotation.y}
+        onChange={(value) => {
+          transform.rotation.y = value;
+          triggerChange();
+        }}
+        step={0.1}
+      />
     </div>
   );
 }

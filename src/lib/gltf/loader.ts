@@ -1,8 +1,5 @@
 import { Application } from "@/lib/engine/application";
-import { OrthographicCamera } from "../camera/orthographic-camera";
-import { PerspectiveCamera } from "../camera/perspective-camera";
 import { BufferGeometry } from "../engine/buffer-geometry";
-import { Camera } from "../engine/camera";
 import { Color } from "../engine/color";
 import { GLImage } from "../engine/image";
 import { Mesh } from "../engine/mesh";
@@ -78,8 +75,6 @@ export async function loadGLTF(data: unknown, app: Application) {
     }
   });
 
-  let activeCamera: Camera | undefined;
-
   const nodes = gltf.nodes.map((node, index) => {
     const transform = new Transform(
       Vector3.fromArray(node.translation),
@@ -135,47 +130,6 @@ export async function loadGLTF(data: unknown, app: Application) {
         meshGL.name = node.name;
       }
       return meshGL;
-    } else if (node.camera !== undefined) {
-      let camera: Camera;
-      const cameraGltf = gltf.cameras[node.camera];
-      if (!cameraGltf) {
-        throw new Error(`Camera not found for index ${node.camera}`);
-      }
-
-      switch (cameraGltf.type) {
-        case "perspective":
-          if (!cameraGltf.perspective) {
-            throw new Error("Perspective camera missing parameter");
-          }
-          camera = new PerspectiveCamera(
-            cameraGltf.perspective.fovy,
-            app.canvas.width / app.canvas.height,
-            cameraGltf.perspective.near,
-            cameraGltf.perspective.far
-          );
-          break;
-        case "orthographic":
-          if (!cameraGltf.orthographic) {
-            throw new Error("Orthographic camera missing parameter");
-          }
-          camera = new OrthographicCamera(
-            cameraGltf.orthographic.left,
-            cameraGltf.orthographic.left + app.canvas.width,
-            cameraGltf.orthographic.top,
-            cameraGltf.orthographic.top - app.canvas.height,
-            cameraGltf.orthographic.near,
-            cameraGltf.orthographic.far
-          );
-          break;
-      }
-      camera.transform = transform;
-      if (node.name) {
-        camera.name = node.name;
-      }
-      if (node.activeCamera) {
-        activeCamera = camera;
-      }
-      return camera;
     } else {
       const nodeGL = new GLNode(transform);
       if (node.name) {
@@ -199,10 +153,5 @@ export async function loadGLTF(data: unknown, app: Application) {
   if (!scene || !(scene instanceof Scene)) {
     throw new Error("Scene not found");
   }
-
-  if (!activeCamera) {
-    throw new Error("Active camera not found");
-  }
-
-  return [scene, activeCamera] as const;
+  return scene;
 }

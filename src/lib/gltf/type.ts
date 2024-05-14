@@ -14,8 +14,6 @@ export const GLTFSchema = z.object({
       children: z.array(arrayIndex()).default([]),
       mesh: arrayIndex().optional(),
       name: z.string().optional(),
-      camera: arrayIndex().optional(),
-      activeCamera: z.boolean().optional(),
       background: ColorSchema.optional(),
     })
   ),
@@ -74,30 +72,9 @@ export const GLTFSchema = z.object({
     })
   ),
   images: z.array(z.object({ uri: z.string() })),
-  cameras: z.array(
-    z.object({
-      type: z.enum(["perspective", "orthographic"]),
-      perspective: z
-        .object({
-          fovy: z.number(),
-          near: z.number(),
-          far: z.number(),
-        })
-        .optional(),
-      orthographic: z
-        .object({
-          top: z.number(),
-          left: z.number(),
-          near: z.number(),
-          far: z.number(),
-        })
-        .optional(),
-    })
-  ),
 });
 
 export type GLTF = z.infer<typeof GLTFSchema>;
 export type GLTFNode = GLTF["nodes"][number];
 export type GLTFMesh = GLTF["meshes"][number];
 export type GLTFMaterial = GLTF["materials"][number];
-export type GLTFCamera = GLTF["cameras"][number];

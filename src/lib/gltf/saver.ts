@@ -1,4 +1,3 @@
-import { PerspectiveCamera } from "../camera/perspective-camera";
 import { Camera } from "../engine/camera";
 import { GLImage } from "../engine/image";
 import { Mesh } from "../engine/mesh";
@@ -10,14 +9,13 @@ import { PlaneGeometry } from "../geometry/plane-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
-import { GLTF, GLTFCamera, GLTFMaterial, GLTFMesh, GLTFNode } from "./type";
+import { GLTF, GLTFMaterial, GLTFMesh, GLTFNode } from "./type";
 
-export async function saveGLTF(scene: Scene, activeCamera: Camera) {
+export async function saveGLTF(scene: Scene) {
   const result: GLTF = {
     scene: 0,
     nodes: [],
     meshes: [],
-    cameras: [],
     images: [],
     materials: [],
     textures: [],
@@ -42,11 +40,6 @@ export async function saveGLTF(scene: Scene, activeCamera: Camera) {
 
     if (node instanceof Mesh) {
       nodeData.mesh = processMesh(node);
-    } else if (node instanceof Camera) {
-      nodeData.camera = processCamera(node);
-      if (node === activeCamera) {
-        nodeData.activeCamera = true;
-      }
     } else if (node instanceof Scene) {
       nodeData.background = node.background.value;
     }
@@ -54,26 +47,6 @@ export async function saveGLTF(scene: Scene, activeCamera: Camera) {
     nodeRefs.push(node);
     node.children.forEach((child) => traverseNode(child));
     nodeData.children = node.children.map((child) => nodeRefs.indexOf(child));
-  }
-
-  function processCamera(camera: Camera) {
-    let index = cameraRefs.indexOf(camera);
-    if (index === -1) {
-      const cameraData: GLTFCamera = {
-        type: "perspective",
-      };
-      if (camera instanceof PerspectiveCamera) {
-        cameraData.perspective = {
-          fovy: camera.fovy,
-          near: camera.near,
-          far: camera.far,
-        };
-      }
-      cameraRefs.push(camera);
-      index = cameraRefs.length - 1;
-      result.cameras.push(cameraData);
-    }
-    return index;
   }
 
   function processMesh(mesh: Mesh) {
