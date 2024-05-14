@@ -14,6 +14,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { InputDrag } from "./ui/input-drag";
+import { Progress } from "./ui/progress";
 let interval: NodeJS.Timeout | undefined = undefined;
 
 export function Animations() {
@@ -194,8 +195,16 @@ export function Animations() {
               </div>
             </div>
 
-            <div>
-              Frame: {frame + 1}/{focusedAnimation.length}
+            <div className="my-2">
+              <h4 className="font-medium">FRAME</h4>
+              <Progress
+                value={(frame / (focusedAnimation.length - 1)) * 100}
+                className="w-full"
+              />
+              <div className="flex justify-between">
+                <span>{frame + 1}</span>
+                <span>{focusedAnimation.length}</span>
+              </div>
             </div>
             <div>
               <label>FPS</label>
