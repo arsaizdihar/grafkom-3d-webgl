@@ -4,6 +4,7 @@ import { NodeEdits } from "./components/node-edits";
 import { Application } from "./lib/engine/application";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
+import { CameraEdits } from "./components/camera-edits";
 
 const GLTF_FILE = "/scenes/cube.json";
 
@@ -73,6 +74,7 @@ function App() {
       <div className="bg-slate-200 w-64 flex flex-col p-4">
         <ComponentTree />
         <NodeEdits />
+        {/* <CameraEdits /> */}
         {/* <div className="flex flex-col gap-2 text-sm">
           <p>Select camera:</p>
           <div className="flex flex-row gap-2 flex-wrap">

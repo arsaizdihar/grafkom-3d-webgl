@@ -17,6 +17,7 @@ import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
 import { Euler } from "../math/euler";
+import { OrthographicCamera } from "../camera/orthographic-camera";
 
 const arrayIndex = () => z.number().int().nonnegative();
 const ColorSchema = z.union([z.string(), z.array(z.number()).length(4)]);
@@ -88,7 +89,7 @@ const GLTFSchema = z.object({
   images: z.array(z.object({ uri: z.string() })),
   cameras: z.array(
     z.object({
-      type: z.enum(["perspective"]),
+      type: z.enum(["perspective", "orthographic"]),
       perspective: z
         .object({
           fovy: z.number(),
@@ -96,6 +97,16 @@ const GLTFSchema = z.object({
           far: z.number(),
         })
         .optional(),
+      orthographic: z
+        .object({
+          top: z.number(),
+          bottom: z.number(),
+          left: z.number(),
+          right: z.number(),
+          near: z.number(),
+          far: z.number(),
+        })
+        .optional()
     })
   ),
 });
@@ -224,6 +235,19 @@ export async function loadGLTF(data: unknown, app: Application) {
             app.canvas.width / app.canvas.height,
             cameraGltf.perspective.near,
             cameraGltf.perspective.far
+          );
+          break;
+        case "orthographic":
+          if (!cameraGltf.orthographic) {
+            throw new Error("Perspective camera missing parameter");
+          }
+          camera = new OrthographicCamera(
+            cameraGltf.orthographic.left,
+            cameraGltf.orthographic.right,
+            cameraGltf.orthographic.bottom,
+            cameraGltf.orthographic.top,
+            cameraGltf.orthographic.near,
+            cameraGltf.orthographic.far,
           );
           break;
       }
