@@ -5,6 +5,8 @@ export class GLNode {
   public children: GLNode[] = [];
   protected parent: GLNode | null = null;
   public transform: Transform;
+  private _isParentDirty = false;
+  public isDirty = true;
 
   private _localMatrix: Matrix4;
   set localMatrix(matrix: Matrix4) {

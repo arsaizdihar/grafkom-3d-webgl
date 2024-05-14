@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React, { useEffect, useRef, useState } from "react";
 import { Application } from "./app";
 import { Camera } from "./lib/engine/camera";
@@ -111,7 +112,7 @@ function App() {
           <p>FOV</p>
           <div id="value-fov"></div>
           <input id="slider-fov" type="range" min="1" max="179" step="1" />
-          <button
+          <Button
             onClick={() => {
               if (!app || !scene || !camera) {
                 return;
@@ -122,7 +123,7 @@ function App() {
             }}
           >
             save
-          </button>
+          </Button>
         </div>
       </div>
     </>
