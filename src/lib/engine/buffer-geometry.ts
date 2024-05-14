@@ -100,6 +100,8 @@ export class BufferGeometry {
         ab.subVectors(pA, pB);
         cb.cross(ab);
 
+        cb.normalize();
+
         normal.set(i, [cb.x, cb.y, cb.z]);
         normal.set(i + 1, [cb.x, cb.y, cb.z]);
         normal.set(i + 2, [cb.x, cb.y, cb.z]);

@@ -24,7 +24,6 @@ export class Application {
       attributes: ["position", "texcoord", "normal"],
       uniforms: {
         matrix: { type: "uniformMatrix4fv" },
-        normalMat: { type: "uniformMatrix4fv" },
         ambientColor: { type: "uniform4f" },
         diffuseColor: { type: "uniform4f" },
         specularColor: { type: "uniform4f" },
@@ -33,12 +32,15 @@ export class Application {
         lightPos: { type: "uniform3f" },
         color: { type: "uniform4f" },
         texture: { type: "uniform1i" },
+        viewProjectionMat: { type: "uniformMatrix4fv" },
+        projectionMat: { type: "uniformMatrix4fv" },
       },
     });
 
     this.adjustCanvas();
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     this.gl.enable(this.gl.CULL_FACE);
+    this.gl.enable(this.gl.DEPTH_TEST);
 
     const ro = new ResizeObserver(this.adjustCanvas.bind(this));
     ro.observe(container, { box: "content-box" });
@@ -64,10 +66,11 @@ export class Application {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     const nodes: GLNode[] = [...scene.children];
     this.program.setUniforms({
-      normalMat: [false, camera.projectionMatrix.el],
+      projectionMat: [false, camera.projectionMatrix.el],
+      viewProjectionMat: [false, camera.viewProjectionMatrix.el],
     });
     this.program.setUniforms({
-      lightPos: [0, 100, 0],
+      lightPos: [0, 50, 0],
     });
     while (nodes.length) {
       const node = nodes.pop()!;
