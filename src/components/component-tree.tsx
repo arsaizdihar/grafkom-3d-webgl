@@ -1,6 +1,12 @@
 import { GLNode } from "@/lib/engine/node";
 import { useApp } from "@/state/app-store";
-import { Button } from "./ui/button";
+import clsx from "clsx";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -38,15 +44,27 @@ function Node({ node }: { node: GLNode }) {
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger asChild>
-        <Button
-          size={"sm"}
-          onClick={handleClick}
-          variant={focusNode === node ? "default" : "outline"}
-          className="w-full text-left justify-start"
+      <ContextMenuTrigger>
+        <div
+          className={clsx(
+            "flex justify-between",
+            focusNode === node ? "bg-slate-300" : "bg-slate-100"
+          )}
         >
-          {node.name}
-        </Button>
+          <button
+            key={node.id}
+            className={clsx(
+              "w-full flex flex-1 items-center justify-between py-2 font-medium transition-all [&[data-state=open]>svg]:rotate-180 pl-2"
+            )}
+            onClick={handleClick}
+          >
+            {node.name}
+          </button>
+
+          {node.children.length > 0 && (
+            <AccordionTrigger className={clsx("px-2")}></AccordionTrigger>
+          )}
+        </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
         <ContextMenuItem
@@ -68,15 +86,27 @@ function Node({ node }: { node: GLNode }) {
 
 function NodeChildren({ nodes }: { nodes: GLNode[] }) {
   return (
-    <ul>
-      {nodes.map((node) => (
-        <li key={node.id}>
-          <Node node={node} />
-          <div className="ml-2">
-            <NodeChildren nodes={node.children} />
-          </div>
-        </li>
-      ))}
-    </ul>
+    <Accordion asChild type="multiple" className="text-sm">
+      <ul>
+        {nodes.map((node) =>
+          node.children.length > 0 ? (
+            <AccordionItem asChild key={node.id} value={node.id}>
+              <li>
+                <Node node={node} />
+                <AccordionContent>
+                  <div className="ml-2">
+                    <NodeChildren nodes={node.children} />
+                  </div>
+                </AccordionContent>
+              </li>
+            </AccordionItem>
+          ) : (
+            <li key={node.id}>
+              <Node node={node} />
+            </li>
+          )
+        )}
+      </ul>
+    </Accordion>
   );
 }

@@ -13,9 +13,30 @@
       "translation": [0, 0, 0],
       "rotation": [15, 0, 0],
       "scale": [3, 3, 3],
-      "children": [],
+      "children": [2],
       "mesh": 0,
       "name": "pyramid"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [15, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [3, 4],
+      "name": "node1"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [15, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "name": "node2"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [15, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "name": "node3"
     }
   ],
   "meshes": [
