@@ -6,21 +6,11 @@ import { NodeEdits } from "./components/node-edits";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { PerspectiveCamera } from "./lib/camera/perspective-camera";
 import { Application } from "./lib/engine/application";
-import { GLNode } from "./lib/engine/node";
 import { loadGLTF } from "./lib/gltf/loader";
 import { degToRad } from "./lib/math/math-utils";
 import { useApp } from "./state/app-store";
 
 const GLTF_FILE = "/scenes/pyramid.json";
-
-function recomputeIfDirty(node: GLNode) {
-  if (node.isDirty) {
-    node.computeWorldMatrix(false, true);
-    node.clean();
-  } else {
-    node.children.forEach(recomputeIfDirty);
-  }
-}
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
@@ -64,7 +54,7 @@ function App() {
       }
       const [scene, animations] = await loadGLTF(
         await fetch(GLTF_FILE).then((res) => res.json()),
-        app,
+        app
       );
       // const camera = new OrthographicCamera(
       //   app.canvas.width / -2,
@@ -78,7 +68,7 @@ function App() {
         degToRad(60),
         app.canvas.width / app.canvas.height,
         1,
-        2000,
+        2000
       );
       camera.transform.position.z = 500;
       camera.dirty();
@@ -95,20 +85,17 @@ function App() {
     if (!app || !scene || !currentCamera) {
       return;
     }
-    const interval = setInterval(() => {
-      recomputeIfDirty(scene);
-      if (currentCamera.isCameraDirty) {
-        currentCamera.computeProjectionMatrix();
-        currentCamera.cameraClean();
-      }
-      app.render(scene, currentCamera, animations);
-    }, 1000 / 60);
 
-    return () => clearInterval(interval);
+    const cleanup = app.render(scene, currentCamera, animations);
+    return cleanup;
   }, [app, scene, currentCamera, animations]);
 
   return (
     <>
+      <div
+        className="absolute bottom-4 left-4 text-green-500 bg-black"
+        id="fps"
+      ></div>
       <div className="bg-slate-200 w-64 flex flex-col p-4">
         <ComponentTree />
       </div>
