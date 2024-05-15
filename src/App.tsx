@@ -64,16 +64,16 @@ function App() {
       //   100,
       //   -100
       // );
-      const camera = new PerspectiveCamera(
-        degToRad(60),
-        app.canvas.width / app.canvas.height,
-        1,
-        2000
-      );
-      camera.transform.position.z = 500;
-      camera.dirty();
+      // const camera = new PerspectiveCamera(
+      //   degToRad(60),
+      //   app.canvas.width / app.canvas.height,
+      //   1,
+      //   2000
+      // );
+      // camera.transform.position.z = 500;
+      // camera.dirty();
       setScene(scene);
-      setCurrentCamera(camera);
+      // setCurrentCamera(camera);
       setAnimations(animations);
       setFocusedNode(null);
     }

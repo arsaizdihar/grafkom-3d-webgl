@@ -1,14 +1,13 @@
 import { useApp } from "@/state/app-store";
 import { Dropdown } from "./ui/dropdown";
 import { PerspectiveCamera } from "@/lib/camera/perspective-camera";
-import { degToRad, radToDeg } from "@/lib/math/math-utils";
+import { degToRad } from "@/lib/math/math-utils";
 import { OrthographicCamera } from "@/lib/camera/orthographic-camera";
 import { ObliqueCamera } from "@/lib/camera/oblique-camera";
 import { useEffect, useState } from "react";
 import { Slider } from "./ui/slider";
-import { Matrix4 } from "@/lib/math/m4";
-import { Vector3 } from "@/lib/engine/vector";
 import { GLNode } from "@/lib/engine/node";
+import { Button } from "./ui/button";
 
 export function CameraEdits() {
   const { app, currentCamera, setCurrentCamera, focusedNode } = useApp((state) => ({
@@ -33,7 +32,6 @@ export function CameraEdits() {
     phi: degToRad(75),
 
     cameraAngleRadians: 0,
-    cameraRadius: 200,
 
     zPos: 1
   });
@@ -48,17 +46,33 @@ export function CameraEdits() {
         bottom: app.canvas.height * -0.5,
         aspect: app.canvas.width / app.canvas.height,
       }));
+
+      // Initial camera
+      const camera = new PerspectiveCamera(
+        degToRad(params.fovy),
+        app.canvas.width / app.canvas.height,
+        1,
+        2000
+      );
+      camera.transform.position.z = 500;
+      camera.dirty();
+      
+      node.addChild(camera);
+      camera.transform.position.z = params.zPos * 500;
+
+      camera.dirty();
+      setCurrentCamera(camera);
     }
   }, [app]);
 
   const [node, setNode] = useState(new GLNode());
 
   useEffect(() => {
-    const angleInRadians = degToRad(params.cameraAngleRadians);
+    const angleInDegree = params.cameraAngleRadians;
     const zPos = params.zPos;
 
     if (currentCamera) {
-      node.transform.rotation.y = params.cameraAngleRadians;
+      node.transform.rotation.y = angleInDegree;
 
       // zPos
       if (currentCamera instanceof PerspectiveCamera) {
@@ -66,8 +80,18 @@ export function CameraEdits() {
       } else if (
         currentCamera instanceof OrthographicCamera ||
         currentCamera instanceof ObliqueCamera
-      ) {
-        currentCamera.transform.position.z = zPos * 100;
+      ) {      
+        if (app?.canvas) {
+          const zoom = zPos / 1;
+
+          // Update camera frustum based on zoom
+          currentCamera.left = -app.canvas.width * 0.5 * zoom;
+          currentCamera.right = app.canvas.width * 0.5 * zoom;
+          currentCamera.top = app.canvas.height * 0.5 * zoom;
+          currentCamera.bottom = -app.canvas.height * 0.5 * zoom;
+
+          currentCamera.computeProjectionMatrix();
+        }
       }
 
       currentCamera.dirty();
@@ -81,6 +105,10 @@ export function CameraEdits() {
   ];
 
   const handleChange = (value: string | number) => {
+    node.removeAllChildren();
+    node.computeWorldMatrix(false, true);
+    node.transform.rotation.y = params.cameraAngleRadians;
+
     if (value === "Perspective") {
       const cameraPerspective = new PerspectiveCamera(
         degToRad(params.fovy),
@@ -89,12 +117,8 @@ export function CameraEdits() {
         params.far
       );
       node.addChild(cameraPerspective);
-      node.computeWorldMatrix(false, true);
-      cameraPerspective.transform.position.z = 500;
-      node.transform.rotation.y = params.cameraAngleRadians;
+      cameraPerspective.transform.position.z = params.zPos * 500;
 
-      setNode(node);
-      // cameraPerspective.transform.rotation.y = params.cameraAngleRadians;
       cameraPerspective.dirty();
       setCurrentCamera(cameraPerspective);
     } else if (value === "Orthographic") {
@@ -106,12 +130,20 @@ export function CameraEdits() {
         params.near,
         params.far
       );
-      // cameraOrthographic.transform.position.z = 100;
-      // cameraOrthographic.transform.rotation.y = params.cameraAngleRadians;
       node.addChild(cameraOrthographic);
-      node.computeWorldMatrix(false, true);
       cameraOrthographic.transform.position.z = 100;
-      node.transform.rotation.y = params.cameraAngleRadians;
+
+      if (app?.canvas) {
+        const zoom = params.zPos / 1;
+
+        cameraOrthographic.left = -app.canvas.width * 0.5 * zoom;
+        cameraOrthographic.right = app.canvas.width * 0.5 * zoom;
+        cameraOrthographic.top = app.canvas.height * 0.5 * zoom;
+        cameraOrthographic.bottom = -app.canvas.height * 0.5 * zoom;
+
+        cameraOrthographic.computeProjectionMatrix();
+      }
+
       cameraOrthographic.dirty();
       setCurrentCamera(cameraOrthographic);
     } else if (value === "Oblique") {
@@ -125,12 +157,19 @@ export function CameraEdits() {
         params.theta,
         params.phi
       );
-      // cameraOblique.transform.position.z = 100;
-      // cameraOblique.transform.rotation.y = params.cameraAngleRadians;
       node.addChild(cameraOblique);
-      node.computeWorldMatrix(false, true);
       cameraOblique.transform.position.z = 100;
-      node.transform.rotation.y = params.cameraAngleRadians;
+
+      if (app?.canvas) {
+        const zoom = params.zPos / 1;
+
+        cameraOblique.left = -app.canvas.width * 0.5 * zoom;
+        cameraOblique.right = app.canvas.width * 0.5 * zoom;
+        cameraOblique.top = app.canvas.height * 0.5 * zoom;
+        cameraOblique.bottom = -app.canvas.height * 0.5 * zoom;
+
+        cameraOblique.computeProjectionMatrix();
+      }
       cameraOblique.dirty();
       setCurrentCamera(cameraOblique);
     }
@@ -143,6 +182,29 @@ export function CameraEdits() {
       ? "Orthographic"
       : currentCamera instanceof ObliqueCamera 
       ? "Oblique" : undefined;
+
+  const handleResetView = () => {
+    const value = currentCameraType;
+
+    node.computeWorldMatrix(false, true);
+    setParams((prevParams) => ({
+      ...prevParams,
+      cameraAngleRadians: 0,
+      zPos: 1,
+    }));
+    node.transform.rotation.y = 0;
+
+    if (value === "Perspective" && currentCamera instanceof PerspectiveCamera) {
+      currentCamera.transform.position.z = 500;
+      currentCamera.dirty();
+    } else if (value === "Orthographic" && currentCamera instanceof OrthographicCamera) {
+      currentCamera.transform.position.z = 100;
+      currentCamera.dirty();
+    } else if (value === "Oblique" && currentCamera instanceof ObliqueCamera) {
+      currentCamera.transform.position.z = 100;
+      currentCamera.dirty();
+    }
+  }
 
   return (
     <>
@@ -190,6 +252,13 @@ export function CameraEdits() {
               }}
             />
           </div>
+          <Button
+            size={"sm"}
+            onClick={handleResetView}
+            className="w-full text-center"
+          >
+            Reset to Default View
+          </Button>
         </div>
       )}
     </>
