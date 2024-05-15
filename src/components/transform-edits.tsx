@@ -10,7 +10,7 @@ export function TransformEdits({
 }) {
   return (
     <div>
-      <h3>Transform</h3>
+      <h3 className="mt-2">Transform</h3>
 
       <h4>Position</h4>
       <div className="flex space-x-4">

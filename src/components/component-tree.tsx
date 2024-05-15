@@ -14,7 +14,7 @@ export function ComponentTree() {
 
   return (
     <div className="h-1/2 overflow-y-auto">
-      <h2>Component Tree</h2>
+      <h2 className="mb-2">Component Tree</h2>
       {scene && <NodeChildren nodes={scene.children} />}
     </div>
   );
