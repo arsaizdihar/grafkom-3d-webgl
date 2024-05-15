@@ -114,8 +114,6 @@ export class PyramidHollowGeometry extends BufferGeometry {
       )
     );
     this.calculateNormals();
-    console.log(this.attributes.normal);
-    console.log(this.attributes.texcoord);
   }
 }
 

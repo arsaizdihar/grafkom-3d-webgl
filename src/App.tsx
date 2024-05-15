@@ -1,25 +1,16 @@
 import { useEffect, useRef } from "react";
+import { Animations } from "./components/animations";
 import { ComponentTree } from "./components/component-tree";
 import { Load } from "./components/load";
 import { NodeEdits } from "./components/node-edits";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { PerspectiveCamera } from "./lib/camera/perspective-camera";
 import { Application } from "./lib/engine/application";
-import { GLNode } from "./lib/engine/node";
 import { loadGLTF } from "./lib/gltf/loader";
-import { useApp } from "./state/app-store";
-import { CameraEdits } from "./components/camera-edits";
 import { degToRad } from "./lib/math/math-utils";
+import { useApp } from "./state/app-store";
 
-const GLTF_FILE = "/scenes/1-cube.json";
-
-function recomputeIfDirty(node: GLNode) {
-  if (node.isDirty) {
-    node.computeWorldMatrix(false, true);
-    node.clean();
-  } else {
-    node.children.forEach(recomputeIfDirty);
-  }
-}
+const GLTF_FILE = "/scenes/pyramid.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
@@ -32,6 +23,8 @@ function App() {
     currentCamera,
     setCurrentCamera,
     setFocusedNode,
+    animations,
+    setAnimations,
   } = useApp();
 
   useEffect(() => {
@@ -59,7 +52,7 @@ function App() {
       if (!app) {
         return;
       }
-      const scene = await loadGLTF(
+      const [scene, animations] = await loadGLTF(
         await fetch(GLTF_FILE).then((res) => res.json()),
         app
       );
@@ -81,96 +74,52 @@ function App() {
       camera.dirty();
       setScene(scene);
       setCurrentCamera(camera);
+      setAnimations(animations);
       setFocusedNode(null);
     }
+
     load();
-  }, [app, setCurrentCamera, setScene, setFocusedNode]);
+  }, [app, setCurrentCamera, setScene, setFocusedNode, setAnimations]);
 
   useEffect(() => {
     if (!app || !scene || !currentCamera) {
       return;
     }
-    const interval = setInterval(() => {
-      recomputeIfDirty(scene);
-      if (currentCamera.isCameraDirty) {
-        currentCamera.computeProjectionMatrix();
-        currentCamera.cameraClean();
-      }
-      app.render(scene, currentCamera);
-    }, 1000 / 30);
 
-    return () => clearInterval(interval);
-  }, [app, scene, currentCamera]);
+    const cleanup = app.render(scene, currentCamera, animations);
+    return cleanup;
+  }, [app, scene, currentCamera, animations]);
 
   return (
     <>
+      <div className="bg-slate-200 w-64 flex flex-col p-4">
+        <ComponentTree />
+
+        <div
+          className="w-full text-green-500 font-mono text-center"
+          id="fps"
+        ></div>
+      </div>
       <div
         className="flex-1 canvas-container max-w-3/4 overflow-hidden"
         ref={containterRef}
       >
         <canvas ref={canvasRef}></canvas>
       </div>
-      <div className="bg-slate-200 w-64 flex flex-col p-4">
-        <ComponentTree />
-        <NodeEdits />
-        <Load />
-        {/* <div className="flex flex-col gap-2 text-sm">
-          <p>Select camera:</p>
-          <div className="flex flex-row gap-2 flex-wrap">
-            <div className="flex gap-2">
-              <input
-                id="orthographic"
-                type="radio"
-                name="camera"
-                value="orthographic"
-              />
-              <label htmlFor="orthographic">Orthographic</label>
-            </div>
-            <div className="flex gap-2">
-              <input
-                id="perspective"
-                type="radio"
-                name="camera"
-                value="perspective"
-              />
-              <label htmlFor="perspective">Perspective</label>
-            </div>
-            <div className="flex gap-2">
-              <input id="oblique" type="radio" name="camera" value="oblique" />
-              <label htmlFor="oblique">Oblique</label>
-            </div>
-          </div>
-
-          <p>camera</p>
-          <div id="value-camera"></div>
-          <input id="slider-camera" type="range" min="0" max="360" step="1" />
-
-          <p>camera radius</p>
-          <div id="value-camera-radius"></div>
-          <input
-            id="slider-camera-radius"
-            type="range"
-            min="0"
-            max="360"
-            step="1"
-          />
-
-          <p>FOV</p>
-          <div id="value-fov"></div>
-          <input id="slider-fov" type="range" min="1" max="179" step="1" />
-          <Button
-            onClick={() => {
-              if (!app || !scene || !currentCamera) {
-                return;
-              }
-              saveGLTF(scene, currentCamera).then((res) => {
-                console.log(res);
-              });
-            }}
-          >
-            save
-          </Button>
-        </div> */}
+      <div className="bg-slate-200 w-72">
+        <Tabs defaultValue="edit" className="h-full flex flex-col">
+          <TabsList>
+            <TabsTrigger value="edit">Edit</TabsTrigger>
+            <TabsTrigger value="animations">Animations</TabsTrigger>
+          </TabsList>
+          <TabsContent value="edit" className="px-4 pb-4 flex-1">
+            <NodeEdits />
+            <Load />
+          </TabsContent>
+          <TabsContent value="animations" className="px-4 pb-4 flex-1">
+            <Animations />
+          </TabsContent>
+        </Tabs>
       </div>
     </>
   );

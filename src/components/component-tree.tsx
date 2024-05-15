@@ -1,23 +1,30 @@
 import { GLNode } from "@/lib/engine/node";
 import { useApp } from "@/state/app-store";
 import { Button } from "./ui/button";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "./ui/context-menu";
 
 export function ComponentTree() {
   const scene = useApp((state) => state.scene);
+  const _ = useApp((state) => state._rerenderSceneGraph);
 
   return (
-    <div className="h-1/2 overflow-y-auto">
-      <h2>Component Tree</h2>
+    <div className="flex-1 h-1 overflow-y-auto">
+      <h2 className="mb-2">Component Tree</h2>
       {scene && <NodeChildren nodes={scene.children} />}
     </div>
   );
 }
 
 function Node({ node }: { node: GLNode }) {
-  const { focusNode, setFocusedNode } = useApp((state) => ({
+  const { focusNode, setFocusedNode, rerenderSceneGraph } = useApp((state) => ({
     focusNode: state.focusedNode,
     setFocusedNode: state.setFocusedNode,
-    rerender: state._rerender,
+    rerenderSceneGraph: state.rerenderSceneGraph,
   }));
 
   const handleClick = () => {
@@ -30,14 +37,32 @@ function Node({ node }: { node: GLNode }) {
   };
 
   return (
-    <Button
-      size={"sm"}
-      onClick={handleClick}
-      variant={focusNode === node ? "default" : "outline"}
-      className="w-full text-left justify-start"
-    >
-      {node.name}
-    </Button>
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <Button
+          size={"sm"}
+          onClick={handleClick}
+          variant={focusNode === node ? "default" : "outline"}
+          className="w-full text-left justify-start"
+        >
+          {node.name}
+        </Button>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem
+          inset
+          onSelect={() => {
+            node.removeFromParent();
+            if (focusNode === node) {
+              setFocusedNode(null);
+            }
+            rerenderSceneGraph();
+          }}
+        >
+          Delete
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }
 

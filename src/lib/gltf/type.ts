@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { AnimationClipSchema } from "../engine/animation";
 
 const arrayIndex = () => z.number().int().nonnegative();
 const ColorSchema = z.union([z.string(), z.array(z.number()).length(4)]);
@@ -15,6 +16,7 @@ export const GLTFSchema = z.object({
       mesh: arrayIndex().optional(),
       name: z.string().optional(),
       background: ColorSchema.optional(),
+      lightPos: z.array(z.number()).length(3).optional(),
     })
   ),
   meshes: z.array(
@@ -72,6 +74,13 @@ export const GLTFSchema = z.object({
     })
   ),
   images: z.array(z.object({ uri: z.string() })),
+  animations: z.array(
+    z.object({
+      root: arrayIndex(),
+      fps: z.number().default(30),
+      clip: AnimationClipSchema,
+    })
+  ),
 });
 
 export type GLTF = z.infer<typeof GLTFSchema>;

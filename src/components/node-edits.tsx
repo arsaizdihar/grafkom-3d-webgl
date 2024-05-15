@@ -1,17 +1,22 @@
 import { Mesh } from "@/lib/engine/mesh";
 import { useApp } from "@/state/app-store";
-import { MeshEdits } from "./mesh-edits";
-import { TransformEdit } from "./transform-edit";
-import { Input } from "./ui/input";
 import { CameraEdits } from "./camera-edits";
-import { Button } from "./ui/button";
+import { LightEdits } from "./light-edits.tsx";
+import { MeshEdits } from "./mesh-edits";
+import { TransformEdits } from "./transform-edits.tsx";
+import { Input } from "./ui/input";
 
 export function NodeEdits() {
   const node = useApp((state) => state.focusedNode);
-  const rerender = useApp((state) => state.rerenderReact);
+  const rerender = useApp((state) => state.rerenderSceneGraph);
 
   if (!node) {
-    return <CameraEdits />;
+    return (
+      <>
+        <CameraEdits />
+        <LightEdits />
+      </>
+    );
   }
 
   return (
@@ -28,7 +33,7 @@ export function NodeEdits() {
           }}
         />
       </div>
-      <TransformEdit
+      <TransformEdits
         key={node.id + "transform"}
         transform={node.transform}
         triggerChange={() => {

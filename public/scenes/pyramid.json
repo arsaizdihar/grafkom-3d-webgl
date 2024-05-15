@@ -53,7 +53,136 @@
   "textures": [
     {
       "source": 0,
-      "generateMipmaps": true
+      "generateMipmaps": false,
+      "wrapS": 33071,
+      "wrapT": 33071,
+      "minFilter": 9729
+    }
+  ],
+  "animations": [
+    {
+      "root": 1,
+      "fps": 12,
+      "clip": {
+        "name": "rotate",
+        "frames": [
+          {
+            "keyframe": {
+              "rotation": [15, 15, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 45, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 75, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 90, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 105, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 120, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 135, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 150, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 165, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 180, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 195, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 210, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 225, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 240, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 255, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 270, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 285, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 300, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 315, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 330, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 345, 0]
+            }
+          }
+        ]
+      }
     }
   ]
 }
