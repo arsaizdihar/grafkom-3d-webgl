@@ -119,7 +119,6 @@ export class Application {
           this.program.setUniforms(node.material.uniforms);
           this.program.setUniforms({
             matrix: [false, node.worldMatrix.el],
-            // TODO: world inverse only for phong
             normalMat: [false, node.worldInvTransposeMatrix.el],
           });
           const geometry = node.geometry;

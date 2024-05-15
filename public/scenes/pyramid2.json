@@ -5,7 +5,7 @@
       "translation": [0, 0, 0],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
-      "children": [1, 2],
+      "children": [1],
       "background": [1, 1, 1, 1],
       "name": "scene"
     },
@@ -13,17 +13,30 @@
       "translation": [0, 0, 0],
       "rotation": [15, 0, 0],
       "scale": [3, 3, 3],
-      "children": [],
+      "children": [2],
       "mesh": 0,
       "name": "pyramid"
     },
     {
       "translation": [0, 0, 0],
-      "rotation": [0, 0, 0],
+      "rotation": [15, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [3, 4],
+      "name": "node1"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [15, 0, 0],
       "scale": [3, 3, 3],
       "children": [],
-      "mesh": 1,
-      "name": "cube"
+      "name": "node2"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [15, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "name": "node3"
     }
   ],
   "meshes": [
@@ -34,15 +47,6 @@
         "pyramidhollow": {
           "size": 20,
           "thickness": 4
-        }
-      }
-    },
-    {
-      "primitive": {
-        "geometry": "cube",
-        "material": 0,
-        "cube": {
-          "size": 50
         }
       }
     }
@@ -78,27 +82,19 @@
   ],
   "animations": [
     {
-      "root": 0,
+      "root": 1,
       "fps": 1,
       "clip": {
         "name": "rotate",
         "frames": [
           {
-            "children": {
-              "pyramid": {
-                "keyframe": {
-                  "rotation": [15, 0, 0]
-                }
-              }
+            "keyframe": {
+              "translation": [0, 0, 0]
             }
           },
           {
-            "children": {
-              "pyramid": {
-                "keyframe": {
-                  "rotation": [15, 180, 0]
-                }
-              }
+            "keyframe": {
+              "translation": [30, 180, 0]
             }
           }
         ]

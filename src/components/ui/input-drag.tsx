@@ -66,8 +66,8 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
       if (isNaN(value)) {
         value = 0;
       }
-      if (props.min) value = Math.max(value, +props.min);
-      if (props.max) value = Math.min(value, +props.max);
+      if (props.min !== undefined) value = Math.max(value, +props.min);
+      if (props.max !== undefined) value = Math.min(value, +props.max);
       onChange?.(value);
       e.target.valueAsNumber = value;
       rerenderThis();
@@ -88,8 +88,10 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
           let delta = Math.sqrt(a * a + b * b) * stepModifier;
           if (x2 < x1) delta = -delta;
           let newValue: number = startValue.current + delta;
-          if (props.min) newValue = Math.max(newValue, +props.min);
-          if (props.max) newValue = Math.min(newValue, +props.max);
+          if (props.min !== undefined)
+            newValue = Math.max(newValue, +props.min);
+          if (props.max !== undefined)
+            newValue = Math.min(newValue, +props.max);
           newValue = +newValue.toFixed(decimals);
           if (newValue) {
             onChange?.(newValue);

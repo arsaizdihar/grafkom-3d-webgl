@@ -17,8 +17,6 @@ export class BufferAttribute {
   private _stride = 0;
   private _offset = 0;
 
-  private _isDirty = true; // kita copy atribut minimal sekali di awal terlebih dahulu
-
   /**
    * Creates an instance of BufferAttribute.
    * @param {TypedArray} data Typed array data.
@@ -63,44 +61,25 @@ export class BufferAttribute {
   get offset() {
     return this._offset;
   }
-  get isDirty() {
-    return this._isDirty;
-  }
   // Public set accessor to private properties.
   // Should toggle isDirty flag to true.
   set data(data: TypedArray) {
     this._data = data;
-    this._isDirty = true;
   }
   set size(size: number) {
     this._size = size;
-    this._isDirty = true;
   }
   set dtype(dtype: number) {
     this._dtype = dtype;
-    this._isDirty = true;
   }
   set normalize(normalize: boolean) {
     this._normalize = normalize;
-    this._isDirty = true;
   }
   set stride(stride: number) {
     this._stride = stride;
-    this._isDirty = true;
   }
   set offset(offset: number) {
     this._offset = offset;
-    this._isDirty = true;
-  }
-
-  /**
-   * Tandai buffer sebagai bersih
-   * (tidak perlu di-copy kembali ke GPU)
-   *
-   * Hanya dipanggil pada attribute setter.
-   */
-  consume() {
-    this._isDirty = false;
   }
 
   /**
@@ -118,8 +97,6 @@ export class BufferAttribute {
   }
 
   set(index: number, data: number[]) {
-    this._isDirty = true;
-
     this._data.set(data, this.offset + index * (this.stride + this._size));
   }
 

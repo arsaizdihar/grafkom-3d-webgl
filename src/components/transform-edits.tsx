@@ -13,8 +13,8 @@ export function TransformEdits({
       <h3 className="mt-2">Transform</h3>
 
       <h4>Position</h4>
-      <div className="flex space-x-4">
-        <div className="flex items-center">
+      <div className="flex space-x-3">
+        <div className="flex items-center flex-1">
           <span className="mr-2">X</span>
           <InputDrag
             getValue={() => transform.position.x}
@@ -25,7 +25,7 @@ export function TransformEdits({
             step={0.5}
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center flex-1">
           <span className="mr-2">Y</span>
           <InputDrag
             getValue={() => transform.position.y}
@@ -36,7 +36,7 @@ export function TransformEdits({
             step={0.5}
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center flex-1">
           <span className="mr-2">Z</span>
           <InputDrag
             getValue={() => transform.position.z}
@@ -50,8 +50,8 @@ export function TransformEdits({
       </div>
 
       <h4>Rotation</h4>
-      <div className="flex space-x-1">
-        <div className="flex items-center">
+      <div className="flex space-x-3">
+        <div className="flex items-center flex-1">
           <span className="mr-2">X</span>
           <InputDrag
             getValue={() => transform.rotation.x}
@@ -62,7 +62,7 @@ export function TransformEdits({
             step={0.5}
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center flex-1">
           <span className="mr-2">Y</span>
           <InputDrag
             getValue={() => transform.rotation.y}
@@ -73,7 +73,7 @@ export function TransformEdits({
             step={0.5}
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center flex-1">
           <span className="mr-2">Z</span>
           <InputDrag
             getValue={() => transform.rotation.z}
@@ -87,8 +87,8 @@ export function TransformEdits({
       </div>
 
       <h4>Scale</h4>
-      <div className="flex space-x-4">
-        <div className="flex items-center">
+      <div className="flex space-x-3">
+        <div className="flex items-center flex-1">
           <span className="mr-2">X</span>
           <InputDrag
             getValue={() => transform.scale.x}
@@ -96,10 +96,11 @@ export function TransformEdits({
               transform.scale.x = value;
               triggerChange();
             }}
+            min={0}
             step={0.1}
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center flex-1">
           <span className="mr-2">Y</span>
           <InputDrag
             getValue={() => transform.scale.y}
@@ -107,10 +108,11 @@ export function TransformEdits({
               transform.scale.y = value;
               triggerChange();
             }}
+            min={0}
             step={0.1}
           />
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center flex-1">
           <span className="mr-2">Z</span>
           <InputDrag
             getValue={() => transform.scale.z}
@@ -118,6 +120,7 @@ export function TransformEdits({
               transform.scale.z = value;
               triggerChange();
             }}
+            min={0}
             step={0.1}
           />
         </div>

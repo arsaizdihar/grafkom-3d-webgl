@@ -217,7 +217,7 @@ export function Animations() {
                     focusedAnimation.fps = value;
                   }
                 }}
-                min={1}
+                min={0.01}
                 max={60}
                 step={1}
               />

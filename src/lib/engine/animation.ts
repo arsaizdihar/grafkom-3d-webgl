@@ -33,10 +33,11 @@ export class AnimationRunner {
   fps: number = 30;
   private root: GLNode;
   private _currentFrame: number = 0;
-  private deltaFrame: number = 0;
+  public deltaFrame: number = 0;
   private currentAnimation: AnimationClip;
   private _onFrameChange: ((frame: number) => void) | null = null;
   public reverse: boolean = false;
+  public tweening = true;
 
   constructor(animClip: AnimationClip, root: GLNode, { fps = 30 } = {}) {
     this.currentAnimation = animClip;
@@ -51,7 +52,9 @@ export class AnimationRunner {
   set currentFrame(frame: number) {
     frame = ((frame % this.length) + this.length) % this.length;
     this._currentFrame = frame;
-    this.updateSceneGraph();
+    if (!this.tweening) {
+      this.updateSceneGraph();
+    }
     this._onFrameChange?.(frame);
   }
 
@@ -87,22 +90,94 @@ export class AnimationRunner {
     this.currentFrame = 0;
   }
 
+  getFrameNumberDelta(delta: number) {
+    return (
+      (((this.currentFrame + delta) % this.length) + this.length) % this.length
+    );
+  }
+
   update(deltaSecond: number) {
     if (this.isPlaying) {
       this.deltaFrame += deltaSecond * this.fps;
+      const beforeFrame = this.currentFrame;
+      const multiplier = this.reverse ? -1 : 1;
       if (this.deltaFrame >= 1) {
-        const multiplier = this.reverse ? -1 : 1;
         // 1 frame
         this.currentFrame =
           this.currentFrame + Math.floor(this.deltaFrame) * multiplier;
         this.deltaFrame = this.deltaFrame % 1;
+      }
+      if (!this.tweening) {
+        return;
+      }
+      if (this.deltaFrame === 0 && beforeFrame === this.currentFrame) {
+        return;
+      }
+      // tweening to start
+      if (
+        !this.reverse &&
+        this.currentFrame === this.currentAnimation.frames.length - 1
+      ) {
+        this.currentFrame = 0;
+      }
+      if (this.reverse && this.currentFrame === 0) {
+        this.currentFrame = this.currentAnimation.frames.length - 1;
+      }
+      this.updateSceneGraphTweening(
+        this.currentFrame,
+        this.deltaFrame,
+        this.root
+      );
+    }
+  }
+
+  updateSceneGraphTweening(
+    frameNumber: number,
+    delta: number,
+    node: GLNode = this.root,
+    names: string[] = []
+  ) {
+    let prevFrame: AnimationPath | undefined =
+      this.currentAnimation.frames[frameNumber];
+    let frame: AnimationPath | undefined =
+      this.currentAnimation.frames[
+        this.getFrameNumberDelta(this.reverse ? -1 : 1)
+      ];
+    names.forEach((name) => {
+      frame = frame?.children?.[name];
+      prevFrame = prevFrame?.children?.[name];
+    });
+
+    if (frame?.keyframe && prevFrame?.keyframe) {
+      const tweeningFn = TWEENING_FN.linear;
+      const resFrame = tweenFrame(
+        prevFrame.keyframe,
+        frame.keyframe,
+        delta,
+        tweeningFn
+      );
+      this.updateNode(node, resFrame);
+    } else if (frame?.keyframe) {
+      this.updateNode(node, frame.keyframe);
+    }
+
+    if (frame?.children) {
+      for (const childName in frame.children) {
+        const child = this.root.children.find(
+          (node) => node.name === childName
+        );
+        if (child) {
+          names.push(childName);
+          this.updateSceneGraphTweening(frameNumber, delta, child, names);
+          names.pop();
+        }
       }
     }
   }
 
   updateSceneGraph(frame = this.frame, node: GLNode = this.root) {
     // Update scene graph with current frame
-    this.updateNode(node, frame);
+    this.updateNode(node, frame.keyframe);
     if (frame.children) {
       for (const childName in frame.children) {
         const child = this.root.children.find(
@@ -115,11 +190,11 @@ export class AnimationRunner {
     }
   }
 
-  updateNode(node: GLNode, frame: AnimationPath) {
-    if (!frame.keyframe) {
+  private updateNode(node: GLNode, keyframe?: AnimationTRS) {
+    if (!keyframe) {
       return;
     }
-    const { translation, rotation, scale } = frame.keyframe;
+    const { translation, rotation, scale } = keyframe;
     if (translation) {
       node.transform.position.set(
         translation[0],
@@ -139,4 +214,87 @@ export class AnimationRunner {
       node.dirty();
     }
   }
+}
+
+function tweenFrame(
+  trs1: AnimationTRS,
+  trs2: AnimationTRS,
+  delta: number,
+  tweeningFn: TweeningFn
+) {
+  const { translation: t1, rotation: r1, scale: s1 } = trs1;
+  const { translation: t2, rotation: r2, scale: s2 } = trs2;
+  const t = !t1
+    ? t2
+    : !t2
+      ? t1
+      : t1.map((v, i) => v + (t2[i] - v) * tweeningFn(delta));
+  const r = !r1
+    ? r2
+    : !r2
+      ? r1
+      : r1.map((v, i) => v + (r2[i] - v) * tweeningFn(delta));
+  const s = !s1
+    ? s2
+    : !s2
+      ? s1
+      : s1.map((v, i) => v + (s2[i] - v) * tweeningFn(delta));
+  return { translation: t, rotation: r, scale: s };
+}
+
+type TweeningFn = (x: number) => number;
+
+const TWEENING_FN = {
+  sine,
+  quad,
+  cubic,
+  expo,
+  circ,
+  bounce,
+  linear,
+} as const;
+
+// all is ease in
+
+function linear(x: number) {
+  return x;
+}
+
+function sine(x: number) {
+  return 1 - Math.cos((x * Math.PI) / 2);
+}
+
+function quad(x: number): number {
+  return x * x;
+}
+
+function cubic(x: number): number {
+  return x * x * x;
+}
+
+function expo(x: number): number {
+  return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
+}
+
+function circ(x: number): number {
+  return 1 - Math.sqrt(1 - Math.pow(x, 2));
+}
+
+function outBounce(x: number): number {
+  const n1 = 7.5625;
+  const d1 = 2.75;
+
+  if (x < 1 / d1) {
+    return n1 * x * x;
+  } else if (x < 2 / d1) {
+    return n1 * (x -= 1.5 / d1) * x + 0.75;
+  } else if (x < 2.5 / d1) {
+    return n1 * (x -= 2.25 / d1) * x + 0.9375;
+  } else {
+    return n1 * (x -= 2.625 / d1) * x + 0.984375;
+  }
+}
+
+function bounce(x: number): number {
+  return 1 - outBounce(1 - x);
 }

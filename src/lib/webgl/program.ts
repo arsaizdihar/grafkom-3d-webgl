@@ -16,7 +16,7 @@ export class Program<
       type: UniformTypes;
       args?: any[];
     }
-  >
+  >,
 > {
   public gl: WebGLRenderingContext;
   public indexBuffer: WebGLBuffer | null;
@@ -128,11 +128,11 @@ export class Program<
       this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buf);
       const v = values[0];
       if (v instanceof BufferAttribute) {
-        if (v.isDirty) {
-          // Data Changed Time (note that buffer is already binded)
-          this.gl.bufferData(this.gl.ARRAY_BUFFER, v.data, this.gl.STATIC_DRAW);
-          v.consume();
-        }
+        // if (v.isDirty) {
+        // Data Changed Time (note that buffer is already binded)
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, v.data, this.gl.STATIC_DRAW);
+        // v.consume();
+        // }
         this.gl.enableVertexAttribArray(loc);
         this.gl.vertexAttribPointer(
           loc,
