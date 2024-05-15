@@ -1,5 +1,6 @@
 import { Vector3 } from "../engine/vector";
 import { Matrix4 } from "./m4";
+import { radToDeg } from "./math-utils";
 import { Quaternion } from "./quaternion";
 
 // internal cache to minimize object creation
@@ -44,6 +45,10 @@ export class Euler extends Vector3 {
       this.x = Math.atan2(m32, m22);
       this.z = 0;
     }
+    
+    this.x = radToDeg(this.x);
+    this.y = radToDeg(this.y);
+
     return this;
   }
 }

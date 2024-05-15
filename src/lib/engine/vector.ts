@@ -47,6 +47,14 @@ export class Vector3 {
     return this;
   }
 
+  static cross(v1: Vector3, v2: Vector3): Vector3 {
+    return new Vector3(
+      v1.y * v2.z - v1.z * v2.y,
+      v1.z * v2.x - v1.x * v2.z,
+      v1.x * v2.y - v1.y * v2.x
+    );
+  }
+
   add(v: Vector3): this {
     this.x += v.x;
     this.y += v.y;
@@ -67,6 +75,14 @@ export class Vector3 {
     this.y = a.y - b.y;
     this.z = a.z - b.z;
     return this;
+  }
+
+  static subtract(v1: Vector3, v2: Vector3): Vector3 {
+    return new Vector3(
+      v1.x - v2.x,
+      v1.y - v2.y,
+      v1.z - v2.z
+    );
   }
 
   length(): number {

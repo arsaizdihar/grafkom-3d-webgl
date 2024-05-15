@@ -66,6 +66,16 @@ export class GLNode {
     return this;
   }
 
+  removeAllChildren() {
+    while (this.children.length > 0) {
+      const child = this.children.pop();
+      if (child) {
+        child.parent = null;
+      }
+    }
+    return this;
+  }
+
   removeFromParent() {
     if (this.parent) {
       this.parent.removeChild(this);
