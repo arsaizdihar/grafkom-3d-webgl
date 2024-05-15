@@ -4,13 +4,11 @@ import { ComponentTree } from "./components/component-tree";
 import { Load } from "./components/load";
 import { NodeEdits } from "./components/node-edits";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { PerspectiveCamera } from "./lib/camera/perspective-camera";
 import { Application } from "./lib/engine/application";
 import { loadGLTF } from "./lib/gltf/loader";
-import { degToRad } from "./lib/math/math-utils";
 import { useApp } from "./state/app-store";
 
-const GLTF_FILE = "/scenes/pyramid.json";
+const GLTF_FILE = "/scenes/torus.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
@@ -56,24 +54,7 @@ function App() {
         await fetch(GLTF_FILE).then((res) => res.json()),
         app
       );
-      // const camera = new OrthographicCamera(
-      //   app.canvas.width / -2,
-      //   app.canvas.width / 2,
-      //   -app.canvas.height / 2,
-      //   app.canvas.height / 2,
-      //   100,
-      //   -100
-      // );
-      // const camera = new PerspectiveCamera(
-      //   degToRad(60),
-      //   app.canvas.width / app.canvas.height,
-      //   1,
-      //   2000
-      // );
-      // camera.transform.position.z = 500;
-      // camera.dirty();
       setScene(scene);
-      // setCurrentCamera(camera);
       setAnimations(animations);
       setFocusedNode(null);
     }

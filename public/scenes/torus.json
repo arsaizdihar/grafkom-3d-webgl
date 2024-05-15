@@ -1,0 +1,186 @@
+{
+  "scene": 0,
+  "nodes": [
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [1],
+      "background": [1, 1, 1, 1],
+      "name": "scene"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "mesh": 0,
+      "name": "Torus"
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": "torus",
+        "material": 0,
+        "torus": {
+          "slices": 20,
+          "innerRad": 10,
+          "outerRad": 20
+        }
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/red.png"
+    }
+  ],
+  "materials": [
+    {
+      "type": "phong",
+      "textures": [0],
+      "basic": {
+        "color": [1, 1, 1, 1]
+      },
+      "phong": {
+        "ambient": [0, 0, 0, 0],
+        "diffuse": [1, 0, 0, 0],
+        "specular": [0, 0, 0, 0],
+        "shininess": 20
+      }
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "generateMipmaps": true
+    }
+  ],
+  "animations": [
+    {
+      "root": 1,
+      "fps": 12,
+      "clip": {
+        "name": "rotate",
+        "frames": [
+          {
+            "keyframe": {
+              "rotation": [15, 15, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 45, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 75, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 90, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 105, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 120, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 135, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 150, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 165, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 180, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 195, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 210, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 225, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 240, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 255, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 270, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 285, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 300, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 315, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 330, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 345, 0]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

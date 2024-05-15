@@ -1,0 +1,505 @@
+{
+  "scene": 0,
+  "nodes": [
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [1],
+      "background": [1, 1, 1, 1],
+      "name": "scene"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [3, 3, 3],
+      "children": [],
+      "mesh": 0,
+      "name": "Hollow Cube"
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": "cubehollow",
+        "material": 0,
+        "cubehollow": {
+          "size": 20,
+          "thickness": 2
+        }
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/gradient.jpg"
+    }
+  ],
+  "materials": [
+    {
+      "type": "basic",
+      "textures": [0],
+      "basic": {
+        "color": [1, 1, 1, 1]
+      },
+      "phong": {
+        "ambient": [0, 0, 0, 1],
+        "diffuse": [1, 1, 0.5, 1],
+        "specular": [1, 1, 0.5, 1],
+        "shininess": 100
+      }
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "generateMipmaps": false,
+      "wrapS": 33071,
+      "wrapT": 33071,
+      "minFilter": 9729
+    }
+  ],
+  "animations": [
+    {
+      "root": 1,
+      "fps": 12,
+      "clip": {
+        "name": "rotate",
+        "frames": [
+          {
+            "keyframe": {
+              "rotation": [0, 15, 0],
+              "translation": [0, 0, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [5, 30, 0],
+              "translation": [10, 10, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [10, 45, 0],
+              "translation": [20, 20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 60, 0],
+              "translation": [30, 30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [20, 75, 0],
+              "translation": [40, 40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [25, 90, 0],
+              "translation": [50, 50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [30, 105, 0],
+              "translation": [60, 60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [35, 120, 0],
+              "translation": [70, 70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [40, 135, 0],
+              "translation": [80, 80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [45, 150, 0],
+              "translation": [90, 90, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [50, 165, 0],
+              "translation": [80, 80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [55, 180, 0],
+              "translation": [70, 70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [60, 195, 0],
+              "translation": [60, 60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [65, 210, 0],
+              "translation": [50, 50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [70, 225, 0],
+              "translation": [40, 40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [75, 240, 0],
+              "translation": [30, 30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [80, 255, 0],
+              "translation": [20, 20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [85, 270, 0],
+              "translation": [10, 10, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [90, 285, 0],
+              "translation": [0, 0, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [95, 300, 0],
+              "translation": [-10, -10, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [100, 315, 0],
+              "translation": [-20, -20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [105, 330, 0],
+              "translation": [-30, -30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [110, 345, 0],
+              "translation": [-40, -40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [120, 360, 0],
+              "translation": [-50, -50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [125, 15, 0],
+              "translation": [-60, -60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [130, 30, 0],
+              "translation": [-70, -70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [135, 45, 0],
+              "translation": [-80, -80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [140, 60, 0],
+              "translation": [-90, -90, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [145, 75, 0],
+              "translation": [-80, -80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [150, 90, 0],
+              "translation": [-70, -70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [155, 105, 0],
+              "translation": [-60, -60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [160, 120, 0],
+              "translation": [-50, -50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [175, 135, 0],
+              "translation": [-40, -40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [180, 150, 0],
+              "translation": [-30, -30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [185, 165, 0],
+              "translation": [-20, -20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [190, 180, 0],
+              "translation": [-10, -10, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [195, 195, 0],
+              "translation": [0, 0, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [200, 210, 0],
+              "translation": [-10, 10, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [205, 225, 0],
+              "translation": [-20, 20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [210, 240, 0],
+              "translation": [-30, 30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [215, 255, 0],
+              "translation": [-40, 40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [220, 270, 0],
+              "translation": [-50, 50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [225, 285, 0],
+              "translation": [-60, 60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [230, 300, 0],
+              "translation": [-70, 70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [235, 315, 0],
+              "translation": [-80, 80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [240, 330, 0],
+              "translation": [-90, 90, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [245, 345, 0],
+              "translation": [-80, 80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [250, 360, 0],
+              "translation": [-70, 70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [255, 15, 0],
+              "translation": [-60, 60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [260, 30, 0],
+              "translation": [-50, 50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [265, 45, 0],
+              "translation": [-40, 40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [270, 60, 0],
+              "translation": [-30, 30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [275, 75, 0],
+              "translation": [-20, 20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [280, 90, 0],
+              "translation": [-10, 10, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [285, 105, 0],
+              "translation": [0, 0, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [290, 120, 0],
+              "translation": [10, -10, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [295, 135, 0],
+              "translation": [20, -20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [300, 150, 0],
+              "translation": [30, -30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [305, 165, 0],
+              "translation": [40, -40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [310, 180, 0],
+              "translation": [50, -50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [315, 195, 0],
+              "translation": [60, -60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [320, 210, 0],
+              "translation": [70, -70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [325, 225, 0],
+              "translation": [80, -80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [330, 240, 0],
+              "translation": [90, -90, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [335, 255, 0],
+              "translation": [80, -80, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [340, 270, 0],
+              "translation": [70, -70, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [345, 285, 0],
+              "translation": [60, -60, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [350, 300, 0],
+              "translation": [50, -50, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [355, 315, 0],
+              "translation": [40, -40, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [360, 330, 0],
+              "translation": [30, -30, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [365, 345, 0],
+              "translation": [20, -20, 0]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [370, 360, 0],
+              "translation": [10, -10, 0]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
