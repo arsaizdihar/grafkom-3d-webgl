@@ -11,6 +11,7 @@ import React, {
   useState,
 } from "react";
 import { Input, InputProps } from "./input";
+
 type InputModifier = "shiftKey" | "altKey" | "ctrlKey" | "metaKey";
 export type InputDragModifiers = {
   [key in InputModifier]?: number;
@@ -25,6 +26,7 @@ interface InputDragProps
   modifiers?: InputDragModifiers;
   onChange?: InputWithDragChangeHandler;
 }
+
 /*  * Input with drag functionality
 @prop {number} mouseDragThreshold - The number of pixels that a User Interface element has to be moved before it is recognized.
 @prop {number} tabletDragThreshold - The drag threshold for tablet events. */
@@ -39,7 +41,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
       getValue,
       ...props
     },
-    forwardRef
+    forwardRef,
   ) {
     const [_, rerenderThis] = useReducer((x) => !x, false);
     const value = getValue();
@@ -52,10 +54,20 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
         shiftKey: 0.1,
         ..._modifiers,
       }),
-      [_modifiers]
+      [_modifiers],
     );
     const [, setStartPos] = useState<[number, number]>([0, 0]);
-    const style: CSSProperties = { cursor: "ew-resize", ..._style };
+    const style: CSSProperties = {
+      cursor: "ew-resize",
+      ..._style,
+      // Hide the spinners
+      // @ts-ignore
+      "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
+        "-webkit-appearance": "none",
+        margin: 0,
+      },
+      "-moz-appearance": "textfield",
+    };
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       let value = e.target.valueAsNumber;
       if (isNaN(value)) {
@@ -78,9 +90,9 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
           if (modifier) {
             mod = modifiers[modifier] || 1;
           }
-          const stepModifer = step * mod;
-          const decimals = countDecimals(stepModifer);
-          let delta = Math.sqrt(a * a + b * b) * stepModifer;
+          const stepModifier = step * mod;
+          const decimals = countDecimals(stepModifier);
+          let delta = Math.sqrt(a * a + b * b) * stepModifier;
           if (x2 < x1) delta = -delta;
           let newValue: number = startValue.current + delta;
           if (props.min) newValue = Math.max(newValue, +props.min);
@@ -96,7 +108,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
           return pos;
         });
       },
-      [modifier, props.max, props.min, step, modifiers, onChange]
+      [modifier, props.max, props.min, step, modifiers, onChange],
     );
     const handleMoveEnd = useCallback(() => {
       document.removeEventListener("mousemove", handleMove);
@@ -113,7 +125,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
         document.addEventListener("mousemove", handleMove);
         document.addEventListener("mouseup", handleMoveEnd);
       },
-      [handleMove, handleMoveEnd, value, props.min, props.defaultValue]
+      [handleMove, handleMoveEnd, value, props.min, props.defaultValue],
     );
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.metaKey) {
@@ -162,7 +174,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
         lang="en_EN"
       />
     );
-  }
+  },
 );
 
 /**
