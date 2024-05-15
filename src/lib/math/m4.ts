@@ -672,28 +672,51 @@ export class Matrix4 {
   lookAt(eye: Vector3, target: Vector3, up: Vector3) {
     const te = this.el;
 
-    const z = _x.subVectors(eye, target).normalize();
-    const x = _y.crossVectors(up, z).normalize();
-    const y = _z.crossVectors(z, x).normalize();
+    _z.subVectors(eye, target);
 
-    te[0] = x.x;
-    te[4] = y.x;
-    te[8] = z.x;
-    te[12] = eye.x;
-    te[1] = x.y;
-    te[5] = y.y;
-    te[9] = z.y;
-    te[13] = eye.y;
-    te[2] = x.z;
-    te[6] = y.z;
-    te[10] = z.z;
-    te[14] = eye.z;
-    te[3] = 0;
-    te[7] = 0;
-    te[11] = 0;
-    te[15] = 1;
+    if (_z.length() === 0) {
+      _z.z = 1;
+    }
 
+    _z.normalize();
+
+    _x.crossVectors(up, _z);
+
+    if (_x.length() === 0) {
+      if ( Math.abs( up.z ) === 1 ) {
+				_z.x += 0.0001;
+			} else {
+				_z.z += 0.0001;
+			}
+
+			_z.normalize();
+			_x.crossVectors(up, _z);
+    }
+
+    _x.normalize();
+    _y.crossVectors(_z, _x);
+
+    te[ 0 ] = _x.x; te[ 4 ] = _y.x; te[ 8 ] = _z.x; te[ 12 ] = eye.x;
+		te[ 1 ] = _x.y; te[ 5 ] = _y.y; te[ 9 ] = _z.y; te[ 13 ] = eye.y;
+		te[ 2 ] = _x.z; te[ 6 ] = _y.z; te[ 10 ] = _z.z; te[ 14 ] = eye.z;
+    te[ 3 ] = 0; te[ 7 ] = 0; te[ 11 ] = 0; te[ 15 ] = 1;
+    
     return this;
+  }
+
+  static lookAt(eye: Vector3, target: Vector3, up: Vector3) {
+    const z = Vector3.subtract(eye, target).normalize();
+    const x = Vector3.cross(up, z).normalize();
+    const y = Vector3.cross(z, x).normalize();
+
+    const te = [
+      x.x, x.y, x.z, 0,
+      y.x, y.y, y.z, 0,
+      z.x, z.y, z.z, 0,
+      eye.x, eye.y, eye.z, 1
+    ];
+
+    return new Matrix4(te);
   }
 
   toString() {

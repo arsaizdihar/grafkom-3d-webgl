@@ -6,6 +6,9 @@ import { OrthographicCamera } from "@/lib/camera/orthographic-camera";
 import { ObliqueCamera } from "@/lib/camera/oblique-camera";
 import { useEffect, useState } from "react";
 import { Slider } from "./ui/slider";
+import { Matrix4 } from "@/lib/math/m4";
+import { Vector3 } from "@/lib/engine/vector";
+import { GLNode } from "@/lib/engine/node";
 
 export function CameraEdits() {
   const { app, currentCamera, setCurrentCamera, focusedNode } = useApp((state) => ({
@@ -32,7 +35,7 @@ export function CameraEdits() {
     cameraAngleRadians: 0,
     cameraRadius: 200,
 
-    zoom: 1
+    zPos: 1
   });
 
   useEffect(() => {
@@ -48,28 +51,28 @@ export function CameraEdits() {
     }
   }, [app]);
 
+  const [node, setNode] = useState(new GLNode());
+
   useEffect(() => {
-    const angleInRadians = params.cameraAngleRadians;
-    const zoom = params.zoom;
+    const angleInRadians = degToRad(params.cameraAngleRadians);
+    const zPos = params.zPos;
 
     if (currentCamera) {
-      // camera angle
-      currentCamera.transform.rotation.y = angleInRadians;
+      node.transform.rotation.y = params.cameraAngleRadians;
 
-      // zoom
-      if (currentCamera instanceof PerspectiveCamera) {  
-        currentCamera.transform.scale.z = zoom;
+      // zPos
+      if (currentCamera instanceof PerspectiveCamera) {
+        currentCamera.transform.position.z = zPos * 500;
       } else if (
         currentCamera instanceof OrthographicCamera ||
         currentCamera instanceof ObliqueCamera
       ) {
-        currentCamera.transform.scale.x = 1 / zoom;
-        currentCamera.transform.scale.y = 1 / zoom;
+        currentCamera.transform.position.z = zPos * 100;
       }
 
       currentCamera.dirty();
     }
-  }, [params.cameraAngleRadians, params.zoom]);
+  }, [params.cameraAngleRadians, params.zPos]);
 
   const cameraTypes = [
     { value: "Perspective", label: "Perspective" },
@@ -85,12 +88,16 @@ export function CameraEdits() {
         params.near,
         params.far
       );
+      node.addChild(cameraPerspective);
+      node.computeWorldMatrix(false, true);
       cameraPerspective.transform.position.z = 500;
-      cameraPerspective.transform.rotation.y = params.cameraAngleRadians;
+      node.transform.rotation.y = params.cameraAngleRadians;
+
+      setNode(node);
+      // cameraPerspective.transform.rotation.y = params.cameraAngleRadians;
       cameraPerspective.dirty();
       setCurrentCamera(cameraPerspective);
     } else if (value === "Orthographic") {
-      console.log(params);
       const cameraOrthographic = new OrthographicCamera(
         params.left,
         params.right,
@@ -99,8 +106,12 @@ export function CameraEdits() {
         params.near,
         params.far
       );
+      // cameraOrthographic.transform.position.z = 100;
+      // cameraOrthographic.transform.rotation.y = params.cameraAngleRadians;
+      node.addChild(cameraOrthographic);
+      node.computeWorldMatrix(false, true);
       cameraOrthographic.transform.position.z = 100;
-      cameraOrthographic.transform.rotation.y = params.cameraAngleRadians;
+      node.transform.rotation.y = params.cameraAngleRadians;
       cameraOrthographic.dirty();
       setCurrentCamera(cameraOrthographic);
     } else if (value === "Oblique") {
@@ -114,8 +125,12 @@ export function CameraEdits() {
         params.theta,
         params.phi
       );
+      // cameraOblique.transform.position.z = 100;
+      // cameraOblique.transform.rotation.y = params.cameraAngleRadians;
+      node.addChild(cameraOblique);
+      node.computeWorldMatrix(false, true);
       cameraOblique.transform.position.z = 100;
-      cameraOblique.transform.rotation.y = params.cameraAngleRadians;
+      node.transform.rotation.y = params.cameraAngleRadians;
       cameraOblique.dirty();
       setCurrentCamera(cameraOblique);
     }
@@ -159,18 +174,18 @@ export function CameraEdits() {
             />
           </div>
           <div className="text-sm">
-            <p>Zoom</p>
-            <p>{params.zoom}</p>
+            <p>Z Position</p>
+            <p>{params.zPos}</p>
             <Slider
               min={0}
               max={5}
               step={0.1}
-              defaultValue={params.zoom}
-              value={params.zoom}
+              defaultValue={params.zPos}
+              value={params.zPos}
               onChange={(value) => {
                 setParams((prevParams) => ({
                   ...prevParams,
-                  zoom: value,
+                  zPos: value,
                 }));
               }}
             />
