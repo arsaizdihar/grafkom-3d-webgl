@@ -3,7 +3,7 @@ import { AnimationClipSchema } from "../engine/animation";
 
 const arrayIndex = () => z.number().int().nonnegative();
 const ColorSchema = z.union([z.string(), z.array(z.number()).length(4)]);
-const GeometryEnum = ["cube", "plane", "pyramidhollow"] as const;
+const GeometryEnum = ["cube", "plane", "pyramidhollow", "torus", "cubehollow"] as const;
 
 export const GLTFSchema = z.object({
   scene: arrayIndex(),
@@ -38,6 +38,19 @@ export const GLTFSchema = z.object({
           .object({
             size: z.number().nonnegative(),
             thickness: z.number().nonnegative(),
+          })
+          .optional(),
+        cubehollow: z
+          .object({
+            size: z.number().nonnegative(),
+            thickness: z.number().nonnegative(),
+          })
+          .optional(),
+        torus: z
+          .object({
+            slices: z.number().nonnegative(),
+            innerRad: z.number().nonnegative(),
+            outerRad: z.number().nonnegative(),
           })
           .optional(),
         material: arrayIndex(),

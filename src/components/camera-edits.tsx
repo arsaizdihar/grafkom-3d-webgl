@@ -20,7 +20,7 @@ export function CameraEdits() {
   const [params, setParams] = useState({
     fovy: 60,
     aspect: 0,
-    near: 1,
+    near: -100,
     far: 2000,
 
     left: 0,
@@ -158,7 +158,7 @@ export function CameraEdits() {
         params.phi
       );
       node.addChild(cameraOblique);
-      cameraOblique.transform.position.z = 100;
+      cameraOblique.transform.position.z = 0;
 
       if (app?.canvas) {
         const zoom = params.zPos / 1;
@@ -201,7 +201,7 @@ export function CameraEdits() {
       currentCamera.transform.position.z = 100;
       currentCamera.dirty();
     } else if (value === "Oblique" && currentCamera instanceof ObliqueCamera) {
-      currentCamera.transform.position.z = 100;
+      currentCamera.transform.position.z = 0;
       currentCamera.dirty();
     }
   }

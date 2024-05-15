@@ -16,6 +16,8 @@ import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { Euler } from "../math/euler";
 import { GLTFSchema } from "./type";
+import { TorusGeometry } from "../geometry/torus-geometry";
+import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 
 function parseColor(color: string | number[]) {
   return Array.isArray(color)
@@ -125,6 +127,25 @@ export async function loadGLTF(data: unknown, app: Application) {
           geometry = new PyramidHollowGeometry(
             mesh.primitive.pyramidhollow.size,
             mesh.primitive.pyramidhollow.thickness
+          );
+          break;
+        case "cubehollow":
+          if (!mesh.primitive.cubehollow) {
+            throw new Error("Cube hollow geometry missing parameter");
+          }
+          geometry = new CubeHollowGeometry(
+            mesh.primitive.cubehollow.size,
+            mesh.primitive.cubehollow.thickness
+          );
+          break;
+        case "torus":
+          if (!mesh.primitive.torus) {
+            throw new Error("Test hollow geometry missing parameter");
+          }
+          geometry = new TorusGeometry(
+            mesh.primitive.torus.slices,
+            mesh.primitive.torus.innerRad,
+            mesh.primitive.torus.outerRad,
           );
           break;
       }
