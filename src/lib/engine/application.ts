@@ -98,7 +98,7 @@ export class Application {
         viewProjectionMat: [false, camera.viewProjectionMatrix.el],
       });
       this.program.setUniforms({
-        lightPos: [0, 100, 50],
+        lightPos: scene.lightPos.toArray(),
       });
       const delta = time - this.time;
       animations.forEach((runner) => {
@@ -119,6 +119,7 @@ export class Application {
           this.program.setUniforms(node.material.uniforms);
           this.program.setUniforms({
             matrix: [false, node.worldMatrix.el],
+            // TODO: world inverse only for phong
             normalMat: [false, node.worldInvTransposeMatrix.el],
           });
           const geometry = node.geometry;

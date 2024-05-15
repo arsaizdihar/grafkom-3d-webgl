@@ -41,7 +41,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
       getValue,
       ...props
     },
-    forwardRef,
+    forwardRef
   ) {
     const [_, rerenderThis] = useReducer((x) => !x, false);
     const value = getValue();
@@ -54,19 +54,12 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
         shiftKey: 0.1,
         ..._modifiers,
       }),
-      [_modifiers],
+      [_modifiers]
     );
     const [, setStartPos] = useState<[number, number]>([0, 0]);
     const style: CSSProperties = {
       cursor: "ew-resize",
       ..._style,
-      // Hide the spinners
-      // @ts-ignore
-      "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
-        "-webkit-appearance": "none",
-        margin: 0,
-      },
-      "-moz-appearance": "textfield",
     };
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       let value = e.target.valueAsNumber;
@@ -108,7 +101,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
           return pos;
         });
       },
-      [modifier, props.max, props.min, step, modifiers, onChange],
+      [modifier, props.max, props.min, step, modifiers, onChange]
     );
     const handleMoveEnd = useCallback(() => {
       document.removeEventListener("mousemove", handleMove);
@@ -125,7 +118,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
         document.addEventListener("mousemove", handleMove);
         document.addEventListener("mouseup", handleMoveEnd);
       },
-      [handleMove, handleMoveEnd, value, props.min, props.defaultValue],
+      [handleMove, handleMoveEnd, value, props.min, props.defaultValue]
     );
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.metaKey) {
@@ -155,6 +148,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
     return (
       <Input
         {...props}
+        className="px-2 py-1 h-auto"
         ref={(next) => {
           // @ts-expect-error - ref is a forwardRef
           ref.current = next;
@@ -174,7 +168,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
         lang="en_EN"
       />
     );
-  },
+  }
 );
 
 /**

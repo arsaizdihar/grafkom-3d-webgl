@@ -92,12 +92,13 @@ function App() {
 
   return (
     <>
-      <div
-        className="absolute bottom-4 left-4 text-green-500 bg-black"
-        id="fps"
-      ></div>
       <div className="bg-slate-200 w-64 flex flex-col p-4">
         <ComponentTree />
+
+        <div
+          className="w-full text-green-500 font-mono text-center"
+          id="fps"
+        ></div>
       </div>
       <div
         className="flex-1 canvas-container max-w-3/4 overflow-hidden"

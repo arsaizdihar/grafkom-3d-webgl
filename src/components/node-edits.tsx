@@ -1,6 +1,7 @@
 import { Mesh } from "@/lib/engine/mesh";
 import { useApp } from "@/state/app-store";
 import { CameraEdits } from "./camera-edits";
+import { LightEdits } from "./light-edits.tsx";
 import { MeshEdits } from "./mesh-edits";
 import { TransformEdits } from "./transform-edits.tsx";
 import { Input } from "./ui/input";
@@ -10,7 +11,12 @@ export function NodeEdits() {
   const rerender = useApp((state) => state.rerenderSceneGraph);
 
   if (!node) {
-    return <CameraEdits />;
+    return (
+      <>
+        <CameraEdits />
+        <LightEdits />
+      </>
+    );
   }
 
   return (

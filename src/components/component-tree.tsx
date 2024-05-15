@@ -13,7 +13,7 @@ export function ComponentTree() {
   const _ = useApp((state) => state._rerenderSceneGraph);
 
   return (
-    <div className="h-1/2 overflow-y-auto">
+    <div className="flex-1 h-1 overflow-y-auto">
       <h2 className="mb-2">Component Tree</h2>
       {scene && <NodeChildren nodes={scene.children} />}
     </div>

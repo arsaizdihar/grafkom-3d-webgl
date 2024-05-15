@@ -84,7 +84,10 @@ export async function loadGLTF(data: unknown, app: Application) {
     );
 
     if (gltf.scene === index) {
-      return new Scene(parseColor(node.background || "0x000000"));
+      return new Scene(
+        parseColor(node.background || "0x000000"),
+        node.lightPos && Vector3.fromArray(node.lightPos)
+      );
     }
 
     if (node.mesh !== undefined) {
