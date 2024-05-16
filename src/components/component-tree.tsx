@@ -18,6 +18,18 @@ import { Button } from "./ui/button";
 export function ComponentTree() {
   const scene = useApp((state) => state.scene);
   const _ = useApp((state) => state._rerenderSceneGraph);
+  const { focusNode, rerenderSceneGraph } = useApp((state) => ({
+    focusNode: state.focusedNode,
+    rerenderSceneGraph: state.rerenderSceneGraph,
+  }));
+  const handleAddChildrenClick = () => {
+    if (focusNode) {
+      const newNode = new GLNode();
+      newNode.name = "New Node";
+      focusNode.addChild(newNode);
+      rerenderSceneGraph();
+    }
+  };
 
   return (
     <div className="flex-1 h-1 overflow-y-auto">
@@ -26,6 +38,7 @@ export function ComponentTree() {
         <Button
               size={"sm"}
               className="focus:outline-none w-auto mt-5"
+              onClick={handleAddChildrenClick}
             >
               Add children
         </Button>
