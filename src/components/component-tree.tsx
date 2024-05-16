@@ -13,6 +13,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "./ui/context-menu";
+import { Button } from "./ui/button";
 
 export function ComponentTree() {
   const scene = useApp((state) => state.scene);
@@ -22,6 +23,12 @@ export function ComponentTree() {
     <div className="flex-1 h-1 overflow-y-auto">
       <h2 className="mb-2">Component Tree</h2>
       {scene && <NodeChildren nodes={scene.children} />}
+        <Button
+              size={"sm"}
+              className="focus:outline-none w-auto mt-5"
+            >
+              Add children
+        </Button>
     </div>
   );
 }
