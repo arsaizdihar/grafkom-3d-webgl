@@ -123,6 +123,7 @@ export function CameraEdits() {
       zPos: 1,
     }));
     cameraNode.transform.rotation.y = 0;
+    cameraNode.transform.rotation.x = 0;
 
     if (value === "Perspective" && currentCamera instanceof PerspectiveCamera) {
       currentCamera.transform.position.z = 500;
@@ -153,6 +154,7 @@ export function CameraEdits() {
           </div>
           <div className="text-sm">
             <p>Camera Angle</p>
+            <p>Y</p>
             <p>{Math.floor(params.cameraAngleDegreeY)}</p>
             <Slider
               min={0}
@@ -164,6 +166,21 @@ export function CameraEdits() {
                 setParams((prevParams) => ({
                   ...prevParams,
                   cameraAngleDegreeY: value,
+                }));
+              }}
+            />
+            <p>X</p>
+            <p>{Math.floor(params.cameraAngleDegreeX)}</p>
+            <Slider
+              min={0}
+              max={360}
+              step={1}
+              defaultValue={params.cameraAngleDegreeX}
+              value={params.cameraAngleDegreeX}
+              onChange={(value) => {
+                setParams((prevParams) => ({
+                  ...prevParams,
+                  cameraAngleDegreeX: value,
                 }));
               }}
             />

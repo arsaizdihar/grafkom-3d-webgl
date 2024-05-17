@@ -109,11 +109,26 @@ export function useCamera() {
 
     function mouseMove(e: MouseEvent) {
       if (clicked) {
-        setParams((prevParams) => ({
-          ...prevParams,
-          cameraAngleDegreeY: prevParams.cameraAngleDegreeY + e.movementX * 1,
-          cameraAngleDegreeX: prevParams.cameraAngleDegreeX + e.movementY * 1,
-        }));
+        setParams((prevParams) => {
+          let y = prevParams.cameraAngleDegreeY + e.movementX * 1;
+          let x = prevParams.cameraAngleDegreeX + e.movementY * 1;
+          if (y > 360) {
+            y -= 360;
+          } else if (y < 0) {
+            y += 360;
+          }
+
+          if (x > 360) {
+            x -= 360;
+          } else if (x < 0) {
+            x += 360;
+          }
+          return {
+            ...prevParams,
+            cameraAngleDegreeY: y,
+            cameraAngleDegreeX: x,
+          };
+        });
       }
     }
 
