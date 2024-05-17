@@ -46,14 +46,8 @@ export function useCamera() {
       camera.dirty();
       setCurrentCamera(camera);
     }
-  }, [
-    app,
-    params.fovy,
-    params.aspect,
-    params.zPos,
-    setCurrentCamera,
-    setParams,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [app, setCurrentCamera, setParams]);
 
   useEffect(() => {
     const angleYInDegree = params.cameraAngleDegreeY;

@@ -40,8 +40,8 @@ export function CameraEdits() {
       const cameraPerspective = new PerspectiveCamera(
         degToRad(params.fovy),
         params.aspect,
-        params.near,
-        params.far
+        1,
+        2000
       );
       cameraNode.clearChildren();
       cameraNode.addChild(cameraPerspective);
