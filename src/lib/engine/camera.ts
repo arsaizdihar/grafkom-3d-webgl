@@ -18,8 +18,8 @@ export abstract class Camera extends GLNode {
     this._isCameraDirty = false;
   }
 
-  computeWorldMatrix() {
-    super.computeWorldMatrix();
+  computeWorldMatrix(updateParent = true, updateChildren = true) {
+    super.computeWorldMatrix(updateParent, updateChildren);
     this._invWorldMatrix.copy(this.worldInvTransposeMatrix).transpose();
   }
 

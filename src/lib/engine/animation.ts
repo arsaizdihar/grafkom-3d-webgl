@@ -153,7 +153,7 @@ export class AnimationRunner {
     });
 
     if (frame?.keyframe && prevFrame?.keyframe) {
-      const tweeningFn = TWEENING_FN.cubic;
+      const tweeningFn = TWEENING_FN.linear;
       const resFrame = tweenFrame(
         prevFrame.keyframe,
         frame.keyframe,

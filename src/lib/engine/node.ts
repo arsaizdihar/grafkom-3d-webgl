@@ -114,4 +114,11 @@ export class GLNode {
   }
 
   onWorldMatrixChange() {}
+
+  clearChildren() {
+    this.children.forEach((child) => {
+      child.parent = null;
+    });
+    this.children = [];
+  }
 }

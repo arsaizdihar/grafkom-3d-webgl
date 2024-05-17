@@ -79,10 +79,8 @@ export class Application {
     const runRender: FrameRequestCallback = (time) => {
       this.recomputeIfDirty(scene);
 
-      if (camera.isDirty) {
-        camera.computeWorldMatrix();
-      }
-      if (camera.isCameraDirty) {
+      if (camera.isDirty || camera.isCameraDirty) {
+        camera.computeWorldMatrix(true, false);
         camera.computeProjectionMatrix();
         camera.clean();
       }

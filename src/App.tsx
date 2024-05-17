@@ -4,6 +4,7 @@ import { ComponentTree } from "./components/component-tree";
 import { Load } from "./components/load";
 import { NodeEdits } from "./components/node-edits";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { useCamera } from "./hooks/camera";
 import { Application } from "./lib/engine/application";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
@@ -23,7 +24,19 @@ function App() {
     setFocusedNode,
     animations,
     setAnimations,
-  } = useApp();
+    setCameraParams,
+  } = useApp((state) => ({
+    app: state.app,
+    setApp: state.setApp,
+    scene: state.scene,
+    setScene: state.setScene,
+    currentCamera: state.currentCamera,
+    setCurrentCamera: state.setCurrentCamera,
+    setFocusedNode: state.setFocusedNode,
+    animations: state.animations,
+    setAnimations: state.setAnimations,
+    setCameraParams: state.setCameraParams,
+  }));
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -70,6 +83,8 @@ function App() {
     const cleanup = app.render(scene, currentCamera, animations);
     return cleanup;
   }, [app, scene, currentCamera, animations]);
+
+  useCamera();
 
   return (
     <>
