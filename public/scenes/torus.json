@@ -24,7 +24,7 @@
         "geometry": "torus",
         "material": 0,
         "torus": {
-          "slices": 20,
+          "slices": 50,
           "innerRad": 10,
           "outerRad": 20
         }
@@ -33,7 +33,7 @@
   ],
   "images": [
     {
-      "uri": "/red.png"
+      "uri": "/gradient.jpg"
     }
   ],
   "materials": [
@@ -44,9 +44,9 @@
         "color": [1, 1, 1, 1]
       },
       "phong": {
-        "ambient": [0, 0, 0, 0],
-        "diffuse": [1, 0, 0, 0],
-        "specular": [0, 0, 0, 0],
+        "ambient": [0, 0, 0, 1],
+        "diffuse": [1, 1, 1, 1],
+        "specular": [1, 1, 1, 1],
         "shininess": 20
       }
     }
@@ -54,7 +54,10 @@
   "textures": [
     {
       "source": 0,
-      "generateMipmaps": true
+      "generateMipmaps": false,
+      "wrapS": 33071,
+      "wrapT": 33071,
+      "minFilter": 9729
     }
   ],
   "animations": [

@@ -2,7 +2,12 @@ import { BufferAttribute } from "../engine/buffer-attribute";
 import { BufferGeometry } from "../engine/buffer-geometry";
 
 export class TorusGeometry extends BufferGeometry {
-  constructor(public slices: number = 20, public loops: number = 20, public innerRad: number = 0.5, public outerRad: number = 2) {
+  constructor(
+    public slices: number = 20,
+    public loops: number = 20,
+    public innerRad: number = 0.5,
+    public outerRad: number = 2
+  ) {
     super();
     this.slices = 20;
     this.loops = 50;
@@ -41,7 +46,6 @@ export class TorusGeometry extends BufferGeometry {
       let v2 = v1 + vertsPerSlice;
 
       for (let j = 0; j < this.loops; ++j) {
-
         indices.push(v1);
         indices.push(v1 + 1);
         indices.push(v2);
@@ -55,14 +59,27 @@ export class TorusGeometry extends BufferGeometry {
       }
     }
 
-    this.setIndices(new BufferAttribute(new Uint16Array(indices), 3));
+    const verticesResult: number[] = [];
+    const texCoordsResult: number[] = [];
+
+    indices.forEach((index) => {
+      verticesResult.push(vertices[index * 3]);
+      verticesResult.push(vertices[index * 3 + 1]);
+      verticesResult.push(vertices[index * 3 + 2]);
+
+      texCoordsResult.push(texCoords[index * 2]);
+      texCoordsResult.push(texCoords[index * 2 + 1]);
+    });
+
+    // not using indices because it will generate weird normals
+    // this.setIndices(new BufferAttribute(new Uint16Array(indices), 3));
     this.setAttribute(
       "position",
-      new BufferAttribute(new Float32Array(vertices), 3)
+      new BufferAttribute(new Float32Array(verticesResult), 3)
     );
     this.setAttribute(
       "texcoord",
-      new BufferAttribute(new Float32Array(texCoords), 2)
+      new BufferAttribute(new Float32Array(texCoordsResult), 2)
     );
     this.calculateNormals();
   }
