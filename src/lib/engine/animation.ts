@@ -76,18 +76,22 @@ export class AnimationRunner {
 
   nextFrame() {
     this.currentFrame += 1;
+    this.updateSceneGraph();
   }
 
   prevFrame() {
     this.currentFrame -= 1;
+    this.updateSceneGraph();
   }
 
   lastFrame() {
     this.currentFrame = this.length - 1;
+    this.updateSceneGraph();
   }
 
   firstFrame() {
     this.currentFrame = 0;
+    this.updateSceneGraph();
   }
 
   getFrameNumberDelta(delta: number) {
@@ -149,7 +153,7 @@ export class AnimationRunner {
     });
 
     if (frame?.keyframe && prevFrame?.keyframe) {
-      const tweeningFn = TWEENING_FN.linear;
+      const tweeningFn = TWEENING_FN.cubic;
       const resFrame = tweenFrame(
         prevFrame.keyframe,
         frame.keyframe,
