@@ -1,9 +1,15 @@
 import { z } from "zod";
-import { AnimationClipSchema } from "../engine/animation";
+import { AnimationClipSchema, TWEENING_FN_KEYS } from "../engine/animation";
 
 const arrayIndex = () => z.number().int().nonnegative();
 const ColorSchema = z.union([z.string(), z.array(z.number()).length(4)]);
-const GeometryEnum = ["cube", "plane", "pyramidhollow", "torus", "cubehollow"] as const;
+const GeometryEnum = [
+  "cube",
+  "plane",
+  "pyramidhollow",
+  "torus",
+  "cubehollow",
+] as const;
 
 export const GLTFSchema = z.object({
   scene: arrayIndex(),
@@ -91,6 +97,7 @@ export const GLTFSchema = z.object({
     z.object({
       root: arrayIndex(),
       fps: z.number().default(30),
+      tween: z.enum(TWEENING_FN_KEYS).default("linear"),
       clip: AnimationClipSchema,
     })
   ),
@@ -100,3 +107,4 @@ export type GLTF = z.infer<typeof GLTFSchema>;
 export type GLTFNode = GLTF["nodes"][number];
 export type GLTFMesh = GLTF["meshes"][number];
 export type GLTFMaterial = GLTF["materials"][number];
+export type GLTFAnimation = GLTF["animations"][number];

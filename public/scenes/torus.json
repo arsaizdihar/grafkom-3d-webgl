@@ -13,9 +13,17 @@
       "translation": [0, 0, 0],
       "rotation": [0, 0, 0],
       "scale": [3, 3, 3],
-      "children": [],
+      "children": [2],
       "mesh": 0,
       "name": "Torus"
+    },
+    {
+      "translation": [50, 0, 0],
+      "rotation": [0, 50, 15],
+      "scale": [1, 1, 1],
+      "children": [],
+      "mesh": 0,
+      "name": "Torus2"
     }
   ],
   "meshes": [
@@ -25,7 +33,7 @@
         "material": 0,
         "torus": {
           "slices": 50,
-          "innerRad": 10,
+          "innerRad": 15,
           "outerRad": 20
         }
       }
@@ -38,7 +46,7 @@
   ],
   "materials": [
     {
-      "type": "phong",
+      "type": "basic",
       "textures": [0],
       "basic": {
         "color": [1, 1, 1, 1]
@@ -47,7 +55,7 @@
         "ambient": [0, 0, 0, 1],
         "diffuse": [1, 1, 1, 1],
         "specular": [1, 1, 1, 1],
-        "shininess": 20
+        "shininess": 100
       }
     }
   ],
@@ -69,12 +77,41 @@
         "frames": [
           {
             "keyframe": {
-              "rotation": [15, 0, 0]
+              "rotation": [15, 0, 0],
+              "translation": [-150, 0, 0]
+            },
+            "children": {
+              "Torus2": {
+                "keyframe": {
+                  "rotation": [0, 50, 15]
+                }
+              }
             }
           },
           {
             "keyframe": {
-              "rotation": [15, 360, 0]
+              "rotation": [15, 180, 0],
+              "translation": [150, 0, 0]
+            },
+            "children": {
+              "Torus2": {
+                "keyframe": {
+                  "rotation": [0, 230, 15]
+                }
+              }
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [15, 360, 0],
+              "translation": [-150, 0, 0]
+            },
+            "children": {
+              "Torus2": {
+                "keyframe": {
+                  "rotation": [0, 410, 15]
+                }
+              }
             }
           }
         ]

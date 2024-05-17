@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { GLTFAnimation } from "../gltf/type";
 import { GLNode } from "./node";
 
 export const AnimationTRSSchema = z.object({
@@ -33,16 +34,26 @@ export class AnimationRunner {
   fps: number = 30;
   private root: GLNode;
   private _currentFrame: number = 0;
+  private _tweeningFn: TweeningFn = TWEENING_FN.linear;
+  private _tween: keyof typeof TWEENING_FN = "linear";
   public deltaFrame: number = 0;
   private currentAnimation: AnimationClip;
   private _onFrameChange: ((frame: number) => void) | null = null;
   public reverse: boolean = false;
-  public tweening = true;
+  public enableTweening = true;
 
-  constructor(animClip: AnimationClip, root: GLNode, { fps = 30 } = {}) {
+  constructor(
+    animClip: AnimationClip,
+    root: GLNode,
+    {
+      fps = 30,
+      tween = "linear",
+    }: { fps?: number; tween?: keyof typeof TWEENING_FN } = {}
+  ) {
     this.currentAnimation = animClip;
     this.fps = fps;
     this.root = root;
+    this.tweening = tween;
   }
 
   get currentFrame() {
@@ -52,7 +63,7 @@ export class AnimationRunner {
   set currentFrame(frame: number) {
     frame = ((frame % this.length) + this.length) % this.length;
     this._currentFrame = frame;
-    if (!this.tweening) {
+    if (!this.enableTweening) {
       this.updateSceneGraph();
     }
     this._onFrameChange?.(frame);
@@ -64,6 +75,15 @@ export class AnimationRunner {
 
   get name() {
     return this.currentAnimation.name;
+  }
+
+  set tweening(tweening: keyof typeof TWEENING_FN) {
+    this._tween = tweening;
+    this._tweeningFn = TWEENING_FN[tweening];
+  }
+
+  get tweening() {
+    return this._tween;
   }
 
   set onFrameChange(cb: ((frame: number) => void) | null) {
@@ -111,7 +131,7 @@ export class AnimationRunner {
           this.currentFrame + Math.floor(this.deltaFrame) * multiplier;
         this.deltaFrame = this.deltaFrame % 1;
       }
-      if (!this.tweening) {
+      if (!this.enableTweening) {
         return;
       }
       if (this.deltaFrame === 0 && beforeFrame === this.currentFrame) {
@@ -153,7 +173,7 @@ export class AnimationRunner {
     });
 
     if (frame?.keyframe && prevFrame?.keyframe) {
-      const tweeningFn = TWEENING_FN.linear;
+      const tweeningFn = this._tweeningFn;
       const resFrame = tweenFrame(
         prevFrame.keyframe,
         frame.keyframe,
@@ -218,6 +238,23 @@ export class AnimationRunner {
       node.dirty();
     }
   }
+
+  static fromJSON(obj: GLTFAnimation, nodes: GLNode[]) {
+    const runner = new AnimationRunner(obj.clip, nodes[obj.root], {
+      fps: obj.fps,
+      tween: obj.tween,
+    });
+    return runner;
+  }
+
+  toJSON(nodeRefs: GLNode[]): GLTFAnimation {
+    return {
+      root: nodeRefs.indexOf(this.root),
+      clip: this.currentAnimation,
+      fps: this.fps,
+      tween: this.tweening,
+    };
+  }
 }
 
 function tweenFrame(
@@ -248,7 +285,17 @@ function tweenFrame(
 
 type TweeningFn = (x: number) => number;
 
-const TWEENING_FN = {
+export const TWEENING_FN_KEYS = [
+  "sine",
+  "quad",
+  "cubic",
+  "expo",
+  "circ",
+  "bounce",
+  "linear",
+] as const;
+
+const TWEENING_FN: Record<(typeof TWEENING_FN_KEYS)[number], TweeningFn> = {
   sine,
   quad,
   cubic,

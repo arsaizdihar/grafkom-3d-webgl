@@ -1,4 +1,4 @@
-import { AnimationRunner } from "@/lib/engine/animation";
+import { AnimationRunner, TWEENING_FN_KEYS } from "@/lib/engine/animation";
 import { useApp } from "@/state/app-store";
 import { useLongPress } from "@uidotdev/usehooks";
 import {
@@ -15,6 +15,13 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { InputDrag } from "./ui/input-drag";
 import { Progress } from "./ui/progress";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 let interval: NodeJS.Timeout | undefined = undefined;
 
 export function Animations() {
@@ -25,6 +32,8 @@ export function Animations() {
   const [frame, setFrame] = useState(0);
   const [loop, setLoop] = useState(true);
   const [reverse, setReverse] = useState(false);
+  const [tweening, setTweening] =
+    useState<(typeof TWEENING_FN_KEYS)[number]>("linear");
   const fpsRef = useRef<HTMLInputElement>(null);
 
   const longPressNext = useLongPress(
@@ -96,6 +105,7 @@ export function Animations() {
                 setFocusedAnimation(animation);
                 setIsPlaying(animation.isPlaying);
                 setFrame(animation.currentFrame);
+                setTweening(animation.tweening);
               }}
             >
               {animation.name}
@@ -221,6 +231,27 @@ export function Animations() {
                 max={60}
                 step={1}
               />
+            </div>
+            <div className="my-2">
+              <label>Tweening</label>
+              <Select
+                value={tweening}
+                onValueChange={(value: typeof tweening) => {
+                  if (focusedAnimation) {
+                    focusedAnimation.tweening = value;
+                  }
+                  setTweening(value);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TWEENING_FN_KEYS.map((key) => (
+                    <SelectItem value={key}>{key}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </>
         )}

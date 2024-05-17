@@ -1,17 +1,19 @@
-import { Camera } from "../engine/camera";
+import { AnimationRunner } from "../engine/animation";
 import { GLImage } from "../engine/image";
 import { Mesh } from "../engine/mesh";
 import { GLNode } from "../engine/node";
 import { Scene } from "../engine/scene";
 import { Texture } from "../engine/texture";
 import { CubeGeometry } from "../geometry/cube-geometry";
+import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
+import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
 import { GLTF, GLTFMaterial, GLTFMesh, GLTFNode } from "./type";
 
-export async function saveGLTF(scene: Scene) {
+export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
   const result: GLTF = {
     scene: 0,
     nodes: [],
@@ -19,6 +21,7 @@ export async function saveGLTF(scene: Scene) {
     images: [],
     materials: [],
     textures: [],
+    animations: [],
   };
 
   const nodeRefs: GLNode[] = [];
@@ -26,7 +29,6 @@ export async function saveGLTF(scene: Scene) {
   const materialRefs: ShaderMaterial[] = [];
   const textureRefs: Texture[] = [];
   const imageRefs: GLImage[] = [];
-  const cameraRefs: Camera[] = [];
 
   function traverseNode(node: GLNode) {
     if (nodeRefs.includes(node)) return;
@@ -68,6 +70,18 @@ export async function saveGLTF(scene: Scene) {
         meshData.primitive.plane = {
           width: mesh.geometry.width,
           height: mesh.geometry.height,
+        };
+      } else if (mesh.geometry instanceof PyramidHollowGeometry) {
+        meshData.primitive.geometry = "pyramidhollow";
+        meshData.primitive.pyramidhollow = {
+          size: mesh.geometry.size,
+          thickness: mesh.geometry.thickness,
+        };
+      } else if (mesh.geometry instanceof CubeHollowGeometry) {
+        meshData.primitive.geometry = "cubehollow";
+        meshData.primitive.cubehollow = {
+          size: mesh.geometry.size,
+          thickness: mesh.geometry.thickness,
         };
       }
 
@@ -140,6 +154,10 @@ export async function saveGLTF(scene: Scene) {
   }
 
   traverseNode(scene);
+
+  animations.forEach((runner) => {
+    result.animations.push(runner.toJSON(nodeRefs));
+  });
 
   return result;
 }

@@ -10,14 +10,14 @@ import { Texture } from "../engine/texture";
 import { Transform } from "../engine/transform";
 import { Vector3 } from "../engine/vector";
 import { CubeGeometry } from "../geometry/cube-geometry";
+import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
+import { TorusGeometry } from "../geometry/torus-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { Euler } from "../math/euler";
 import { GLTFSchema } from "./type";
-import { TorusGeometry } from "../geometry/torus-geometry";
-import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 
 function parseColor(color: string | number[]) {
   return Array.isArray(color)
@@ -145,7 +145,7 @@ export async function loadGLTF(data: unknown, app: Application) {
           geometry = new TorusGeometry(
             mesh.primitive.torus.slices,
             mesh.primitive.torus.innerRad,
-            mesh.primitive.torus.outerRad,
+            mesh.primitive.torus.outerRad
           );
           break;
       }
@@ -182,7 +182,11 @@ export async function loadGLTF(data: unknown, app: Application) {
         `Root node animation not found for index ${animation.root}`
       );
     }
-    return new AnimationRunner(animation.clip, root, { fps: animation.fps });
+    const anim = new AnimationRunner(animation.clip, root, {
+      fps: animation.fps,
+    });
+    anim.tweening = animation.tween;
+    return anim;
   });
 
   const scene = nodes[gltf.scene];
