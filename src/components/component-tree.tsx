@@ -40,7 +40,7 @@ export function ComponentTree() {
               className="focus:outline-none w-auto mt-5"
               onClick={handleAddChildrenClick}
             >
-              Add children
+              Add New Node
         </Button>
     </div>
   );
