@@ -20,14 +20,14 @@
 2. Install dependencies (you can use pnpm instead) ```npm install -g pnpm``` and ```pnpm install```
 3. Run ```pnpm run dev``` and then open it on ```http://localhost:5173/```
 
-## Hollow objects
+## Hollow Objects
 
 1. xxx (13521051)
 2. Hollow cube & torus (13521055)
 3. xxx (13521096)
 4. Hollow prism (13521101)
 
-## Articulated models
+## Articulated Models
 
 1. xxx (13521051)
 2. xxx (13521055)
