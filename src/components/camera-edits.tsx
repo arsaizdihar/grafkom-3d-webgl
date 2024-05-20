@@ -120,6 +120,7 @@ export function CameraEdits() {
     setParams((prevParams) => ({
       ...prevParams,
       cameraAngleDegreeY: 0,
+      cameraAngleDegreeX: 0,
       zPos: 1,
     }));
     cameraNode.transform.rotation.y = 0;
@@ -144,7 +145,7 @@ export function CameraEdits() {
     <>
       {!focusedNode && (
         <div className="h-fit overflow-y-auto flex flex-col gap-2">
-          <div>
+          <div className="flex flex-col gap-2">
             <h2>Camera</h2>
             <Dropdown
               list={cameraTypes}
@@ -152,10 +153,12 @@ export function CameraEdits() {
               onChange={handleChange}
             />
           </div>
-          <div className="text-sm">
+          <div className="text-sm flex flex-col gap-1">
             <p>Camera Angle</p>
-            <p>Y</p>
-            <p>{Math.floor(params.cameraAngleDegreeY)}</p>
+            <div className="flex">
+              <p>Y:&nbsp; </p>
+              <p>{Math.floor(params.cameraAngleDegreeY)}</p>
+            </div>
             <Slider
               min={0}
               max={360}
@@ -169,8 +172,10 @@ export function CameraEdits() {
                 }));
               }}
             />
-            <p>X</p>
-            <p>{Math.floor(params.cameraAngleDegreeX)}</p>
+            <div className="flex">
+              <p>X:&nbsp; </p>
+              <p>{Math.floor(params.cameraAngleDegreeX)}</p>
+            </div>
             <Slider
               min={0}
               max={360}
