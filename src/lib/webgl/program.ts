@@ -2,7 +2,8 @@ import { BufferAttribute } from "../engine/buffer-attribute";
 
 type UniformTypes =
   | `uniform${1 | 2 | 3 | 4}${"i" | "f"}${"v" | ""}`
-  | `uniformMatrix${2 | 3 | 4}fv`;
+  | `uniformMatrix${2 | 3 | 4}fv`
+  | "texture";
 
 type AttributeSingleDataType = BufferAttribute | Float32Array | number[];
 type AttributeDataType = [AttributeSingleDataType] | number[];
@@ -14,7 +15,6 @@ export class Program<
     string,
     {
       type: UniformTypes;
-      args?: any[];
     }
   >,
 > {
@@ -30,6 +30,7 @@ export class Program<
     [K in keyof TUniforms]: {
       type: TUniforms[K]["type"];
       location: WebGLUniformLocation | null;
+      unit?: number;
     };
   };
 
@@ -63,19 +64,25 @@ export class Program<
     });
 
     this.uniforms = {} as typeof this.uniforms;
+    let textureUnit = 0;
 
     Object.entries(uniforms).forEach(([uniformName, obj]) => {
       const location = this.gl.getUniformLocation(
         this.program,
         "u_" + uniformName
       );
-      if (obj.args) {
-        (this.gl[obj.type as UniformTypes] as any)(location, ...obj.args);
+      if (obj.type === "texture") {
+        this.uniforms[uniformName as keyof TUniforms] = {
+          type: obj.type,
+          location,
+          unit: textureUnit++,
+        };
+      } else {
+        this.uniforms[uniformName as keyof TUniforms] = {
+          type: obj.type,
+          location,
+        };
       }
-      this.uniforms[uniformName as keyof TUniforms] = {
-        type: obj.type,
-        location,
-      };
     });
 
     this.indexBuffer = this.gl.createBuffer();
@@ -177,7 +184,21 @@ export class Program<
       if (!uniform) {
         return;
       }
-      (this.gl[uniform.type] as any)(uniform.location, ...args);
+      const type = uniform.type;
+      if (type === "texture") {
+        const texture = args[0] as WebGLTexture;
+        if (!texture) {
+          return;
+        }
+        this.gl.uniform1i(uniform.location, uniform.unit!);
+        this.gl.activeTexture(this.gl.TEXTURE0 + uniform.unit!);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, args[0] as WebGLTexture);
+      } else {
+        (this.gl[type as keyof typeof this.gl] as any)(
+          uniform.location,
+          ...args
+        );
+      }
     });
   }
 

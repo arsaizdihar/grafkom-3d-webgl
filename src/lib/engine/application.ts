@@ -114,15 +114,17 @@ export class Application {
       while (nodes.length) {
         const node = nodes.pop()!;
         if (node instanceof Mesh) {
-          this.program.setUniforms(node.material.uniforms);
+          this.program.setUniforms(node.material.getUniforms(this.gl));
           this.program.setUniforms({
             matrix: [false, node.worldMatrix.el],
             normalMat: [false, node.worldInvTransposeMatrix.el],
           });
           const geometry = node.geometry;
           this.program.setAttributes(geometry.attributes);
-          const texture = node.material.textures[0];
-          texture.bind(this.gl);
+          const texture = node.material.texture;
+          this.program.setUniforms({
+            texture: [texture.texture],
+          });
           if (geometry.indices) {
             this.program.bindIndexBuffer(geometry.indices);
             this.gl.drawElements(

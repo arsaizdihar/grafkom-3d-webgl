@@ -18,9 +18,9 @@ export class BasicMaterial extends ShaderMaterial {
     return MATERIAL_TYPE.BASIC;
   }
 
-  public get uniforms() {
+  public getUniforms(gl: WebGLRenderingContext) {
     return {
-      ...super.uniforms,
+      ...super.getUniforms(gl),
       color: this.color.value,
     };
   }

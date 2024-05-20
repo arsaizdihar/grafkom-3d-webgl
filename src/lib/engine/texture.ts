@@ -1,8 +1,8 @@
+import { Color } from "./color";
 import { GLImage } from "./image";
 
-export interface TextureOptions {
-  image: GLImage;
-  texture: WebGLTexture | null;
+export type TextureOptions = {
+  image?: GLImage;
   wrapS?: number;
   wrapT?: number;
   magFilter?: number;
@@ -10,17 +10,74 @@ export interface TextureOptions {
   // format?: WebGLTexture;
   // type: WebGLType;
   generateMipmaps?: boolean;
-}
+  color?: Color;
+};
 
 export class Texture {
-  constructor(private options: TextureOptions) {}
+  private static white: Texture;
+  public texture;
+  constructor(
+    private options: TextureOptions,
+    gl: WebGLRenderingContext
+  ) {
+    this.texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    if (this.options.image) {
+      if (this.options.generateMipmaps) {
+        gl.generateMipmap(gl.TEXTURE_2D);
+      }
+      if (this.options.wrapS !== undefined) {
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.options.wrapS);
+      }
+
+      if (this.options.wrapT !== undefined) {
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.options.wrapT);
+      }
+
+      if (this.options.magFilter !== undefined) {
+        gl.texParameteri(
+          gl.TEXTURE_2D,
+          gl.TEXTURE_MAG_FILTER,
+          this.options.magFilter
+        );
+      }
+
+      if (this.options.minFilter !== undefined) {
+        gl.texParameteri(
+          gl.TEXTURE_2D,
+          gl.TEXTURE_MIN_FILTER,
+          this.options.minFilter
+        );
+      }
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        this.image!.image
+      );
+    } else if (this.options.color) {
+      const color = this.options.color;
+      const data = new Float32Array(color.value);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        1,
+        1,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        data
+      );
+    } else {
+      throw new Error("Texture must have image or color");
+    }
+  }
 
   get image() {
     return this.options.image;
-  }
-
-  get texture() {
-    return this.options.texture;
   }
 
   get wrapS() {
@@ -43,41 +100,16 @@ export class Texture {
     return this.options.generateMipmaps;
   }
 
-  bind(gl: WebGLRenderingContext) {
-    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      this.image.image
-    );
-    if (this.options.generateMipmaps) {
-      gl.generateMipmap(gl.TEXTURE_2D);
-    }
-    if (this.options.wrapS !== undefined) {
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, this.options.wrapS);
-    }
-
-    if (this.options.wrapT !== undefined) {
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, this.options.wrapT);
-    }
-
-    if (this.options.magFilter !== undefined) {
-      gl.texParameteri(
-        gl.TEXTURE_2D,
-        gl.TEXTURE_MAG_FILTER,
-        this.options.magFilter
+  static WHITE(gl: WebGLRenderingContext) {
+    if (!Texture.white) {
+      Texture.white = new Texture(
+        {
+          color: Color.hex(0xffffff),
+          generateMipmaps: true,
+        },
+        gl
       );
     }
-
-    if (this.options.minFilter !== undefined) {
-      gl.texParameteri(
-        gl.TEXTURE_2D,
-        gl.TEXTURE_MIN_FILTER,
-        this.options.minFilter
-      );
-    }
+    return Texture.white;
   }
 }

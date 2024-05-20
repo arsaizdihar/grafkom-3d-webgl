@@ -47,7 +47,7 @@
   "materials": [
     {
       "type": "basic",
-      "textures": [0],
+      "texture": 0,
       "basic": {
         "color": [1, 1, 1, 1]
       },

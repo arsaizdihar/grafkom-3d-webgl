@@ -15,6 +15,8 @@ uniform int u_materialType;
 uniform vec3 u_lightPos;
 
 uniform sampler2D u_texture;
+uniform sampler2D u_specularTexture;
+uniform sampler2D u_normalTexture;
 
 void main() {
   // basic material
@@ -22,7 +24,8 @@ void main() {
     gl_FragColor = u_color * texture2D(u_texture, v_texcoord);
   } else if(u_materialType == 1) {
     vec4 diffuseColor = u_diffuseColor * texture2D(u_texture, v_texcoord);
-    vec4 ambient = u_ambientColor * texture2D(u_texture, v_texcoord);
+    vec4 specularColor = u_specularColor * texture2D(u_specularTexture, v_texcoord);
+    vec4 ambient = u_ambientColor;
     vec4 normal = vec4(v_normal, 1);
     vec3 normalInterp = (u_normalMat * normal).xyz;
     // phong material

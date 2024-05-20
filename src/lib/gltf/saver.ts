@@ -101,7 +101,7 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
     if (index === -1) {
       const materialData: GLTFMaterial = {
         type: "basic",
-        textures: material.textures.map(processTexture),
+        texture: processTexture(material.texture),
       };
       if (material instanceof BasicMaterial) {
         materialData.type = "basic";
@@ -130,7 +130,7 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
       textureRefs.push(texture);
       index = textureRefs.length - 1;
 
-      const image = texture.image;
+      const image = texture.image!;
       const imageIndex = processImage(image);
       result.textures.push({
         source: imageIndex,

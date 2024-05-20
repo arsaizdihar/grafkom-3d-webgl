@@ -3,12 +3,12 @@ import { MATERIAL_TYPE } from "./material-type";
 
 export type MaterialOptions = {
   id: string;
-  textures: Texture[];
+  texture: Texture;
 };
 
 export class ShaderMaterial {
   public id: string;
-  public textures: Texture[];
+  public texture: Texture;
 
   public get materialType(): (typeof MATERIAL_TYPE)[keyof typeof MATERIAL_TYPE] {
     return MATERIAL_TYPE.BASIC;
@@ -16,12 +16,13 @@ export class ShaderMaterial {
 
   constructor(options: MaterialOptions) {
     this.id = options.id;
-    this.textures = options.textures;
+    this.texture = options.texture;
   }
 
-  public get uniforms() {
+  public getUniforms(gl: WebGLRenderingContext) {
     return {
       materialType: [this.materialType],
+      texture: [this.texture.texture],
     };
   }
 }

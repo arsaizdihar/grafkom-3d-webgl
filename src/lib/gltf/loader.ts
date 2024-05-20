@@ -39,20 +39,21 @@ export async function loadGLTF(data: unknown, app: Application) {
     if (!image) {
       throw new Error(`Image not found for index ${texture.source}`);
     }
-    return new Texture({
-      image,
-      texture: app.gl.createTexture(),
-      ...texture,
-    });
+    return new Texture(
+      {
+        image,
+        ...texture,
+      },
+      app.gl
+    );
   });
 
   const materials = gltf.materials.map((material) => {
-    const matTextures = material.textures.map((texture) => {
-      if (!textures[texture]) {
-        throw new Error(`Texture not found for index ${texture}`);
-      }
-      return textures[texture];
-    });
+    const texture = textures[material.texture];
+    if (!texture) {
+      throw new Error(`Texture not found for index ${material.texture}`);
+    }
+
     switch (material.type) {
       case "basic":
         if (!material.basic) {
@@ -60,7 +61,7 @@ export async function loadGLTF(data: unknown, app: Application) {
         }
         return new BasicMaterial({
           color: parseColor(material.basic.color),
-          textures: matTextures,
+          texture: texture,
           id: "basic",
         });
       case "phong":
@@ -72,7 +73,7 @@ export async function loadGLTF(data: unknown, app: Application) {
           diffuse: parseColor(material.phong.diffuse),
           specular: parseColor(material.phong.specular),
           shininess: material.phong.shininess,
-          textures: matTextures,
+          texture: texture,
           id: "phong",
         });
     }

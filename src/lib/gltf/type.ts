@@ -66,7 +66,7 @@ export const GLTFSchema = z.object({
   materials: z.array(
     z.object({
       type: z.enum(["basic", "phong"]),
-      textures: z.array(arrayIndex()),
+      texture: arrayIndex(),
       basic: z
         .object({
           color: z.union([z.string(), z.array(z.number()).length(4)]),
