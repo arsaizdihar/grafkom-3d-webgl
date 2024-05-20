@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { Application } from "@/lib/engine/application";
 import { AnimationRunner } from "../engine/animation";
 import { BufferGeometry } from "../engine/buffer-geometry";
@@ -68,12 +69,20 @@ export async function loadGLTF(data: unknown, app: Application) {
         if (!material.phong) {
           throw new Error("Phong material missing parameter");
         }
+        const specularTexture = material.phong.specularTexture
+          ? textures[material.phong.specularTexture]
+          : undefined;
+        const normalTexture = material.phong.normalTexture
+          ? textures[material.phong.normalTexture]
+          : undefined;
         return new PhongMaterial({
           ambient: parseColor(material.phong.ambient),
           diffuse: parseColor(material.phong.diffuse),
           specular: parseColor(material.phong.specular),
           shininess: material.phong.shininess,
           texture: texture,
+          specularTexture: specularTexture,
+          normalTexture: normalTexture,
           id: "phong",
         });
     }

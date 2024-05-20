@@ -115,6 +115,12 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
           diffuse: material.diffuse.value,
           specular: material.specular.value,
           shininess: material.shininess,
+          specularTexture: material.specularTexture
+            ? processTexture(material.specularTexture)
+            : undefined,
+          normalTexture: material.normalTexture
+            ? processTexture(material.normalTexture)
+            : undefined,
         };
       }
       materialRefs.push(material);

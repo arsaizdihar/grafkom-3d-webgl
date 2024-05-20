@@ -78,6 +78,8 @@ export const GLTFSchema = z.object({
           diffuse: ColorSchema,
           specular: ColorSchema,
           shininess: z.number().nonnegative(),
+          specularTexture: arrayIndex().optional(),
+          normalTexture: arrayIndex().optional(),
         })
         .optional(),
     })
