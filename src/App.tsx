@@ -8,6 +8,11 @@ import { useCamera } from "./hooks/camera";
 import { Application } from "./lib/engine/application";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
+import { Mesh } from "./lib/engine/mesh";
+import { PlaneGeometry } from "./lib/geometry/plane-geometry";
+import { BasicMaterial } from "./lib/material/basic-material";
+import { Color } from "./lib/engine/color";
+import { Texture } from "./lib/engine/texture";
 
 const GLTF_FILE = "/scenes/pyramid.json";
 
@@ -70,6 +75,25 @@ function App() {
       setScene(scene);
       setAnimations(animations);
       setFocusedNode(null);
+
+      // Plane          
+      const text = new Texture(
+        { color: Color.hex(0xffffff) },
+        app.gl
+      );
+
+      const plane = new Mesh(
+        new PlaneGeometry(800, 800),
+        new BasicMaterial({
+          color: Color.hex(0xffffff),
+          texture: text,
+          id: "basic",
+        })
+      );
+
+      plane.transform.position.y = -100;
+      plane.transform.scale.z = -1;
+      scene.addChild(plane);
     }
 
     load();
