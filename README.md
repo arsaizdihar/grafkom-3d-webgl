@@ -7,11 +7,10 @@
 1. Display 3D hollow objects
 2. Display 3D articulated models
 3. gLTF file format, save and load model
-4. Change camera projection type: orthographic, oblique, and perspective
-5. Change camera property type: orbit control and z position
-6. Adjust lighting configuration
-7. Scene graph (component editor)
-8. Display models animation
+4. Change camera projection type: orthographic, oblique, and perspective and property type: orbit control and z position
+5. Adjust lighting configuration
+6. Component editor (scene graph)
+7. Animation editor & display model animations
 9. 
 
 ## How to Start
