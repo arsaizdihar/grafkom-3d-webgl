@@ -37,7 +37,7 @@
 ## Teams
 
 | Nama                           | Nim      |
-| :----------------------------: | :------: |
+| :----------------------------- | :------: |
 | Manuella Ivana Uli Sianipar    | 13521051 |
 | Muhammad Bangkit Dwi Chahyono  | 13521055 |
 | Noel Christoffel Simbolon      | 13521096 |
