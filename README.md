@@ -10,7 +10,7 @@
 4. Change camera projection type: orthographic, oblique, and perspective
 5. Change camera property type: orbit control and z position
 6. Adjust lighting configuration
-7. Scene graph
+7. Scene graph (component editor)
 8. Display models animation
 9. 
 
