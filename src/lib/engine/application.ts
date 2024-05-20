@@ -33,6 +33,8 @@ export class Application {
         ambientColor: { type: "uniform4f" },
         diffuseColor: { type: "uniform4f" },
         specularColor: { type: "uniform4f" },
+        specularTexture: { type: "texture" },
+        normalTexture: { type: "texture" },
         shininess: { type: "uniform1f" },
         materialType: { type: "uniform1i" },
         lightPos: { type: "uniform3f" },

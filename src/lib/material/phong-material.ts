@@ -42,8 +42,10 @@ export class PhongMaterial extends ShaderMaterial {
       diffuseColor: this.diffuse.value,
       specular: this.specular.value,
       shininess: [this.shininess],
-      specularTexture: [this.specularTexture?.texture ?? Texture.WHITE(gl)],
-      normalTexture: [this.normalTexture?.texture ?? Texture.WHITE(gl)],
+      // specularTexture: [
+      //   this.specularTexture?.texture ?? Texture.WHITE(gl).texture,
+      // ],
+      // normalTexture: [this.normalTexture?.texture ?? Texture.WHITE(gl).texture],
     };
   }
 }

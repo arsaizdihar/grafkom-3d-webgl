@@ -59,7 +59,7 @@ export class Texture {
       );
     } else if (this.options.color) {
       const color = this.options.color;
-      const data = new Float32Array(color.value);
+      const data = new Uint8Array(color.value.map((v) => v * 255));
       gl.texImage2D(
         gl.TEXTURE_2D,
         0,

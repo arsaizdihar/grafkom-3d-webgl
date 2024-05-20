@@ -181,7 +181,7 @@ export class Program<
         return;
       }
       const uniform = this.uniforms[item];
-      if (!uniform) {
+      if (!uniform || !uniform.location) {
         return;
       }
       const type = uniform.type;

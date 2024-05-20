@@ -9,7 +9,7 @@ import { Application } from "./lib/engine/application";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
 
-const GLTF_FILE = "/scenes/torus.json";
+const GLTF_FILE = "/scenes/pyramid.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
