@@ -6,7 +6,7 @@
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
       "children": [1],
-      "background": [1, 1, 1, 1],
+      "background": [0.8, 0.8, 0.8, 1],
       "name": "scene"
     },
     {
@@ -31,10 +31,7 @@
   ],
   "images": [
     {
-      "uri": "/red.png"
-    },
-    {
-      "uri": "/f-texture.png"
+      "uri": "/gradient.jpg"
     }
   ],
   "materials": [
@@ -54,8 +51,11 @@
   ],
   "textures": [
     {
-      "source": 1,
-      "generateMipmaps": true
+      "source": 0,
+      "generateMipmaps": false,
+      "wrapS": 33071,
+      "wrapT": 33071,
+      "minFilter": 9729
     }
   ],
   "animations": []

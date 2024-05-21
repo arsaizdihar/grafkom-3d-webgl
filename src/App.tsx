@@ -15,7 +15,7 @@ import { Color } from "./lib/engine/color";
 import { Texture } from "./lib/engine/texture";
 import { DirectionalLight } from "./lib/light/directional-light";
 
-const GLTF_FILE = "/scenes/pyramid.json";
+const GLTF_FILE = "/scenes/steve.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
@@ -78,24 +78,24 @@ function App() {
       setFocusedNode(null);
 
       // Plane          
-      const text = new Texture(
-        { color: Color.hex(0xffffff) },
-        app.gl
-      );
+      // const text = new Texture(
+      //   { color: Color.hex(0xffffff) },
+      //   app.gl
+      // );
 
-      const plane = new Mesh(
-        new PlaneGeometry(800, 800),
-        new BasicMaterial({
-          color: Color.hex(0xffffff),
-          texture: text,
-          id: "basic",
-        })
-      );
-      plane.name = "plane";
+      // const plane = new Mesh(
+      //   new PlaneGeometry(800, 800),
+      //   new BasicMaterial({
+      //     color: Color.hex(0xffffff),
+      //     texture: text,
+      //     id: "basic",
+      //   })
+      // );
+      // plane.name = "plane";
 
-      plane.transform.position.y = -100;
-      plane.transform.scale.z = -1;
-      scene.addChild(plane);
+      // plane.transform.position.y = -100;
+      // plane.transform.scale.z = -1;
+      // scene.addChild(plane);
 
       // Light
       // const color = Color.hex(0xffffff);
