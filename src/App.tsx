@@ -13,6 +13,7 @@ import { PlaneGeometry } from "./lib/geometry/plane-geometry";
 import { BasicMaterial } from "./lib/material/basic-material";
 import { Color } from "./lib/engine/color";
 import { Texture } from "./lib/engine/texture";
+import { DirectionalLight } from "./lib/light/directional-light";
 
 const GLTF_FILE = "/scenes/pyramid.json";
 
@@ -90,10 +91,23 @@ function App() {
           id: "basic",
         })
       );
+      plane.name = "plane";
 
       plane.transform.position.y = -100;
       plane.transform.scale.z = -1;
       scene.addChild(plane);
+
+      // Light
+      // const color = Color.hex(0xffffff);
+      // const intensity = 1;
+      // const light = new DirectionalLight(
+      //   color,
+      //   intensity
+      // );
+      // light.name = "light";
+
+      // light.transform.position.set(-1, 100, 4);
+      // scene.addChild(light);
     }
 
     load();
