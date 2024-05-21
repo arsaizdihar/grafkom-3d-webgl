@@ -1,0 +1,124 @@
+{
+  "scene": 0,
+  "nodes": [
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 1, 1],
+      "children": [1],
+      "background": [0.8, 0.8, 0.8, 1],
+      "name": "scene"
+    },
+    {
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0],
+      "scale": [4, 6, 2],
+      "children": [2, 3, 4, 5, 6],
+      "mesh": 0,
+      "name": "body"
+    },
+    {
+      "translation": [0, 25, 0],
+      "rotation": [0, 0, 0],
+      "scale": [1, 0.667, 2],
+      "children": [],
+      "mesh": 0,
+      "name": "head"
+    },
+    {
+      "translation": [22.5, -1.5, 0],
+      "rotation": [0, 0, 0],
+      "scale": [0.5, 1.1, 1],
+      "children": [],
+      "mesh": 0,
+      "name": "left hand"
+    },
+    {
+      "translation": [-22.5, -1.5, 0],
+      "rotation": [0, 0, 0],
+      "scale": [0.5, 1.1, 1],
+      "children": [],
+      "mesh": 0,
+      "name": "right hand"
+    },
+    {
+      "translation": [7.5, -30, 0],
+      "rotation": [0, 0, 0],
+      "scale": [0.5, 1, 1],
+      "children": [],
+      "mesh": 0,
+      "name": "left leg"
+    },
+    {
+      "translation": [-7.5, -30, 0],
+      "rotation": [0, 0, 0],
+      "scale": [0.5, 1, 1],
+      "children": [],
+      "mesh": 0,
+      "name": "right leg"
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": "cube",
+        "material": 0,
+        "cube": {
+          "size": 30
+        }
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/gradient.jpg"
+    }
+  ],
+  "materials": [
+    {
+      "type": "basic",
+      "texture": 0,
+      "basic": {
+        "color": [1, 1, 1, 1]
+      }
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "generateMipmaps": false,
+      "wrapS": 33071,
+      "wrapT": 33071,
+      "minFilter": 9729
+    }
+  ],
+  "animations": [
+    {
+      "root": 0,
+      "fps": 1,
+      "clip": {
+        "name": "rotate",
+        "frames": [
+          {
+            "children": {
+              "body": {
+                "keyframe": {
+                  "rotation": [15, 0, 0]
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "keyframe": {
+                  "rotation": [15, 360, 0]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
