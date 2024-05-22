@@ -8,14 +8,8 @@ import { useCamera } from "./hooks/camera";
 import { Application } from "./lib/engine/application";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
-import { Mesh } from "./lib/engine/mesh";
-import { PlaneGeometry } from "./lib/geometry/plane-geometry";
-import { BasicMaterial } from "./lib/material/basic-material";
-import { Color } from "./lib/engine/color";
-import { Texture } from "./lib/engine/texture";
-import { DirectionalLight } from "./lib/light/directional-light";
 
-const GLTF_FILE = "/scenes/steve.json";
+const GLTF_FILE = "/scenes/pyramid.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
@@ -77,7 +71,7 @@ function App() {
       setAnimations(animations);
       setFocusedNode(null);
 
-      // Plane          
+      // Plane
       // const text = new Texture(
       //   { color: Color.hex(0xffffff) },
       //   app.gl

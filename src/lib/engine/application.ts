@@ -39,7 +39,7 @@ export class Application {
         materialType: { type: "uniform1i" },
         lightPos: { type: "uniform3f" },
         color: { type: "uniform4f" },
-        texture: { type: "uniform1i" },
+        texture: { type: "texture" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
       },
@@ -135,13 +135,16 @@ export class Application {
               this.gl.UNSIGNED_SHORT,
               0
             );
+            this.gl.bindTexture(this.gl.TEXTURE_2D, null);
           } else {
             const position = geometry.attributes.position;
             this.gl.drawArrays(this.gl.TRIANGLES, 0, position.count);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, null);
           }
         }
         nodes.push(...node.children);
       }
+
       if (!end) {
         requestAnimationFrame(runRender.bind(this));
       }

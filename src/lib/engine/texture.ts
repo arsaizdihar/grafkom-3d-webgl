@@ -71,6 +71,7 @@ export class Texture {
         gl.UNSIGNED_BYTE,
         data
       );
+      gl.bindTexture(gl.TEXTURE_2D, null);
     } else {
       throw new Error("Texture must have image or color");
     }
