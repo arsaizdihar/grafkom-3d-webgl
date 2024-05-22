@@ -1,18 +1,25 @@
 import { BufferAttribute } from "../engine/buffer-attribute";
-import { BufferGeometry } from "../engine/buffer-geometry";
+import { BufferGeometry, GeometryData } from "../engine/buffer-geometry";
 
 export class CubeHollowGeometry extends BufferGeometry {
-  constructor(public size: number = 1, public thickness: number = 0.1) {
-    super();
+  constructor(
+    public size: number = 1,
+    public thickness: number = 0.1,
+    data?: GeometryData
+  ) {
+    super(data);
     this.size = Math.max(this.size, 1);
     this.thickness = Math.min(this.thickness, this.size / 4);
+    if (data) {
+      return;
+    }
 
     const vertices: number[] = [];
 
     const hs = size / 2;
     const ht = this.thickness / 2;
 
-    for (let j = 0; j < 2; j ++) {
+    for (let j = 0; j < 2; j++) {
       // bottom front and back
       for (let i = 0; i < 2; i++) {
         const z = i === 0 ? hs : -hs;
@@ -45,7 +52,7 @@ export class CubeHollowGeometry extends BufferGeometry {
       const top = hs + ht;
       const bottom = -hs + ht;
       const left = i == 0 ? -hs - ht : hs - ht;
-      const right = i == 0 ? -hs + ht: hs + ht;
+      const right = i == 0 ? -hs + ht : hs + ht;
       console.log(front, back, top, bottom, left, right);
       addCube(vertices, front, back, top, bottom, left, right);
     }
@@ -57,7 +64,7 @@ export class CubeHollowGeometry extends BufferGeometry {
       const top = hs + ht;
       const bottom = -hs + ht;
       const left = i == 0 ? -hs - ht : hs - ht;
-      const right = i == 0 ? -hs + ht: hs + ht;
+      const right = i == 0 ? -hs + ht : hs + ht;
       console.log(front, back, top, bottom, left, right);
       addCube(vertices, front, back, top, bottom, left, right);
     }

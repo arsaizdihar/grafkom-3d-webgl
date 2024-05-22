@@ -1,12 +1,15 @@
 import { BufferAttribute } from "../engine/buffer-attribute";
-import { BufferGeometry } from "../engine/buffer-geometry";
+import { BufferGeometry, GeometryData } from "../engine/buffer-geometry";
 
 export class CubeGeometry extends BufferGeometry {
   size: number;
 
-  constructor(size = 1) {
-    super();
+  constructor(size = 1, data?: GeometryData) {
+    super(data);
     this.size = size;
+    if (data) {
+      return;
+    }
     const hs = size / 2;
     const vertices = new Float32Array([
       // back

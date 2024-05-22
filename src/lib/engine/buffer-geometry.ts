@@ -1,12 +1,26 @@
 import { BufferAttribute } from "./buffer-attribute";
 import { Vector3 } from "./vector";
 
+export type GeometryData = {
+  position: number[];
+  normal: number[];
+  texcoord: number[];
+};
+
 export class BufferGeometry {
   private _attributes: { [name: string]: BufferAttribute };
   private _indices?: BufferAttribute;
 
-  constructor() {
-    this._attributes = {};
+  constructor(data?: GeometryData) {
+    if (data) {
+      this._attributes = {
+        position: new BufferAttribute(new Float32Array(data.position), 3),
+        normal: new BufferAttribute(new Float32Array(data.normal), 3),
+        texcoord: new BufferAttribute(new Float32Array(data.texcoord), 2),
+      };
+    } else {
+      this._attributes = {};
+    }
   }
 
   get attributes() {

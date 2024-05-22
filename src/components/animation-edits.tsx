@@ -24,6 +24,12 @@ import {
 } from "lucide-react";
 import { useEffect, useReducer, useRef, useState } from "react";
 import { Button } from "./ui/button";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "./ui/context-menu";
 import { InputDrag } from "./ui/input-drag";
 
 export function AnimationEdits() {
@@ -68,8 +74,6 @@ export function AnimationEdits() {
     focusedNode,
     animationEdit.rootNode
   );
-  (window as any).frame = focusedFrame;
-  (window as any).node = animationEdit.rootNode;
 
   useEffect(() => {
     if (!animationEdit) return;
@@ -87,103 +91,110 @@ export function AnimationEdits() {
   }, [animationEdit]);
 
   return (
-    <div className="p-4 overflow-y-auto h-full">
-      <ul className="flex gap-2 flex-wrap">
-        {animation.frames.map((frame, i) => {
-          return (
-            <li key={i}>
+    <div className="p-4 overflow-y-auto h-screen">
+      <Button
+        variant={"ghost"}
+        className="w-full mb-2"
+        onClick={() => {
+          setAnimationEdit(null);
+        }}
+      >
+        Back
+      </Button>
+      {animationEdit.currentAnimation.frames.length > 0 ? (
+        <>
+          <div className="bg-slate-300 rounded p-2">
+            <div className="flex justify-center gap-1">
               <Button
-                size={"sm"}
-                variant={i === currentFrameIdx ? "default" : "outline"}
-                className="h-auto w-auto p-2"
+                size="sm"
+                className="aspect-square h-auto w-10"
+                variant={"secondary"}
                 onClick={() => {
-                  setCurrentFrameIdx(i);
-                  animationEdit.currentFrame = i;
-                  animationEdit.updateSceneGraph();
+                  animationEdit.firstFrame();
+                }}
+                disabled={isPlaying}
+              >
+                <SkipBack className="w-4" />
+              </Button>
+              <Button
+                size="sm"
+                className="aspect-square h-auto w-10"
+                variant={"secondary"}
+                onClick={() => {
+                  animationEdit.prevFrame();
+                }}
+                disabled={isPlaying}
+                // {...longPressPrev}
+              >
+                <StepBack className="w-4" />
+              </Button>
+              <Button
+                size="sm"
+                className="aspect-square h-auto w-10"
+                variant={isPlaying ? "default" : "secondary"}
+                onClick={() => {
+                  animationEdit.isPlaying = !animationEdit.isPlaying;
+                  setIsPlaying(animationEdit.isPlaying);
+                  if (!animationEdit.isPlaying) {
+                    animationEdit.updateSceneGraph();
+                  }
                 }}
               >
-                {i + 1}
+                {isPlaying ? (
+                  <Pause className="w-4" />
+                ) : (
+                  <Play className="w-4" />
+                )}
               </Button>
-            </li>
-          );
-        })}
-      </ul>
-      <div className="bg-slate-300 rounded p-2">
-        <div className="flex justify-center gap-1">
-          <Button
-            size="sm"
-            className="aspect-square h-auto w-10"
-            variant={"secondary"}
-            onClick={() => {
-              animationEdit.firstFrame();
-            }}
-            disabled={isPlaying}
-          >
-            <SkipBack className="w-4" />
-          </Button>
-          <Button
-            size="sm"
-            className="aspect-square h-auto w-10"
-            variant={"secondary"}
-            onClick={() => {
-              animationEdit.prevFrame();
-            }}
-            disabled={isPlaying}
-            // {...longPressPrev}
-          >
-            <StepBack className="w-4" />
-          </Button>
-          <Button
-            size="sm"
-            className="aspect-square h-auto w-10"
-            variant={isPlaying ? "default" : "secondary"}
-            onClick={() => {
-              animationEdit.isPlaying = !animationEdit.isPlaying;
-              setIsPlaying(animationEdit.isPlaying);
-              if (!animationEdit.isPlaying) {
-                animationEdit.updateSceneGraph();
-              }
-            }}
-          >
-            {isPlaying ? <Pause className="w-4" /> : <Play className="w-4" />}
-          </Button>
-          <Button
-            size="sm"
-            className="aspect-square h-auto w-10"
-            variant={"secondary"}
-            onClick={() => {
-              animationEdit.nextFrame();
-            }}
-            disabled={isPlaying}
-            // {...longPressNext}
-          >
-            <StepForward className="w-4" />
-          </Button>
-          <Button
-            size="sm"
-            className="aspect-square h-auto w-10"
-            variant={"secondary"}
-            onClick={() => {
-              animationEdit.lastFrame();
-            }}
-            disabled={isPlaying}
-          >
-            <SkipForward className="w-4" />
-          </Button>
-        </div>
-      </div>
+              <Button
+                size="sm"
+                className="aspect-square h-auto w-10"
+                variant={"secondary"}
+                onClick={() => {
+                  animationEdit.nextFrame();
+                }}
+                disabled={isPlaying}
+                // {...longPressNext}
+              >
+                <StepForward className="w-4" />
+              </Button>
+              <Button
+                size="sm"
+                className="aspect-square h-auto w-10"
+                variant={"secondary"}
+                onClick={() => {
+                  animationEdit.lastFrame();
+                }}
+                disabled={isPlaying}
+              >
+                <SkipForward className="w-4" />
+              </Button>
+            </div>
+          </div>
 
-      <div className="my-2">
-        <h4 className="font-medium">FRAME</h4>
-        <Progress
-          value={(currentFrameIdx / (animationEdit.length - 1)) * 100}
-          className="w-full"
-        />
-        <div className="flex justify-between">
-          <span>{currentFrameIdx + 1}</span>
-          <span>{animationEdit.length}</span>
-        </div>
-      </div>
+          <div className="my-2">
+            <h4 className="font-medium">FRAME</h4>
+            <Progress
+              value={(currentFrameIdx / (animationEdit.length - 1)) * 100}
+              className="w-full"
+            />
+            <div className="flex justify-between">
+              <span>{currentFrameIdx + 1}</span>
+              <span>{animationEdit.length}</span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <Button
+          onClick={() => {
+            animationEdit.addFrame(0);
+            animationEdit.updateSceneGraph();
+            setCurrentFrameIdx(0);
+          }}
+        >
+          Add Frame
+        </Button>
+      )}
       <div>
         <label>FPS</label>
         <InputDrag
@@ -223,6 +234,74 @@ export function AnimationEdits() {
           </SelectContent>
         </Select>
       </div>
+
+      <ul className="flex gap-2 flex-wrap my-4">
+        {animation.frames.map((frame, i) => {
+          return (
+            <li key={i}>
+              <ContextMenu>
+                <ContextMenuTrigger>
+                  <Button
+                    size={"sm"}
+                    variant={i === currentFrameIdx ? "default" : "outline"}
+                    className="h-auto w-auto p-2"
+                    onClick={() => {
+                      setCurrentFrameIdx(i);
+                      animationEdit.currentFrame = i;
+                      animationEdit.updateSceneGraph();
+                    }}
+                  >
+                    {i + 1}
+                  </Button>
+                </ContextMenuTrigger>
+                <ContextMenuContent>
+                  <ContextMenuItem
+                    onSelect={() => {
+                      animationEdit.deleteFrame(i);
+                      animationEdit.updateSceneGraph();
+                      setCurrentFrameIdx(-1);
+                      rerender();
+                    }}
+                  >
+                    Delete
+                  </ContextMenuItem>
+                  <ContextMenuItem
+                    onSelect={() => {
+                      animationEdit.addFrame(i);
+                      animationEdit.currentFrame = i + 1;
+                      animationEdit.updateSceneGraph();
+                    }}
+                  >
+                    Add after
+                  </ContextMenuItem>
+                  {i !== 0 && (
+                    <ContextMenuItem
+                      onSelect={() => {
+                        animationEdit.switchFrame(i, i - 1);
+                        animationEdit.currentFrame = i - 1;
+                        animationEdit.updateSceneGraph();
+                      }}
+                    >
+                      Switch before
+                    </ContextMenuItem>
+                  )}
+                  {i !== animation.frames.length - 1 && (
+                    <ContextMenuItem
+                      onSelect={() => {
+                        animationEdit.switchFrame(i, i + 1);
+                        animationEdit.currentFrame = i + 1;
+                        animationEdit.updateSceneGraph();
+                      }}
+                    >
+                      Switch after
+                    </ContextMenuItem>
+                  )}
+                </ContextMenuContent>
+              </ContextMenu>
+            </li>
+          );
+        })}
+      </ul>
       <h2 className="mt-4 mb-2">TRS</h2>
       {focusedFrame?.keyframe && (
         <TRSEdits

@@ -88,6 +88,59 @@ export async function loadGLTF(data: unknown, app: Application) {
     }
   });
 
+  const geometries: BufferGeometry[] = gltf.geometries.map((geometry) => {
+    const data = {
+      position: geometry.vertex,
+      normal: geometry.normal,
+      texcoord: geometry.texcoord,
+    };
+    switch (geometry.type) {
+      case "cube":
+        if (!geometry.cube) {
+          throw new Error("Cube geometry missing parameter");
+        }
+        return new CubeGeometry(geometry.cube.size, data);
+      case "plane":
+        if (!geometry.plane) {
+          throw new Error("Plane geometry missing parameter");
+        }
+        return new PlaneGeometry(
+          geometry.plane.width,
+          geometry.plane.height,
+          data
+        );
+      case "pyramidhollow":
+        if (!geometry.pyramidhollow) {
+          throw new Error("Pyramid hollow geometry missing parameter");
+        }
+        return new PyramidHollowGeometry(
+          geometry.pyramidhollow.size,
+          geometry.pyramidhollow.thickness,
+          data
+        );
+      case "cubehollow":
+        if (!geometry.cubehollow) {
+          throw new Error("Cube hollow geometry missing parameter");
+        }
+        return new CubeHollowGeometry(
+          geometry.cubehollow.size,
+          geometry.cubehollow.thickness,
+          data
+        );
+      case "torus":
+        if (!geometry.torus) {
+          throw new Error("Torus geometry missing parameter");
+        }
+        return new TorusGeometry(
+          geometry.torus.slices,
+          20,
+          geometry.torus.innerRad,
+          geometry.torus.outerRad,
+          data
+        );
+    }
+  });
+
   const nodes = gltf.nodes.map((node, index) => {
     const transform = new Transform(
       Vector3.fromArray(node.translation),
@@ -113,51 +166,11 @@ export async function loadGLTF(data: unknown, app: Application) {
           `Material not found for index ${mesh.primitive.material}`
         );
       }
-      let geometry: BufferGeometry;
-      switch (mesh.primitive.geometry) {
-        case "cube":
-          if (!mesh.primitive.cube) {
-            throw new Error("Cube geometry missing parameter");
-          }
-          geometry = new CubeGeometry(mesh.primitive.cube.size);
-          break;
-        case "plane":
-          if (!mesh.primitive.plane) {
-            throw new Error("Plane geometry missing parameter");
-          }
-          geometry = new PlaneGeometry(
-            mesh.primitive.plane.width,
-            mesh.primitive.plane.height
-          );
-          break;
-        case "pyramidhollow":
-          if (!mesh.primitive.pyramidhollow) {
-            throw new Error("Pyramid hollow geometry missing parameter");
-          }
-          geometry = new PyramidHollowGeometry(
-            mesh.primitive.pyramidhollow.size,
-            mesh.primitive.pyramidhollow.thickness
-          );
-          break;
-        case "cubehollow":
-          if (!mesh.primitive.cubehollow) {
-            throw new Error("Cube hollow geometry missing parameter");
-          }
-          geometry = new CubeHollowGeometry(
-            mesh.primitive.cubehollow.size,
-            mesh.primitive.cubehollow.thickness
-          );
-          break;
-        case "torus":
-          if (!mesh.primitive.torus) {
-            throw new Error("Test hollow geometry missing parameter");
-          }
-          geometry = new TorusGeometry(
-            mesh.primitive.torus.slices,
-            mesh.primitive.torus.innerRad,
-            mesh.primitive.torus.outerRad
-          );
-          break;
+      const geometry = geometries[mesh.primitive.geometry];
+      if (!geometry) {
+        throw new Error(
+          `Geometry not found for index ${mesh.primitive.geometry}`
+        );
       }
       const meshGL = new Mesh(geometry, material);
       meshGL.transform = transform;

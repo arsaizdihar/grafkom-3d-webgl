@@ -1,4 +1,5 @@
 import { AnimationRunner } from "../engine/animation";
+import { BufferGeometry } from "../engine/buffer-geometry";
 import { GLImage } from "../engine/image";
 import { Mesh } from "../engine/mesh";
 import { GLNode } from "../engine/node";
@@ -11,7 +12,7 @@ import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
-import { GLTF, GLTFMaterial, GLTFMesh, GLTFNode } from "./type";
+import { GLTF, GLTFGeometry, GLTFMaterial, GLTFMesh, GLTFNode } from "./type";
 
 export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
   const result: GLTF = {
@@ -22,11 +23,13 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
     materials: [],
     textures: [],
     animations: [],
+    geometries: [],
   };
 
   const nodeRefs: GLNode[] = [];
   const meshRefs: Mesh[] = [];
   const materialRefs: ShaderMaterial[] = [];
+  const geometryRefs: BufferGeometry[] = [];
   const textureRefs: Texture[] = [];
   const imageRefs: GLImage[] = [];
 
@@ -56,34 +59,11 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
     if (index === -1) {
       const meshData: GLTFMesh = {
         primitive: {
-          geometry: "cube",
+          geometry: processGeometry(mesh.geometry),
           material: 0,
         },
       };
-      if (mesh.geometry instanceof CubeGeometry) {
-        meshData.primitive.geometry = "cube";
-        meshData.primitive.cube = {
-          size: mesh.geometry.size,
-        };
-      } else if (mesh.geometry instanceof PlaneGeometry) {
-        meshData.primitive.geometry = "plane";
-        meshData.primitive.plane = {
-          width: mesh.geometry.width,
-          height: mesh.geometry.height,
-        };
-      } else if (mesh.geometry instanceof PyramidHollowGeometry) {
-        meshData.primitive.geometry = "pyramidhollow";
-        meshData.primitive.pyramidhollow = {
-          size: mesh.geometry.size,
-          thickness: mesh.geometry.thickness,
-        };
-      } else if (mesh.geometry instanceof CubeHollowGeometry) {
-        meshData.primitive.geometry = "cubehollow";
-        meshData.primitive.cubehollow = {
-          size: mesh.geometry.size,
-          thickness: mesh.geometry.thickness,
-        };
-      }
+      processGeometry(mesh.geometry);
 
       const material = mesh.material;
       const materialIndex = processMaterial(material);
@@ -92,6 +72,46 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
       meshRefs.push(mesh);
       index = meshRefs.length - 1;
       result.meshes.push(meshData);
+    }
+    return index;
+  }
+
+  function processGeometry(geometry: BufferGeometry) {
+    let index = geometryRefs.indexOf(geometry);
+    if (index === -1) {
+      const geometryData: GLTFGeometry = {
+        type: "cube",
+        vertex: Array.from(geometry.attributes.position.data),
+        normal: Array.from(geometry.attributes.normal.data),
+        texcoord: Array.from(geometry.attributes.texcoord.data),
+      };
+      geometryRefs.push(geometry);
+      if (geometry instanceof CubeGeometry) {
+        geometryData.type = "cube";
+        geometryData.cube = {
+          size: geometry.size,
+        };
+      } else if (geometry instanceof PlaneGeometry) {
+        geometryData.type = "plane";
+        geometryData.plane = {
+          width: geometry.width,
+          height: geometry.height,
+        };
+      } else if (geometry instanceof PyramidHollowGeometry) {
+        geometryData.type = "pyramidhollow";
+        geometryData.pyramidhollow = {
+          size: geometry.size,
+          thickness: geometry.thickness,
+        };
+      } else if (geometry instanceof CubeHollowGeometry) {
+        geometryData.type = "cubehollow";
+        geometryData.cubehollow = {
+          size: geometry.size,
+          thickness: geometry.thickness,
+        };
+      }
+      result.geometries.push(geometryData);
+      index = geometryRefs.length - 1;
     }
     return index;
   }

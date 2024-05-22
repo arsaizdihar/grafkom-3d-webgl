@@ -1,18 +1,23 @@
 import { BufferAttribute } from "../engine/buffer-attribute";
-import { BufferGeometry } from "../engine/buffer-geometry";
+import { BufferGeometry, GeometryData } from "../engine/buffer-geometry";
 
 export class TorusGeometry extends BufferGeometry {
   constructor(
     public slices: number = 20,
     public loops: number = 20,
     public innerRad: number = 0.5,
-    public outerRad: number = 2
+    public outerRad: number = 2,
+    data?: GeometryData
   ) {
     super();
     this.slices = 20;
     this.loops = 50;
     this.innerRad = 10;
     this.outerRad = 20;
+
+    if (data) {
+      return;
+    }
 
     const vertices: number[] = [];
     const texCoords: number[] = [];

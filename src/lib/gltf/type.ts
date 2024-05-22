@@ -28,37 +28,7 @@ export const GLTFSchema = z.object({
   meshes: z.array(
     z.object({
       primitive: z.object({
-        geometry: z.enum(GeometryEnum),
-        cube: z
-          .object({
-            size: z.number().nonnegative(),
-          })
-          .optional(),
-        plane: z
-          .object({
-            width: z.number().nonnegative(),
-            height: z.number().nonnegative(),
-          })
-          .optional(),
-        pyramidhollow: z
-          .object({
-            size: z.number().nonnegative(),
-            thickness: z.number().nonnegative(),
-          })
-          .optional(),
-        cubehollow: z
-          .object({
-            size: z.number().nonnegative(),
-            thickness: z.number().nonnegative(),
-          })
-          .optional(),
-        torus: z
-          .object({
-            slices: z.number().nonnegative(),
-            innerRad: z.number().nonnegative(),
-            outerRad: z.number().nonnegative(),
-          })
-          .optional(),
+        geometry: arrayIndex(),
         material: arrayIndex(),
       }),
     })
@@ -103,10 +73,51 @@ export const GLTFSchema = z.object({
       clip: AnimationClipSchema,
     })
   ),
+  geometries: z
+    .array(
+      z.object({
+        type: z.enum(GeometryEnum),
+        cube: z
+          .object({
+            size: z.number().nonnegative(),
+          })
+          .optional(),
+        plane: z
+          .object({
+            width: z.number().nonnegative(),
+            height: z.number().nonnegative(),
+          })
+          .optional(),
+        pyramidhollow: z
+          .object({
+            size: z.number().nonnegative(),
+            thickness: z.number().nonnegative(),
+          })
+          .optional(),
+        cubehollow: z
+          .object({
+            size: z.number().nonnegative(),
+            thickness: z.number().nonnegative(),
+          })
+          .optional(),
+        torus: z
+          .object({
+            slices: z.number().nonnegative(),
+            innerRad: z.number().nonnegative(),
+            outerRad: z.number().nonnegative(),
+          })
+          .optional(),
+        vertex: z.array(z.number()),
+        normal: z.array(z.number()),
+        texcoord: z.array(z.number()),
+      })
+    )
+    .default([]),
 });
 
 export type GLTF = z.infer<typeof GLTFSchema>;
 export type GLTFNode = GLTF["nodes"][number];
 export type GLTFMesh = GLTF["meshes"][number];
+export type GLTFGeometry = GLTF["geometries"][number];
 export type GLTFMaterial = GLTF["materials"][number];
 export type GLTFAnimation = GLTF["animations"][number];

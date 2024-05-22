@@ -1,14 +1,19 @@
 import { BufferAttribute } from "../engine/buffer-attribute";
-import { BufferGeometry } from "../engine/buffer-geometry";
+import { BufferGeometry, GeometryData } from "../engine/buffer-geometry";
 
 export class PyramidHollowGeometry extends BufferGeometry {
   constructor(
     public size: number = 1,
-    public thickness: number = 0.1
+    public thickness: number = 0.1,
+    data?: GeometryData
   ) {
-    super();
+    super(data);
     this.size = Math.max(this.size, 1);
     this.thickness = Math.min(this.thickness, this.size / 4);
+
+    if (data) {
+      return;
+    }
 
     const vertices: number[] = [];
 

@@ -1,14 +1,17 @@
 import { BufferAttribute } from "../engine/buffer-attribute";
-import { BufferGeometry } from "../engine/buffer-geometry";
+import { BufferGeometry, GeometryData } from "../engine/buffer-geometry";
 
 export class PlaneGeometry extends BufferGeometry {
   width: number;
   height: number;
 
-  constructor(width = 1, height = 1) {
-    super();
+  constructor(width = 1, height = 1, data?: GeometryData) {
+    super(data);
     this.width = width;
     this.height = height;
+    if (data) {
+      return;
+    }
     const hw = width / 2,
       hh = height / 2;
     const vertices = new Float32Array([

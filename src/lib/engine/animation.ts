@@ -202,6 +202,9 @@ export class AnimationRunner {
   }
 
   updateSceneGraph(frame = this.frame, node: GLNode = this.root) {
+    if (!frame) {
+      return;
+    }
     // Update scene graph with current frame
     this.updateNode(node, frame.keyframe);
     if (frame.children) {
@@ -237,6 +240,25 @@ export class AnimationRunner {
       node.transform.scale.set(scale[0], scale[1], scale[2]);
       node.dirty();
     }
+  }
+
+  switchFrame(a: number, b: number) {
+    const frameA = this.currentAnimation.frames[a];
+    const frameB = this.currentAnimation.frames[b];
+    this.currentAnimation.frames[a] = frameB;
+    this.currentAnimation.frames[b] = frameA;
+  }
+
+  addFrame(frame?: number) {
+    if (frame === undefined) {
+      this.currentAnimation.frames.push({});
+    } else {
+      this.currentAnimation.frames.splice(frame + 1, 0, {});
+    }
+  }
+
+  deleteFrame(frame: number) {
+    this.currentAnimation.frames.splice(frame, 1);
   }
 
   static fromJSON(obj: GLTFAnimation, nodes: GLNode[]) {
