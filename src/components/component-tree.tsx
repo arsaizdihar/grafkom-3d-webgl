@@ -3,6 +3,7 @@ import { useApp } from "@/state/app-store";
 import { useState } from "react";
 import { Transform } from "../lib/engine/transform";
 
+import { AnimationRunner } from "@/lib/engine/animation";
 import { Vector3 } from "@/lib/engine/vector";
 import { Euler } from "@/lib/math/euler";
 import clsx from "clsx";
@@ -151,10 +152,22 @@ export function ComponentTree() {
 }
 
 function Node({ node }: { node: GLNode }) {
-  const { focusNode, setFocusedNode, rerenderSceneGraph } = useApp((state) => ({
+  const {
+    focusNode,
+    setFocusedNode,
+    rerenderSceneGraph,
+    animationEdit,
+    setAnimationEdit,
+    animations,
+    setAnimations,
+  } = useApp((state) => ({
     focusNode: state.focusedNode,
     setFocusedNode: state.setFocusedNode,
     rerenderSceneGraph: state.rerenderSceneGraph,
+    animations: state.animations,
+    animationEdit: state.animationEdit,
+    setAnimationEdit: state.setAnimationEdit,
+    setAnimations: state.setAnimations,
   }));
 
   const handleClick = () => {
@@ -203,6 +216,24 @@ function Node({ node }: { node: GLNode }) {
         >
           Delete
         </ContextMenuItem>
+        {!animationEdit && (
+          <ContextMenuItem
+            onSelect={() => {
+              const newAnimation = new AnimationRunner(
+                {
+                  name: "animation",
+                  frames: [],
+                },
+                node,
+                { fps: 1, tween: "linear" }
+              );
+              setAnimations([...animations, newAnimation]);
+              setAnimationEdit(newAnimation);
+            }}
+          >
+            Add new animation
+          </ContextMenuItem>
+        )}
       </ContextMenuContent>
     </ContextMenu>
   );
