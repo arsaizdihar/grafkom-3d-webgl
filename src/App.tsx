@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { AnimationEdits } from "./components/animation-edits";
 import { Animations } from "./components/animations";
 import { ComponentTree } from "./components/component-tree";
 import { Load } from "./components/load";
@@ -9,7 +10,7 @@ import { Application } from "./lib/engine/application";
 import { loadGLTF } from "./lib/gltf/loader";
 import { useApp } from "./state/app-store";
 
-const GLTF_FILE = "/scenes/pyramid.json";
+const GLTF_FILE = "/scenes/steve.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
@@ -24,7 +25,7 @@ function App() {
     setFocusedNode,
     animations,
     setAnimations,
-    setCameraParams,
+    isEditing: isEditingAnimation,
   } = useApp((state) => ({
     app: state.app,
     setApp: state.setApp,
@@ -36,6 +37,7 @@ function App() {
     animations: state.animations,
     setAnimations: state.setAnimations,
     setCameraParams: state.setCameraParams,
+    isEditing: !!state.animationEdit,
   }));
 
   useEffect(() => {
@@ -135,19 +137,23 @@ function App() {
         <canvas ref={canvasRef}></canvas>
       </div>
       <div className="bg-slate-200 w-72">
-        <Tabs defaultValue="edit" className="h-full flex flex-col">
-          <TabsList>
-            <TabsTrigger value="edit">Edit</TabsTrigger>
-            <TabsTrigger value="animations">Animations</TabsTrigger>
-          </TabsList>
-          <TabsContent value="edit" className="px-4 pb-4 flex-1">
-            <NodeEdits />
-            <Load />
-          </TabsContent>
-          <TabsContent value="animations" className="px-4 pb-4 flex-1">
-            <Animations />
-          </TabsContent>
-        </Tabs>
+        {isEditingAnimation ? (
+          <AnimationEdits />
+        ) : (
+          <Tabs defaultValue="edit" className="h-full flex flex-col">
+            <TabsList>
+              <TabsTrigger value="edit">Edit</TabsTrigger>
+              <TabsTrigger value="animations">Animations</TabsTrigger>
+            </TabsList>
+            <TabsContent value="edit" className="px-4 pb-4 flex-1">
+              <NodeEdits />
+              <Load />
+            </TabsContent>
+            <TabsContent value="animations" className="px-4 pb-4 flex-1">
+              <Animations />
+            </TabsContent>
+          </Tabs>
+        )}
       </div>
     </>
   );

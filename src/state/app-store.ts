@@ -39,6 +39,8 @@ type AppStore = {
   setCameraParams: (
     params: CameraParams | ((prevParams: CameraParams) => CameraParams)
   ) => void;
+  animationEdit: AnimationRunner | null;
+  setAnimationEdit: (animation: AnimationRunner | null) => void;
 };
 
 export const useApp = create<AppStore>()((set) => ({
@@ -78,4 +80,6 @@ export const useApp = create<AppStore>()((set) => ({
       return { cameraParams: params };
     });
   },
+  animationEdit: null,
+  setAnimationEdit: (animation) => set({ animationEdit: animation }),
 }));

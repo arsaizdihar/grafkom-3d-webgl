@@ -26,6 +26,7 @@ let interval: NodeJS.Timeout | undefined = undefined;
 
 export function Animations() {
   const animations = useApp((state) => state.animations);
+  const setAnimationEdit = useApp((state) => state.setAnimationEdit);
   const [focusedAnimation, setFocusedAnimation] =
     useState<AnimationRunner | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -248,11 +249,21 @@ export function Animations() {
                 </SelectTrigger>
                 <SelectContent>
                   {TWEENING_FN_KEYS.map((key) => (
-                    <SelectItem value={key}>{key}</SelectItem>
+                    <SelectItem key={key} value={key}>
+                      {key}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+            <Button
+              className="w-full mt-2"
+              onClick={() => {
+                setAnimationEdit(focusedAnimation);
+              }}
+            >
+              Edit
+            </Button>
           </>
         )}
       </div>

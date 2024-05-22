@@ -37,7 +37,7 @@ export class AnimationRunner {
   private _tweeningFn: TweeningFn = TWEENING_FN.linear;
   private _tween: keyof typeof TWEENING_FN = "linear";
   public deltaFrame: number = 0;
-  private currentAnimation: AnimationClip;
+  public currentAnimation: AnimationClip;
   private _onFrameChange: ((frame: number) => void) | null = null;
   public reverse: boolean = false;
   public enableTweening = true;
@@ -63,9 +63,6 @@ export class AnimationRunner {
   set currentFrame(frame: number) {
     frame = ((frame % this.length) + this.length) % this.length;
     this._currentFrame = frame;
-    if (!this.enableTweening) {
-      this.updateSceneGraph();
-    }
     this._onFrameChange?.(frame);
   }
 
@@ -84,6 +81,10 @@ export class AnimationRunner {
 
   get tweening() {
     return this._tween;
+  }
+
+  get rootNode() {
+    return this.root;
   }
 
   set onFrameChange(cb: ((frame: number) => void) | null) {
@@ -129,6 +130,9 @@ export class AnimationRunner {
         // 1 frame
         this.currentFrame =
           this.currentFrame + Math.floor(this.deltaFrame) * multiplier;
+        if (!this.enableTweening) {
+          this.updateSceneGraph();
+        }
         this.deltaFrame = this.deltaFrame % 1;
       }
       if (!this.enableTweening) {
@@ -187,9 +191,7 @@ export class AnimationRunner {
 
     if (frame?.children) {
       for (const childName in frame.children) {
-        const child = this.root.children.find(
-          (node) => node.name === childName
-        );
+        const child = node.children.find((node) => node.name === childName);
         if (child) {
           names.push(childName);
           this.updateSceneGraphTweening(frameNumber, delta, child, names);
@@ -204,9 +206,7 @@ export class AnimationRunner {
     this.updateNode(node, frame.keyframe);
     if (frame.children) {
       for (const childName in frame.children) {
-        const child = this.root.children.find(
-          (node) => node.name === childName
-        );
+        const child = node.children.find((node) => node.name === childName);
         if (child) {
           this.updateSceneGraph(frame.children[childName], child);
         }

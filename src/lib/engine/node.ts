@@ -4,7 +4,7 @@ import { Transform } from "./transform";
 
 export class GLNode {
   public children: GLNode[] = [];
-  protected parent: GLNode | null = null;
+  protected _parent: GLNode | null = null;
   public transform: Transform;
   public id;
   private _isDirty = true;
@@ -20,6 +20,10 @@ export class GLNode {
 
   get isDirty() {
     return this._isDirty;
+  }
+
+  get parent() {
+    return this._parent;
   }
 
   private _worldMatrix: Matrix4;
@@ -53,14 +57,14 @@ export class GLNode {
   addChild(node: GLNode) {
     node.removeFromParent();
     this.children.push(node);
-    node.parent = this;
+    node._parent = this;
     return this;
   }
 
   removeChild(node: GLNode) {
     const index = this.children.indexOf(node);
     if (index !== -1) {
-      this.children[index].parent = null;
+      this.children[index]._parent = null;
       this.children.splice(index, 1);
     }
     return this;
@@ -70,15 +74,15 @@ export class GLNode {
     while (this.children.length > 0) {
       const child = this.children.pop();
       if (child) {
-        child.parent = null;
+        child._parent = null;
       }
     }
     return this;
   }
 
   removeFromParent() {
-    if (this.parent) {
-      this.parent.removeChild(this);
+    if (this._parent) {
+      this._parent.removeChild(this);
     }
     return this;
   }
@@ -88,16 +92,16 @@ export class GLNode {
   }
 
   computeWorldMatrix(updateParent = true, updateChildren = true) {
-    if (updateParent && this.parent) {
-      this.parent.computeWorldMatrix(true, false);
+    if (updateParent && this._parent) {
+      this._parent.computeWorldMatrix(true, false);
     }
     if (this._isDirty) {
       this.computeLocalMatrix();
     }
 
-    if (this.parent) {
+    if (this._parent) {
       this._worldMatrix = Matrix4.multiply(
-        this.parent.worldMatrix,
+        this._parent.worldMatrix,
         this.localMatrix
       );
     } else {
@@ -117,7 +121,7 @@ export class GLNode {
 
   clearChildren() {
     this.children.forEach((child) => {
-      child.parent = null;
+      child._parent = null;
     });
     this.children = [];
   }
