@@ -6,11 +6,11 @@ import { Load } from "./components/load";
 import { NodeEdits } from "./components/node-edits";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { useCamera } from "./hooks/camera";
+import { AnimationRunner } from "./lib/engine/animation";
 import { Application } from "./lib/engine/application";
-import { loadGLTF } from "./lib/gltf/loader";
+import { Color } from "./lib/engine/color";
+import { Scene } from "./lib/engine/scene";
 import { useApp } from "./state/app-store";
-
-const GLTF_FILE = "/scenes/steve.json";
 
 function App() {
   const containterRef = useRef<HTMLDivElement>(null);
@@ -65,45 +65,11 @@ function App() {
       if (!app) {
         return;
       }
-      const [scene, animations] = await loadGLTF(
-        await fetch(GLTF_FILE).then((res) => res.json()),
-        app
-      );
+      const scene = new Scene(Color.hex(0xffffff));
+      const animations: AnimationRunner[] = [];
       setScene(scene);
       setAnimations(animations);
       setFocusedNode(null);
-
-      // Plane
-      // const text = new Texture(
-      //   { color: Color.hex(0xffffff) },
-      //   app.gl
-      // );
-
-      // const plane = new Mesh(
-      //   new PlaneGeometry(800, 800),
-      //   new BasicMaterial({
-      //     color: Color.hex(0xffffff),
-      //     texture: text,
-      //     id: "basic",
-      //   })
-      // );
-      // plane.name = "plane";
-
-      // plane.transform.position.y = -100;
-      // plane.transform.scale.z = -1;
-      // scene.addChild(plane);
-
-      // Light
-      // const color = Color.hex(0xffffff);
-      // const intensity = 1;
-      // const light = new DirectionalLight(
-      //   color,
-      //   intensity
-      // );
-      // light.name = "light";
-
-      // light.transform.position.set(-1, 100, 4);
-      // scene.addChild(light);
     }
 
     load();
