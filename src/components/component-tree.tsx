@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Transform } from "../lib/engine/transform";
 
 import { AnimationRunner } from "@/lib/engine/animation";
+import { Scene } from "@/lib/engine/scene";
 import { Vector3 } from "@/lib/engine/vector";
 import { Euler } from "@/lib/math/euler";
 import clsx from "clsx";
@@ -86,7 +87,9 @@ export function ComponentTree() {
   return (
     <div className="flex-1 h-1 overflow-y-auto">
       <h2 className="mb-2">Component Tree</h2>
-      {node && <NodeChildren nodes={node.children} />}
+      {node && (
+        <NodeChildren nodes={node instanceof Scene ? node.children : [node]} />
+      )}
       {!isEditingAnimation && (
         <div className="flex items-start mt-5">
           <Accordion asChild type="single" className="text-sm">
