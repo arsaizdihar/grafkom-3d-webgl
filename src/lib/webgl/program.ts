@@ -130,17 +130,17 @@ export class Program<
   private createAttributeSetter(name: string): AttributeSetters {
     // Initialization Time
     const loc = this.gl.getAttribLocation(this.program, name);
-    const buf = this.gl.createBuffer();
     return (...values) => {
       // Render Time (saat memanggil setAttributes() pada render loop)
-      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buf);
       const v = values[0];
       if (v instanceof BufferAttribute) {
-        // if (v.isDirty) {
-        // Data Changed Time (note that buffer is already binded)
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, v.data, this.gl.STATIC_DRAW);
-        // v.consume();
-        // }
+        v._buffer = v._buffer || this.gl.createBuffer();
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, v._buffer);
+        if (v.isDirty) {
+          // Data Changed Time (note that buffer is already binded)
+          this.gl.bufferData(this.gl.ARRAY_BUFFER, v.data, this.gl.STATIC_DRAW);
+          v.consume();
+        }
         this.gl.enableVertexAttribArray(loc);
         this.gl.vertexAttribPointer(
           loc,
