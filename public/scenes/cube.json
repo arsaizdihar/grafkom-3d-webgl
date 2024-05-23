@@ -55,7 +55,7 @@
   "materials": [
     {
       "type": "phong",
-      "texture": 3,
+      "texture": 1,
       "phong": {
         "ambient": [0, 0, 0, 1],
         "diffuse": [1, 1, 1, 1],
@@ -66,7 +66,7 @@
     },
     {
       "type": "basic",
-      "texture": 3,
+      "texture": 1,
       "basic": {
         "color": [1, 1, 1, 1]
       }
@@ -74,32 +74,13 @@
   ],
   "textures": [
     {
-      "source": 0,
-      "generateMipmaps": false,
-      "wrapS": 33071,
-      "wrapT": 33071,
-      "minFilter": 9729
+      "source": 0
     },
     {
-      "source": 1,
-      "generateMipmaps": false,
-      "wrapS": 33071,
-      "wrapT": 33071,
-      "minFilter": 9729
+      "source": 1
     },
     {
-      "source": 2,
-      "generateMipmaps": false,
-      "wrapS": 33071,
-      "wrapT": 33071,
-      "minFilter": 9729
-    },
-    {
-      "color": [1, 1, 1, 1],
-      "generateMipmaps": false,
-      "wrapS": 33071,
-      "wrapT": 33071,
-      "minFilter": 9729
+      "source": 2
     }
   ],
   "animations": [

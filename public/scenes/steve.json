@@ -82,11 +82,7 @@
   ],
   "textures": [
     {
-      "source": 0,
-      "generateMipmaps": false,
-      "wrapS": 33071,
-      "wrapT": 33071,
-      "minFilter": 9729
+      "source": 0
     }
   ],
   "animations": [

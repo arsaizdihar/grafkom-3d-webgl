@@ -2,13 +2,13 @@ import { Texture } from "../engine/texture";
 import { Program } from "../webgl/program";
 
 export type MaterialOptions = {
-  texture: Texture;
+  texture?: Texture;
 };
 
 export abstract class ShaderMaterial {
   private static idCounter = 0;
   public id: string;
-  public texture: Texture;
+  public texture?: Texture;
 
   constructor(options: MaterialOptions) {
     this.id = `material-${ShaderMaterial.idCounter++}`;
@@ -17,7 +17,7 @@ export abstract class ShaderMaterial {
 
   public getUniforms(gl: WebGLRenderingContext) {
     return {
-      texture: [this.texture.texture],
+      texture: [this.texture?.texture ?? Texture.WHITE(gl).texture],
     };
   }
 

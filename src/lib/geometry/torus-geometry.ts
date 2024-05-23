@@ -15,9 +15,9 @@ export class TorusGeometry extends BufferGeometry {
     this.innerRad = 10;
     this.outerRad = 20;
 
-    if (data) {
-      return;
-    }
+    // if (data) {
+    //   return;
+    // }
 
     const vertices: number[] = [];
     const texCoords: number[] = [];

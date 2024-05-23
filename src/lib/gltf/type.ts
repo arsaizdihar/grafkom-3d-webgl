@@ -36,7 +36,7 @@ export const GLTFSchema = z.object({
   materials: z.array(
     z.object({
       type: z.enum(["basic", "phong"]),
-      texture: arrayIndex(),
+      texture: arrayIndex().optional(),
       basic: z
         .object({
           color: z.union([z.string(), z.array(z.number()).length(4)]),
@@ -58,11 +58,6 @@ export const GLTFSchema = z.object({
     z.object({
       source: arrayIndex().optional(),
       color: ColorSchema.optional(),
-      wrapS: z.number().optional(),
-      wrapT: z.number().optional(),
-      magFilter: z.number().optional(),
-      minFilter: z.number().optional(),
-      generateMipmaps: z.boolean().optional(),
     })
   ),
   images: z.array(z.object({ uri: z.string() })),

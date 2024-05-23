@@ -7,7 +7,8 @@
       "scale": [1, 1, 1],
       "children": [1],
       "name": "GLNode",
-      "background": [1, 1, 1, 1]
+      "background": [1, 1, 1, 1],
+      "lightPos": [0, 0, 0]
     },
     {
       "translation": [0, 0, 0],
@@ -23,10 +24,16 @@
       "scale": [1, 1, 1],
       "children": [],
       "name": "Torus2",
-      "mesh": 0
+      "mesh": 1
     }
   ],
   "meshes": [
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
     {
       "primitive": {
         "geometry": 0,
@@ -45,22 +52,12 @@
       "texture": 0,
       "basic": {
         "color": [1, 1, 1, 1]
-      },
-      "phong": {
-        "ambient": [0, 0, 0, 1],
-        "diffuse": [1, 1, 1, 1],
-        "specular": [1, 1, 1, 1],
-        "shininess": 100
       }
     }
   ],
   "textures": [
     {
-      "source": 0,
-      "generateMipmaps": false,
-      "wrapS": 33071,
-      "wrapT": 33071,
-      "minFilter": 9729
+      "source": 0
     }
   ],
   "animations": [
@@ -116,7 +113,7 @@
   ],
   "geometries": [
     {
-      "type": "cube",
+      "type": "torus",
       "vertex": [
         30, 0, 0, 29.76344108581543, 3.7599968910217285, 0, 29.51056480407715,
         0, 3.090169906616211, 29.51056480407715, 0, 3.090169906616211,
@@ -9363,7 +9360,12 @@
         0.9800000190734863, 1, 0.9800000190734863, 0.949999988079071, 1,
         0.949999988079071, 0.9800000190734863, 1, 0.9800000190734863, 1, 1,
         0.949999988079071, 1, 1
-      ]
+      ],
+      "torus": {
+        "innerRad": 10,
+        "outerRad": 20,
+        "slices": 20
+      }
     }
   ]
 }

@@ -15,7 +15,6 @@ export interface PhongMaterialOptions extends MaterialOptions {
 export class PhongMaterial extends ShaderMaterial {
   public ambient: Color;
   public diffuse: Color;
-  public diffuseTexture?: Texture;
   public specular: Color;
   public specularTexture?: Texture;
   public shininess: number;

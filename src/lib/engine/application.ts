@@ -39,6 +39,8 @@ export class Application {
         matrix: { type: "uniformMatrix4fv" },
         texture: { type: "texture" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
+        color: { type: "uniform4f" },
+        lightColor: { type: "uniform4f" },
       },
     });
     this.phongProgram = new Program({

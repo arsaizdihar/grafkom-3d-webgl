@@ -9,6 +9,7 @@ import { CubeGeometry } from "../geometry/cube-geometry";
 import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
+import { TorusGeometry } from "../geometry/torus-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
@@ -109,6 +110,13 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
           size: geometry.size,
           thickness: geometry.thickness,
         };
+      } else if (geometry instanceof TorusGeometry) {
+        geometryData.type = "torus";
+        geometryData.torus = {
+          innerRad: geometry.innerRad,
+          outerRad: geometry.outerRad,
+          slices: geometry.slices,
+        };
       }
       result.geometries.push(geometryData);
       index = geometryRefs.length - 1;
@@ -121,7 +129,9 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
     if (index === -1) {
       const materialData: GLTFMaterial = {
         type: "basic",
-        texture: processTexture(material.texture),
+        texture: material.texture
+          ? processTexture(material.texture)
+          : undefined,
       };
       if (material instanceof BasicMaterial) {
         materialData.type = "basic";
@@ -158,22 +168,12 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
       if (texture.color) {
         result.textures.push({
           color: texture.color.value,
-          generateMipmaps: texture.generateMipmaps,
-          wrapS: texture.wrapS,
-          wrapT: texture.wrapT,
-          magFilter: texture.magFilter,
-          minFilter: texture.minFilter,
         });
       } else {
         const image = texture.image!;
         const imageIndex = processImage(image);
         result.textures.push({
           source: imageIndex,
-          generateMipmaps: texture.generateMipmaps,
-          wrapS: texture.wrapS,
-          wrapT: texture.wrapT,
-          magFilter: texture.magFilter,
-          minFilter: texture.minFilter,
         });
       }
     }

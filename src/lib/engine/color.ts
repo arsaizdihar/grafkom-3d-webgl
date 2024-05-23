@@ -24,5 +24,5 @@ export class Color {
     return new Color(arr);
   }
 
-  static WHITE = Color.rgb(255, 255, 255);
+  static WHITE = Color.hex(0xffffff);
 }

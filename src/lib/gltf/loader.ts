@@ -62,8 +62,9 @@ export async function loadGLTF(data: unknown, app: Application) {
   });
 
   const materials = gltf.materials.map((material) => {
-    const texture = textures[material.texture];
-    if (!texture) {
+    const texture =
+      material.texture === undefined ? undefined : textures[material.texture];
+    if (!texture && material.texture !== undefined) {
       throw new Error(`Texture not found for index ${material.texture}`);
     }
 
