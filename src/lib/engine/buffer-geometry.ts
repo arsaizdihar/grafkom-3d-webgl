@@ -3,7 +3,6 @@ import { Vector3 } from "./vector";
 
 export type GeometryData = {
   position: number[];
-  normal: number[];
   texcoord: number[];
 };
 
@@ -15,10 +14,9 @@ export class BufferGeometry {
     if (data) {
       this._attributes = {
         position: new BufferAttribute(new Float32Array(data.position), 3),
-        normal: new BufferAttribute(new Float32Array(data.normal), 3),
         texcoord: new BufferAttribute(new Float32Array(data.texcoord), 2),
       };
-      this.calculateTangents();
+      this.calculateNormals();
     } else {
       this._attributes = {};
     }
@@ -124,14 +122,14 @@ export class BufferGeometry {
     }
 
     this.setAttribute("normal", normal);
+    this.calculateTangents();
   }
 
-  calculateTangents() {
+  private calculateTangents() {
     // NOT SUPPORTING INDICES, FK IT
     const position = this.getAttribute("position");
-    const normal = this.getAttribute("normal");
     const texcoord = this.getAttribute("texcoord");
-    if (!position || !normal || !texcoord) return;
+    if (!position || !texcoord) return;
 
     let tangents = this.getAttribute("tangent");
     if (!tangents) {

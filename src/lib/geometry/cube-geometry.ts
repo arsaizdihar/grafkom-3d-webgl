@@ -149,6 +149,5 @@ export class CubeGeometry extends BufferGeometry {
       )
     );
     this.calculateNormals();
-    this.calculateTangents();
   }
 }

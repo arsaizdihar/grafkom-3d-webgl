@@ -103,7 +103,6 @@ export async function loadGLTF(data: unknown, app: Application) {
   const geometries: BufferGeometry[] = gltf.geometries.map((geometry) => {
     const data = {
       position: geometry.vertex,
-      normal: geometry.normal,
       texcoord: geometry.texcoord,
     };
     switch (geometry.type) {

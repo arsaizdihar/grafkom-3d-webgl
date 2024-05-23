@@ -44,6 +44,5 @@ export class PlaneGeometry extends BufferGeometry {
       new BufferAttribute(new Float32Array([0, 0, 0, 1, 1, 1, 0, 1]), 2)
     );
     this.calculateNormals();
-    this.calculateTangents();
   }
 }

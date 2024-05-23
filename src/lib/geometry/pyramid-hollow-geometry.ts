@@ -122,7 +122,6 @@ export class PyramidHollowGeometry extends BufferGeometry {
       )
     );
     this.calculateNormals();
-    this.calculateTangents();
   }
 }
 

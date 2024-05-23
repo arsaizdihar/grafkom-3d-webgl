@@ -83,7 +83,6 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
       const geometryData: GLTFGeometry = {
         type: "cube",
         vertex: Array.from(geometry.attributes.position.data),
-        normal: Array.from(geometry.attributes.normal.data),
         texcoord: Array.from(geometry.attributes.texcoord.data),
       };
       geometryRefs.push(geometry);

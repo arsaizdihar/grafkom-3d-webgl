@@ -109,7 +109,6 @@ export const GLTFSchema = z.object({
           })
           .optional(),
         vertex: z.array(z.number()),
-        normal: z.array(z.number()),
         texcoord: z.array(z.number()),
       })
     )
