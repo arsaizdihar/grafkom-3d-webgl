@@ -343,6 +343,7 @@ export function AnimationEdits() {
 
 function addKeyframe(frame: AnimationPath, node: GLNode, rootNode: GLNode) {
   if (node === rootNode) {
+    frame.keyframe = frame.keyframe ?? {};
     return;
   }
   const parents = [node.name];
