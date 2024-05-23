@@ -165,40 +165,54 @@ export class AnimationRunner {
     node: GLNode = this.root,
     names: string[] = []
   ) {
-    let prevFrame: AnimationPath | undefined =
-      this.currentAnimation.frames[frameNumber];
-    let frame: AnimationPath | undefined =
-      this.currentAnimation.frames[
-        this.getFrameNumberDelta(this.reverse ? -1 : 1)
-      ];
-    names.forEach((name) => {
-      frame = frame?.children?.[name];
-      prevFrame = prevFrame?.children?.[name];
-    });
+    let exactPrevFrame: AnimationPath | undefined = undefined;
+    let prevCount = 0;
+    while (
+      !exactPrevFrame?.keyframe &&
+      frameNumber >= 0 &&
+      frameNumber < this.length
+    ) {
+      exactPrevFrame = this.currentAnimation.frames[frameNumber];
+      names.forEach((name) => {
+        exactPrevFrame = exactPrevFrame?.children?.[name];
+      });
+      prevCount++;
+      frameNumber -= this.reverse ? -1 : 1;
+    }
+    let exactNextFrame: AnimationPath | undefined = undefined;
+    let nextCount = 0;
 
-    if (frame?.keyframe && prevFrame?.keyframe) {
+    frameNumber = this.getFrameNumberDelta(this.reverse ? -1 : 1);
+    while (
+      !exactNextFrame?.keyframe &&
+      frameNumber >= 0 &&
+      frameNumber < this.length
+    ) {
+      exactNextFrame = this.currentAnimation.frames[frameNumber];
+      names.forEach((name) => {
+        exactNextFrame = exactNextFrame?.children?.[name];
+      });
+      nextCount++;
+      frameNumber += this.reverse ? -1 : 1;
+    }
+
+    if (exactNextFrame?.keyframe && exactPrevFrame?.keyframe) {
       const tweeningFn = this._tweeningFn;
       const resFrame = tweenFrame(
-        prevFrame.keyframe,
-        frame.keyframe,
-        delta,
+        exactPrevFrame.keyframe,
+        exactNextFrame.keyframe,
+        (prevCount - 1 + delta) / (prevCount + nextCount - 1),
         tweeningFn
       );
       this.updateNode(node, resFrame);
-    } else if (frame?.keyframe) {
-      this.updateNode(node, frame.keyframe);
+    } else if (exactPrevFrame?.keyframe) {
+      this.updateNode(node, exactPrevFrame.keyframe);
     }
-
-    if (frame?.children) {
-      for (const childName in frame.children) {
-        const child = node.children.find((node) => node.name === childName);
-        if (child) {
-          names.push(childName);
-          this.updateSceneGraphTweening(frameNumber, delta, child, names);
-          names.pop();
-        }
-      }
-    }
+    node.children.forEach((child) => {
+      names.push(child.name);
+      this.updateSceneGraphTweening(frameNumber, delta, child, names);
+      names.pop();
+    });
   }
 
   updateSceneGraph(frame = this.frame, node: GLNode = this.root) {

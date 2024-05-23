@@ -102,7 +102,29 @@
       "minFilter": 9729
     }
   ],
-  "animations": [],
+  "animations": [
+    {
+      "root": 1,
+      "clip": {
+        "name": "animation",
+        "frames": [
+          {
+            "keyframe": {
+              "rotation": [25, 0, 0]
+            }
+          },
+          {},
+          {
+            "keyframe": {
+              "rotation": [25, 360, 0]
+            }
+          }
+        ]
+      },
+      "fps": 1,
+      "tween": "linear"
+    }
+  ],
   "geometries": [
     {
       "type": "cube",
