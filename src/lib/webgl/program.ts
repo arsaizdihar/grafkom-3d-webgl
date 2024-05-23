@@ -121,6 +121,7 @@ export class Program<
     if (success) {
       return shader;
     }
+    console.log(this.gl.getShaderInfoLog(shader));
 
     this.gl.deleteShader(shader);
     throw new Error("Failed to create shader");

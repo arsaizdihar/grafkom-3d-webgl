@@ -36,7 +36,7 @@ export async function loadGLTF(data: unknown, app: Application) {
     })
   );
   const textures = gltf.textures.map((texture) => {
-    if (texture.source) {
+    if (texture.source !== undefined) {
       const image = images[texture.source];
       if (!image) {
         throw new Error(`Image not found for index ${texture.source}`);
@@ -72,11 +72,13 @@ export async function loadGLTF(data: unknown, app: Application) {
         if (!material.basic) {
           throw new Error("Basic material missing parameter");
         }
-        return new BasicMaterial({
-          color: parseColor(material.basic.color),
-          texture: texture,
-          id: "basic",
-        });
+        return new BasicMaterial(
+          {
+            color: parseColor(material.basic.color),
+            texture: texture,
+          },
+          app.basicProgram
+        );
       case "phong":
         if (!material.phong) {
           throw new Error("Phong material missing parameter");
@@ -87,16 +89,18 @@ export async function loadGLTF(data: unknown, app: Application) {
         const normalTexture = material.phong.normalTexture
           ? textures[material.phong.normalTexture]
           : undefined;
-        return new PhongMaterial({
-          ambient: parseColor(material.phong.ambient),
-          diffuse: parseColor(material.phong.diffuse),
-          specular: parseColor(material.phong.specular),
-          shininess: material.phong.shininess,
-          texture: texture,
-          specularTexture: specularTexture,
-          normalTexture: normalTexture,
-          id: "phong",
-        });
+        return new PhongMaterial(
+          {
+            ambient: parseColor(material.phong.ambient),
+            diffuse: parseColor(material.phong.diffuse),
+            specular: parseColor(material.phong.specular),
+            shininess: material.phong.shininess,
+            texture: texture,
+            specularTexture: specularTexture,
+            normalTexture: normalTexture,
+          },
+          app.phongProgram
+        );
     }
   });
 

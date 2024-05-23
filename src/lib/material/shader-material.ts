@@ -1,28 +1,25 @@
 import { Texture } from "../engine/texture";
-import { MATERIAL_TYPE } from "./material-type";
+import { Program } from "../webgl/program";
 
 export type MaterialOptions = {
-  id: string;
   texture: Texture;
 };
 
-export class ShaderMaterial {
+export abstract class ShaderMaterial {
+  private static idCounter = 0;
   public id: string;
   public texture: Texture;
 
-  public get materialType(): (typeof MATERIAL_TYPE)[keyof typeof MATERIAL_TYPE] {
-    return MATERIAL_TYPE.BASIC;
-  }
-
   constructor(options: MaterialOptions) {
-    this.id = options.id;
+    this.id = `material-${ShaderMaterial.idCounter++}`;
     this.texture = options.texture;
   }
 
   public getUniforms(gl: WebGLRenderingContext) {
     return {
-      materialType: [this.materialType],
       texture: [this.texture.texture],
     };
   }
+
+  abstract get program(): Program<any, any>;
 }

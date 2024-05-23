@@ -5,7 +5,7 @@
       "translation": [0, 0, 0],
       "rotation": [0, 0, 0],
       "scale": [1, 1, 1],
-      "children": [1],
+      "children": [1, 2],
       "name": "GLNode",
       "background": [0, 0, 0, 1],
       "lightPos": [0, 0, 0]
@@ -17,6 +17,14 @@
       "children": [],
       "name": "cube",
       "mesh": 0
+    },
+    {
+      "translation": [50, 0, 0],
+      "rotation": [25, 0, 0],
+      "scale": [2, 2, 2],
+      "children": [],
+      "name": "cube",
+      "mesh": 1
     }
   ],
   "meshes": [
@@ -57,13 +65,10 @@
       }
     },
     {
-      "type": "phong",
-      "texture": 1,
-      "phong": {
-        "ambient": [0, 0, 0, 1],
-        "diffuse": [1, 1, 1, 1],
-        "specular": [1, 1, 1, 1],
-        "shininess": 100
+      "type": "basic",
+      "texture": 3,
+      "basic": {
+        "color": [1, 1, 1, 1]
       }
     }
   ],

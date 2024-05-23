@@ -1,5 +1,9 @@
-import fragmentShaderSource from "@/shaders/fragment-shader.glsl";
-import vertexShaderSource from "@/shaders/vertex-shader.glsl";
+import basicFragment from "@/shaders/basic/basic-fragment.glsl";
+import basicVertex from "@/shaders/basic/basic-vertex.glsl";
+import phongFragment from "@/shaders/phong/phong-fragment.glsl";
+import phongVertex from "@/shaders/phong/phong-vertex.glsl";
+import { BasicMaterial } from "../material/basic-material";
+import { PhongMaterial } from "../material/phong-material";
 import { Program } from "../webgl/program";
 import { AnimationRunner } from "./animation";
 import { Camera } from "./camera";
@@ -9,7 +13,11 @@ import { Scene } from "./scene";
 
 export class Application {
   public gl;
-  public program;
+  public phongProgram;
+  public basicProgram;
+  private currentProgram:
+    | Application["phongProgram"]
+    | Application["basicProgram"];
   private time = performance.now();
   private fpsEl;
 
@@ -22,10 +30,21 @@ export class Application {
       throw new Error("WebGL not supported");
     }
     this.gl = gl;
-    this.program = new Program({
+    this.basicProgram = new Program({
       gl,
-      fragmentShaderSource,
-      vertexShaderSource,
+      fragmentShaderSource: basicFragment,
+      vertexShaderSource: basicVertex,
+      attributes: ["position", "texcoord"],
+      uniforms: {
+        matrix: { type: "uniformMatrix4fv" },
+        texture: { type: "texture" },
+        viewProjectionMat: { type: "uniformMatrix4fv" },
+      },
+    });
+    this.phongProgram = new Program({
+      gl,
+      fragmentShaderSource: phongFragment,
+      vertexShaderSource: phongVertex,
       // TODO: use normal for phong material
       attributes: ["position", "texcoord", "normal", "tangent", "bitangent"],
       uniforms: {
@@ -36,14 +55,13 @@ export class Application {
         specularTexture: { type: "texture" },
         normalTexture: { type: "texture" },
         shininess: { type: "uniform1f" },
-        materialType: { type: "uniform1i" },
         lightPos: { type: "uniform3f" },
-        color: { type: "uniform4f" },
         texture: { type: "texture" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
       },
     });
+    this.currentProgram = this.phongProgram;
 
     this.adjustCanvas();
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
@@ -94,12 +112,6 @@ export class Application {
       );
       this.gl.clear(this.gl.COLOR_BUFFER_BIT);
       const nodes: GLNode[] = [...scene.children];
-      this.program.setUniforms({
-        viewProjectionMat: [false, camera.viewProjectionMatrix.el],
-      });
-      this.program.setUniforms({
-        lightPos: scene.lightPos.toArray(),
-      });
       const delta = time - this.time;
       animations.forEach((runner) => {
         runner.update(delta / 1000);
@@ -112,31 +124,53 @@ export class Application {
       }
       this.time = time;
 
+      this.currentProgram.setUniforms({
+        viewProjectionMat: [false, camera.viewProjectionMatrix.el],
+      });
+      if (this.currentProgram === this.phongProgram) {
+        this.currentProgram.setUniforms({ lightPos: scene.lightPos.toArray() });
+      }
+
       // set point thickness
       while (nodes.length) {
         const node = nodes.pop()!;
         if (node instanceof Mesh) {
-          this.program.setUniforms(node.material.getUniforms(this.gl));
-          this.program.setUniforms({
-            matrix: [false, node.worldMatrix.el],
-            normalMat: [false, node.worldInvTransposeMatrix.el],
-          });
-          const geometry = node.geometry;
-          this.program.setAttributes(geometry.attributes);
-          const texture = node.material.texture;
-          this.program.setUniforms({
-            texture: [texture.texture],
-          });
-          if (geometry.indices) {
-            this.program.bindIndexBuffer(geometry.indices);
-            this.gl.drawElements(
-              this.gl.TRIANGLES,
-              geometry.indices.data.length,
-              this.gl.UNSIGNED_SHORT,
-              0
-            );
+          const program = node.material.program;
+          if (program !== this.currentProgram) {
+            this.currentProgram = program;
+            this.gl.useProgram(program.program);
+            this.currentProgram.setUniforms({
+              viewProjectionMat: [false, camera.viewProjectionMatrix.el],
+            });
+            if (this.currentProgram === this.phongProgram) {
+              this.currentProgram.setUniforms({
+                lightPos: scene.lightPos.toArray(),
+              });
+            }
+          }
+          if (node.material instanceof PhongMaterial) {
+            const program = node.material.program;
+            program.setUniforms(node.material.getUniforms(this.gl));
+            program.setUniforms({
+              matrix: [false, node.worldMatrix.el],
+              normalMat: [false, node.worldInvTransposeMatrix.el],
+            });
+            const geometry = node.geometry;
+            program.setAttributes(geometry.attributes);
+            const position = geometry.attributes.position;
+            this.gl.drawArrays(this.gl.TRIANGLES, 0, position.count);
             this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-          } else {
+          } else if (node.material instanceof BasicMaterial) {
+            const program = node.material.program;
+            program.setUniforms(node.material.getUniforms(this.gl));
+            program.setUniforms({
+              matrix: [false, node.worldMatrix.el],
+            });
+            const geometry = node.geometry;
+            program.setAttributes({
+              position: geometry.attributes.position,
+              texcoord: geometry.attributes.texcoord,
+            });
             const position = geometry.attributes.position;
             this.gl.drawArrays(this.gl.TRIANGLES, 0, position.count);
             this.gl.bindTexture(this.gl.TEXTURE_2D, null);

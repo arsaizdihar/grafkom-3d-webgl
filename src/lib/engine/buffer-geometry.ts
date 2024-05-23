@@ -178,7 +178,7 @@ export class BufferGeometry {
       deltaUV1.subVectors(uv2, uv1);
       deltaUV2.subVectors(uv3, uv1);
 
-      const f = 1.0 / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+      let f = 1.0 / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
       tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
       tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
       tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);

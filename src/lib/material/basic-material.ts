@@ -1,5 +1,5 @@
+import { Application } from "../engine/application";
 import { Color } from "../engine/color";
-import { MATERIAL_TYPE } from "./material-type";
 import { MaterialOptions, ShaderMaterial } from "./shader-material";
 
 export interface BasicMaterialOptions extends MaterialOptions {
@@ -8,20 +8,26 @@ export interface BasicMaterialOptions extends MaterialOptions {
 
 export class BasicMaterial extends ShaderMaterial {
   public color: Color;
+  private _program;
 
-  constructor(options: BasicMaterialOptions) {
+  constructor(
+    options: BasicMaterialOptions,
+    program: Application["basicProgram"]
+  ) {
     super(options);
     this.color = options.color;
-  }
-
-  public get materialType() {
-    return MATERIAL_TYPE.BASIC;
+    this._program = program;
   }
 
   public getUniforms(gl: WebGLRenderingContext) {
     return {
       ...super.getUniforms(gl),
       color: this.color.value,
+      lightColor: Color.WHITE.value,
     };
+  }
+
+  public get program() {
+    return this._program;
   }
 }

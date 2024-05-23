@@ -9,7 +9,6 @@ uniform mat4 u_matrix, u_viewProjectionMat;
 
 varying vec2 v_texcoord;
 varying vec3 v_vertPos;
-varying vec3 v_normal;
 varying vec3 v_viewDir;
 varying mat3 v_TBN;
 

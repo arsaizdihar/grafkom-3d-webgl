@@ -1,6 +1,6 @@
+import { Application } from "../engine/application";
 import { Color } from "../engine/color";
 import { Texture } from "../engine/texture";
-import { MATERIAL_TYPE } from "./material-type";
 import { MaterialOptions, ShaderMaterial } from "./shader-material";
 
 export interface PhongMaterialOptions extends MaterialOptions {
@@ -20,8 +20,12 @@ export class PhongMaterial extends ShaderMaterial {
   public specularTexture?: Texture;
   public shininess: number;
   public normalTexture?: Texture;
+  private _program;
 
-  constructor(options: PhongMaterialOptions) {
+  constructor(
+    options: PhongMaterialOptions,
+    program: Application["phongProgram"]
+  ) {
     super(options);
     this.ambient = options.ambient;
     this.diffuse = options.diffuse;
@@ -29,10 +33,7 @@ export class PhongMaterial extends ShaderMaterial {
     this.shininess = options.shininess;
     this.specularTexture = options.specularTexture;
     this.normalTexture = options.normalTexture;
-  }
-
-  public get materialType() {
-    return MATERIAL_TYPE.PHONG;
+    this._program = program;
   }
 
   public getUniforms(gl: WebGLRenderingContext) {
@@ -49,5 +50,9 @@ export class PhongMaterial extends ShaderMaterial {
         this.normalTexture?.texture ?? Texture.NORMAL(gl).texture,
       ],
     };
+  }
+
+  get program() {
+    return this._program;
   }
 }

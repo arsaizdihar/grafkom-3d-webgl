@@ -23,4 +23,6 @@ export class Color {
   public static fromArray(arr: number[]) {
     return new Color(arr);
   }
+
+  static WHITE = Color.rgb(255, 255, 255);
 }
