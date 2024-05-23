@@ -5,17 +5,12 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
-  useMemo,
   useReducer,
   useRef,
   useState,
 } from "react";
 import { Input, InputProps } from "./input";
 
-type InputModifier = "shiftKey" | "altKey" | "ctrlKey" | "metaKey";
-export type InputDragModifiers = {
-  [key in InputModifier]?: number;
-};
 export type InputWithDragChangeHandler = (newValue: number) => void;
 
 interface InputDragProps
@@ -23,7 +18,6 @@ interface InputDragProps
   // mouseDragThreshold?: number;
   // tabletDragThreshold?: number;
   getValue: () => number;
-  modifiers?: InputDragModifiers;
   onChange?: InputWithDragChangeHandler;
 }
 
@@ -36,7 +30,6 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
       // mouseDragThreshold = 3,
       // tabletDragThreshold = 10,
       style: _style = {},
-      modifiers: _modifiers = {},
       onChange,
       getValue,
       ...props
@@ -45,17 +38,9 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
   ) {
     const [_, rerenderThis] = useReducer((x) => !x, false);
     const value = getValue();
-    const [modifier, setModifier] = useState<InputModifier | "">("");
     const ref = useRef<HTMLInputElement>(null);
     const startValue = useRef(0);
     const step = props.step ? +props.step : 1;
-    const modifiers: InputDragModifiers = useMemo(
-      () => ({
-        shiftKey: 0.1,
-        ..._modifiers,
-      }),
-      [_modifiers]
-    );
     const [, setStartPos] = useState<[number, number]>([0, 0]);
     const style: CSSProperties = {
       cursor: "ew-resize",
@@ -80,9 +65,6 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
           const a = x1 - x2;
           const b = y1 - y2;
           let mod = 1;
-          if (modifier) {
-            mod = modifiers[modifier] || 1;
-          }
           const stepModifier = step * mod;
           const decimals = countDecimals(stepModifier);
           let delta = Math.sqrt(a * a + b * b) * stepModifier;
@@ -103,7 +85,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
           return pos;
         });
       },
-      [modifier, props.max, props.min, step, modifiers, onChange]
+      [props.max, props.min, step, onChange]
     );
     const handleMoveEnd = useCallback(() => {
       document.removeEventListener("mousemove", handleMove);
@@ -122,28 +104,10 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
       },
       [handleMove, handleMoveEnd, value, props.min, props.defaultValue]
     );
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.metaKey) {
-        setModifier("metaKey");
-      } else if (e.ctrlKey) {
-        setModifier("ctrlKey");
-      } else if (e.altKey) {
-        setModifier("altKey");
-      } else if (e.shiftKey) {
-        setModifier("shiftKey");
-      }
-    };
-    const handleKeyUp = () => {
-      setModifier("");
-    };
     useEffect(() => {
-      document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("keyup", handleKeyUp);
       return () => {
         document.removeEventListener("mousemove", handleMove);
         document.removeEventListener("mouseup", handleMoveEnd);
-        document.removeEventListener("keydown", handleKeyDown);
-        document.removeEventListener("keyup", handleKeyUp);
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

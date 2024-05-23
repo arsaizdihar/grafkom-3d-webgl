@@ -15,6 +15,7 @@ export type TextureOptions = {
 
 export class Texture {
   private static white: Texture;
+  private static normal: Texture;
   public texture;
   constructor(
     private options: TextureOptions,
@@ -101,6 +102,10 @@ export class Texture {
     return this.options.generateMipmaps;
   }
 
+  get color() {
+    return this.options.color;
+  }
+
   static WHITE(gl: WebGLRenderingContext) {
     if (!Texture.white) {
       Texture.white = new Texture(
@@ -112,5 +117,18 @@ export class Texture {
       );
     }
     return Texture.white;
+  }
+
+  static NORMAL(gl: WebGLRenderingContext) {
+    if (!Texture.normal) {
+      Texture.normal = new Texture(
+        {
+          color: Color.hex(0x8080ff),
+          generateMipmaps: true,
+        },
+        gl
+      );
+    }
+    return Texture.normal;
   }
 }

@@ -18,6 +18,7 @@ export class BufferGeometry {
         normal: new BufferAttribute(new Float32Array(data.normal), 3),
         texcoord: new BufferAttribute(new Float32Array(data.texcoord), 2),
       };
+      this.calculateTangents();
     } else {
       this._attributes = {};
     }
@@ -123,5 +124,81 @@ export class BufferGeometry {
     }
 
     this.setAttribute("normal", normal);
+  }
+
+  calculateTangents() {
+    // NOT SUPPORTING INDICES, FK IT
+    const position = this.getAttribute("position");
+    const normal = this.getAttribute("normal");
+    const texcoord = this.getAttribute("texcoord");
+    if (!position || !normal || !texcoord) return;
+
+    let tangents = this.getAttribute("tangent");
+    if (!tangents) {
+      tangents = new BufferAttribute(
+        new Float32Array(position.length),
+        position.size
+      );
+    } else {
+      tangents.data.fill(0);
+    }
+
+    let bitangents = this.getAttribute("bitangent");
+    if (!bitangents) {
+      bitangents = new BufferAttribute(
+        new Float32Array(position.length),
+        position.size
+      );
+    } else {
+      bitangents.data.fill(0);
+    }
+
+    const tangent = new Vector3(),
+      bitangent = new Vector3(),
+      pos1 = new Vector3(),
+      pos2 = new Vector3(),
+      pos3 = new Vector3(),
+      uv1 = new Vector3(),
+      uv2 = new Vector3(),
+      uv3 = new Vector3(),
+      nm = new Vector3(),
+      edge1 = new Vector3(),
+      edge2 = new Vector3(),
+      deltaUV1 = new Vector3(),
+      deltaUV2 = new Vector3();
+    for (let i = 0, il = position.count; i < il; i += 3) {
+      pos1.fromBufferAttribute(position, i);
+      pos2.fromBufferAttribute(position, i + 1);
+      pos3.fromBufferAttribute(position, i + 2);
+
+      uv1.fromBufferAttribute(texcoord, i);
+      uv2.fromBufferAttribute(texcoord, i + 1);
+      uv3.fromBufferAttribute(texcoord, i + 2);
+
+      edge1.subVectors(pos2, pos1);
+      edge2.subVectors(pos3, pos1);
+      deltaUV1.subVectors(uv2, uv1);
+      deltaUV2.subVectors(uv3, uv1);
+
+      const f = 1.0 / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+      tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+      tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+      tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+
+      bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+      bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+      bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+
+      tangents.set(i, [tangent.x, tangent.y, tangent.z]);
+      tangents.set(i + 1, [tangent.x, tangent.y, tangent.z]);
+      tangents.set(i + 2, [tangent.x, tangent.y, tangent.z]);
+
+      bitangents.set(i, [bitangent.x, bitangent.y, bitangent.z]);
+      bitangents.set(i + 1, [bitangent.x, bitangent.y, bitangent.z]);
+      bitangents.set(i + 2, [bitangent.x, bitangent.y, bitangent.z]);
+    }
+
+    this.setAttribute("tangent", tangents);
+    this.setAttribute("bitangent", bitangents);
   }
 }

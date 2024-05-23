@@ -56,7 +56,8 @@ export const GLTFSchema = z.object({
   ),
   textures: z.array(
     z.object({
-      source: arrayIndex(),
+      source: arrayIndex().optional(),
+      color: ColorSchema.optional(),
       wrapS: z.number().optional(),
       wrapT: z.number().optional(),
       magFilter: z.number().optional(),

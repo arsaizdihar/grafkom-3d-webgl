@@ -83,6 +83,7 @@ export class CubeHollowGeometry extends BufferGeometry {
       )
     );
     this.calculateNormals();
+    this.calculateTangents();
   }
 }
 

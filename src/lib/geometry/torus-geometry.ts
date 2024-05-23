@@ -87,5 +87,6 @@ export class TorusGeometry extends BufferGeometry {
       new BufferAttribute(new Float32Array(texCoordsResult), 2)
     );
     this.calculateNormals();
+    this.calculateTangents();
   }
 }

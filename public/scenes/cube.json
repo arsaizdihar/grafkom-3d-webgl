@@ -7,23 +7,16 @@
       "scale": [1, 1, 1],
       "children": [1],
       "name": "GLNode",
-      "background": [1, 1, 1, 1]
+      "background": [0, 0, 0, 1],
+      "lightPos": [0, 0, 0]
     },
     {
       "translation": [0, 0, 0],
       "rotation": [25, 0, 0],
       "scale": [2, 2, 2],
-      "children": [2],
+      "children": [],
       "name": "cube",
       "mesh": 0
-    },
-    {
-      "translation": [50, 0, 0],
-      "rotation": [0, 0, 0],
-      "scale": [1, 1, 1],
-      "children": [],
-      "name": "cube2",
-      "mesh": 1
     }
   ],
   "meshes": [
@@ -42,21 +35,25 @@
   ],
   "images": [
     {
-      "uri": "/red.png"
+      "uri": "/brickwall.jpg"
     },
     {
       "uri": "/f-texture.png"
+    },
+    {
+      "uri": "/normal-1.png"
     }
   ],
   "materials": [
     {
       "type": "phong",
-      "texture": 0,
+      "texture": 3,
       "phong": {
         "ambient": [0, 0, 0, 1],
         "diffuse": [1, 1, 1, 1],
         "specular": [1, 1, 1, 1],
-        "shininess": 100
+        "shininess": 100,
+        "normalTexture": 2
       }
     },
     {
@@ -80,6 +77,20 @@
     },
     {
       "source": 1,
+      "generateMipmaps": false,
+      "wrapS": 33071,
+      "wrapT": 33071,
+      "minFilter": 9729
+    },
+    {
+      "source": 2,
+      "generateMipmaps": false,
+      "wrapS": 33071,
+      "wrapT": 33071,
+      "minFilter": 9729
+    },
+    {
+      "color": [1, 1, 1, 1],
       "generateMipmaps": false,
       "wrapS": 33071,
       "wrapT": 33071,

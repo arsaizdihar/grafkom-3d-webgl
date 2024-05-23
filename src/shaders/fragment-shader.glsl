@@ -2,10 +2,9 @@ precision mediump float;
 
 varying vec2 v_texcoord;
 varying vec3 v_vertPos;
-varying vec3 v_normal;
 varying vec3 v_viewDir;
+varying mat3 v_TBN;
 
-uniform mat4 u_normalMat;
 uniform vec4 u_ambientColor;
 uniform vec4 u_diffuseColor;
 uniform vec4 u_specularColor;
@@ -25,11 +24,11 @@ void main() {
   } else if(u_materialType == 1) {
     vec4 diffuseColor = u_diffuseColor * texture2D(u_texture, v_texcoord);
     vec4 specularColor = u_specularColor * texture2D(u_specularTexture, v_texcoord);
-    vec4 normal = vec4(v_normal, 1);
-    vec3 normalInterp = (u_normalMat * normal).xyz;
+    vec3 normal = texture2D(u_normalTexture, v_texcoord).rgb;
+    normal = normal * 2.0 - 1.0;
     // phong material
-    vec3 N = normalize(normalInterp);
-    vec3 L = normalize(u_lightPos - v_vertPos);
+    vec3 N = normalize(v_TBN * normal);
+    vec3 L = normalize((u_lightPos - v_vertPos));
   // Lambert's cosine law
     float lambertian = max(dot(N, L), 0.0);
     float specular = 0.0;

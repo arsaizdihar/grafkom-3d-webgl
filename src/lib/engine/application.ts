@@ -27,7 +27,7 @@ export class Application {
       fragmentShaderSource,
       vertexShaderSource,
       // TODO: use normal for phong material
-      attributes: ["position", "texcoord", "normal"],
+      attributes: ["position", "texcoord", "normal", "tangent", "bitangent"],
       uniforms: {
         matrix: { type: "uniformMatrix4fv" },
         ambientColor: { type: "uniform4f" },

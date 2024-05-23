@@ -47,6 +47,7 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
       nodeData.mesh = processMesh(node);
     } else if (node instanceof Scene) {
       nodeData.background = node.background.value;
+      nodeData.lightPos = node.lightPos.toArray();
     }
     result.nodes.push(nodeData);
     nodeRefs.push(node);
@@ -155,17 +156,27 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
     if (index === -1) {
       textureRefs.push(texture);
       index = textureRefs.length - 1;
-
-      const image = texture.image!;
-      const imageIndex = processImage(image);
-      result.textures.push({
-        source: imageIndex,
-        generateMipmaps: texture.generateMipmaps,
-        wrapS: texture.wrapS,
-        wrapT: texture.wrapT,
-        magFilter: texture.magFilter,
-        minFilter: texture.minFilter,
-      });
+      if (texture.color) {
+        result.textures.push({
+          color: texture.color.value,
+          generateMipmaps: texture.generateMipmaps,
+          wrapS: texture.wrapS,
+          wrapT: texture.wrapT,
+          magFilter: texture.magFilter,
+          minFilter: texture.minFilter,
+        });
+      } else {
+        const image = texture.image!;
+        const imageIndex = processImage(image);
+        result.textures.push({
+          source: imageIndex,
+          generateMipmaps: texture.generateMipmaps,
+          wrapS: texture.wrapS,
+          wrapT: texture.wrapT,
+          magFilter: texture.magFilter,
+          minFilter: texture.minFilter,
+        });
+      }
     }
     return index;
   }

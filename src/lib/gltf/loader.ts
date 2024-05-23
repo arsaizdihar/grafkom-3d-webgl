@@ -36,17 +36,29 @@ export async function loadGLTF(data: unknown, app: Application) {
     })
   );
   const textures = gltf.textures.map((texture) => {
-    const image = images[texture.source];
-    if (!image) {
-      throw new Error(`Image not found for index ${texture.source}`);
+    if (texture.source) {
+      const image = images[texture.source];
+      if (!image) {
+        throw new Error(`Image not found for index ${texture.source}`);
+      }
+      return new Texture(
+        {
+          image,
+          ...texture,
+          color: undefined,
+        },
+        app.gl
+      );
+    } else if (texture.color) {
+      return new Texture(
+        {
+          ...texture,
+          color: parseColor(texture.color),
+          image: undefined,
+        },
+        app.gl
+      );
     }
-    return new Texture(
-      {
-        image,
-        ...texture,
-      },
-      app.gl
-    );
   });
 
   const materials = gltf.materials.map((material) => {

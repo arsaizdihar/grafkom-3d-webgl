@@ -1,6 +1,5 @@
 import { useApp } from "@/state/app-store";
 import { InputDrag } from "./ui/input-drag";
-import { Button } from "./ui/button";
 
 export function LightEdits() {
   const scene = useApp((state) => state.scene);
@@ -13,7 +12,7 @@ export function LightEdits() {
       <hr className="border-slate-400 my-4" />
       <div className="flex flex-col gap-2">
         <h3>Light</h3>
-        <div className="flex space-x-4">
+        <div className="flex space-x-4" key={scene.id}>
           <div className="flex items-center">
             <span className="mr-2">X</span>
             <InputDrag
