@@ -308,7 +308,6 @@ export function AnimationEdits() {
           key={currentFrameIdx + (focusedNode?.id ?? "")}
           trs={focusedFrame?.keyframe}
           triggerChange={() => {
-            console.log(currentFrame);
             animationEdit.updateSceneGraph(currentFrame!);
           }}
           initial={focusedNode!.transform}

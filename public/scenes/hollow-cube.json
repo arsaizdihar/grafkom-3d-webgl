@@ -53,7 +53,7 @@
     {
       "root": 1,
       "clip": {
-        "name": "rotate",
+        "name": "swinging",
         "frames": [
           {
             "keyframe": {
