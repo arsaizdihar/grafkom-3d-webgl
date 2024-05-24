@@ -58,6 +58,10 @@ export function ComponentTree() {
         newNode = new GLNode(transform);
         newNode.name = "Torus Node";
         break;
+      case "parallelepiped":
+          newNode = new GLNode(transform);
+          newNode.name = "Parallelepiped Node";
+          break;
       default:
         newNode = new GLNode(transform);
         newNode.name = "New Node";
@@ -134,6 +138,12 @@ export function ComponentTree() {
                         onClick={() => handleSelectChange("torus")}
                       >
                         Torus
+                      </button>
+                      <button
+                        className={`w-full text-left p-2 ${selectedOption === "parallelepiped" ? "bg-slate-300" : ""}`}
+                        onClick={() => handleSelectChange("parallelepiped")}
+                      >
+                        Parallelepiped
                       </button>
                     </li>
                   </ul>

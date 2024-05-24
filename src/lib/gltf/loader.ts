@@ -15,6 +15,7 @@ import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
+import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { Euler } from "../math/euler";
@@ -35,6 +36,7 @@ export async function loadGLTF(data: unknown, app: Application) {
       return img;
     })
   );
+  
   const textures = gltf.textures.map((texture) => {
     if (texture.source !== undefined) {
       const image = images[texture.source];
@@ -152,6 +154,15 @@ export async function loadGLTF(data: unknown, app: Application) {
           20,
           geometry.torus.innerRad,
           geometry.torus.outerRad,
+          data
+        );
+      case "parallelepiped":
+        console.log(geometry.parallelepiped);
+        if (!geometry.parallelepiped) {
+          throw new Error("Parallelepiped geometry missing parameter");
+        }
+        return new ParallelepipedGeometry(
+          geometry.parallelepiped.size,
           data
         );
     }
