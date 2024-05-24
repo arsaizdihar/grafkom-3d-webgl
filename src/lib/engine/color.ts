@@ -9,6 +9,10 @@ export class Color {
     );
   }
 
+  get hexString() {
+    return "#" + this.hex.toString(16);
+  }
+
   private constructor(value: number[] = [1, 1, 1, 1]) {
     this.value = value;
   }
@@ -26,6 +30,10 @@ export class Color {
     const g = (hex >> 8) & 255;
     const b = hex & 255;
     return new Color([r / 255, g / 255, b / 255, 1]);
+  }
+
+  public static hexString(hex: string) {
+    return Color.hex(parseInt(hex.slice(1), 16));
   }
 
   public static fromArray(arr: number[]) {
