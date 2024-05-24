@@ -7,10 +7,10 @@ import { Scene } from "../engine/scene";
 import { Texture } from "../engine/texture";
 import { CubeGeometry } from "../geometry/cube-geometry";
 import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
+import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
-import { ParallelepipedGeometry,  } from "../geometry/parallelepiped-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
@@ -157,6 +157,11 @@ export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
           normalTexture: material.normalTexture
             ? processTexture(material.normalTexture)
             : undefined,
+          displacementTexture: material.displacementTexture
+            ? processTexture(material.displacementTexture)
+            : undefined,
+          displacementFactor: material.displacementFactor,
+          displacementBias: material.displacementBias,
         };
       }
       materialRefs.push(material);

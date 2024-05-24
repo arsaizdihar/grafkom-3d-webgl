@@ -47,7 +47,6 @@ export class Application {
       gl,
       fragmentShaderSource: phongFragment,
       vertexShaderSource: phongVertex,
-      // TODO: use normal for phong material
       attributes: ["position", "texcoord", "normal", "tangent", "bitangent"],
       uniforms: {
         matrix: { type: "uniformMatrix4fv" },
@@ -61,6 +60,15 @@ export class Application {
         texture: { type: "texture" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
+        displacementTexture: {
+          type: "texture",
+        },
+        displacementFactor: {
+          type: "uniform1f",
+        },
+        displacementBias: {
+          type: "uniform1f",
+        },
       },
     });
     this.currentProgram = this.phongProgram;

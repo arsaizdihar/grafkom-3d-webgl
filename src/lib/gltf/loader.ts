@@ -12,10 +12,10 @@ import { Transform } from "../engine/transform";
 import { Vector3 } from "../engine/vector";
 import { CubeGeometry } from "../geometry/cube-geometry";
 import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
+import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
-import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { Euler } from "../math/euler";
@@ -36,7 +36,7 @@ export async function loadGLTF(data: unknown, app: Application) {
       return img;
     })
   );
-  
+
   const textures = gltf.textures.map((texture) => {
     if (texture.source !== undefined) {
       const image = images[texture.source];
@@ -86,12 +86,18 @@ export async function loadGLTF(data: unknown, app: Application) {
         if (!material.phong) {
           throw new Error("Phong material missing parameter");
         }
-        const specularTexture = material.phong.specularTexture
-          ? textures[material.phong.specularTexture]
-          : undefined;
-        const normalTexture = material.phong.normalTexture
-          ? textures[material.phong.normalTexture]
-          : undefined;
+        const specularTexture =
+          material.phong.specularTexture !== undefined
+            ? textures[material.phong.specularTexture]
+            : undefined;
+        const normalTexture =
+          material.phong.normalTexture !== undefined
+            ? textures[material.phong.normalTexture]
+            : undefined;
+        const displacementTexture =
+          material.phong.displacementTexture !== undefined
+            ? textures[material.phong.displacementTexture]
+            : undefined;
         return new PhongMaterial(
           {
             ambient: parseColor(material.phong.ambient),
@@ -101,6 +107,9 @@ export async function loadGLTF(data: unknown, app: Application) {
             texture: texture,
             specularTexture: specularTexture,
             normalTexture: normalTexture,
+            displacementTexture: displacementTexture,
+            displacementFactor: material.phong.displacementFactor,
+            displacementBias: material.phong.displacementBias,
           },
           app.phongProgram
         );
@@ -161,10 +170,7 @@ export async function loadGLTF(data: unknown, app: Application) {
         if (!geometry.parallelepiped) {
           throw new Error("Parallelepiped geometry missing parameter");
         }
-        return new ParallelepipedGeometry(
-          geometry.parallelepiped.size,
-          data
-        );
+        return new ParallelepipedGeometry(geometry.parallelepiped.size, data);
     }
   });
 

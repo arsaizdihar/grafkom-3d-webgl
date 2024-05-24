@@ -13,6 +13,7 @@ function isPowerOf2(value: number) {
 export class Texture {
   private static white: Texture;
   private static normal: Texture;
+  private static black: Texture;
   public texture;
   constructor(
     private options: TextureOptions,
@@ -89,5 +90,17 @@ export class Texture {
       );
     }
     return Texture.normal;
+  }
+
+  static BLACK(gl: WebGLRenderingContext) {
+    if (!Texture.black) {
+      Texture.black = new Texture(
+        {
+          color: Color.hex(0x000000),
+        },
+        gl
+      );
+    }
+    return Texture.black;
   }
 }

@@ -10,6 +10,9 @@ export interface PhongMaterialOptions extends MaterialOptions {
   shininess: number;
   specularTexture?: Texture;
   normalTexture?: Texture;
+  displacementTexture?: Texture;
+  displacementFactor?: number;
+  displacementBias?: number;
 }
 
 export class PhongMaterial extends ShaderMaterial {
@@ -19,6 +22,9 @@ export class PhongMaterial extends ShaderMaterial {
   public specularTexture?: Texture;
   public shininess: number;
   public normalTexture?: Texture;
+  public displacementTexture?: Texture;
+  public displacementFactor: number;
+  public displacementBias: number;
   private _program;
 
   constructor(
@@ -33,6 +39,9 @@ export class PhongMaterial extends ShaderMaterial {
     this.specularTexture = options.specularTexture;
     this.normalTexture = options.normalTexture;
     this._program = program;
+    this.displacementTexture = options.displacementTexture;
+    this.displacementFactor = options.displacementFactor ?? 1;
+    this.displacementBias = options.displacementBias ?? 0;
   }
 
   public getUniforms(gl: WebGLRenderingContext) {
@@ -48,6 +57,11 @@ export class PhongMaterial extends ShaderMaterial {
       normalTexture: [
         this.normalTexture?.texture ?? Texture.NORMAL(gl).texture,
       ],
+      displacementTexture: [
+        this.displacementTexture?.texture ?? Texture.BLACK(gl).texture,
+      ],
+      displacementFactor: [this.displacementFactor],
+      displacementBias: [this.displacementBias],
     };
   }
 

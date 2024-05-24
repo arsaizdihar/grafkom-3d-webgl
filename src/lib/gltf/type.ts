@@ -9,7 +9,7 @@ const GeometryEnum = [
   "pyramidhollow",
   "torus",
   "cubehollow",
-  "parallelepiped"
+  "parallelepiped",
 ] as const;
 
 export const GLTFSchema = z.object({
@@ -51,6 +51,9 @@ export const GLTFSchema = z.object({
           shininess: z.number().nonnegative(),
           specularTexture: arrayIndex().optional(),
           normalTexture: arrayIndex().optional(),
+          displacementTexture: arrayIndex().optional(),
+          displacementFactor: z.number().optional(),
+          displacementBias: z.number().optional(),
         })
         .optional(),
     })
