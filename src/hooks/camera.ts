@@ -126,11 +126,25 @@ export function useCamera() {
       }
     }
 
+    function mouseWheel(e: WheelEvent) {
+      setParams((prevParams) => {
+        let newZPos = prevParams.zPos + e.deltaY * 0.001;
+        newZPos = Math.max(0, newZPos);
+        newZPos = Math.round(newZPos * 10) / 10;
+        return {
+          ...prevParams,
+          zPos: newZPos,
+        };
+      });
+    }
+
     canvas.addEventListener("mousedown", mouseDown);
 
     canvas.addEventListener("mouseup", mouseUp);
 
     canvas.addEventListener("mousemove", mouseMove);
+
+    canvas.addEventListener("wheel", mouseWheel);
 
     return () => {
       canvas.removeEventListener("mousedown", mouseDown);
