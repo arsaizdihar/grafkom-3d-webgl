@@ -125,7 +125,7 @@ export class BufferGeometry {
     this.calculateTangents();
   }
 
-  private calculateTangents() {
+  protected calculateTangents() {
     // NOT SUPPORTING INDICES, FK IT
     const position = this.getAttribute("position");
     const texcoord = this.getAttribute("texcoord");

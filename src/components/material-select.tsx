@@ -60,6 +60,7 @@ export function MaterialSelect({
               app.phongProgram
             );
             scene.materials.push(newMaterial);
+            onSelect(newMaterial);
           }}
         >
           New Phong Material
