@@ -60,6 +60,8 @@ export async function loadGLTF(data: unknown, app: Application) {
         },
         app.gl
       );
+    } else {
+      throw new Error("Texture missing parameter, source or color");
     }
   });
 
@@ -249,5 +251,9 @@ export async function loadGLTF(data: unknown, app: Application) {
   if (!scene || !(scene instanceof Scene)) {
     throw new Error("Scene not found");
   }
+  scene.materials = materials;
+  scene.geometries = geometries;
+  scene.textures = textures;
+  scene.images = images;
   return [scene, animations] as const;
 }

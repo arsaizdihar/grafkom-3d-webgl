@@ -1,6 +1,14 @@
 export class Color {
   public value: number[] = [1, 1, 1, 1];
 
+  get hex() {
+    return (
+      ((this.value[0] * 255) << 16) +
+      ((this.value[1] * 255) << 8) +
+      this.value[2] * 255
+    );
+  }
+
   private constructor(value: number[] = [1, 1, 1, 1]) {
     this.value = value;
   }

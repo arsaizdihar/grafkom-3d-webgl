@@ -43,6 +43,12 @@
         "displacementTexture": 0,
         "displacementFactor": 10
       }
+    },
+    {
+      "type": "basic",
+      "basic": {
+        "color": [1, 0, 0, 1]
+      }
     }
   ],
   "textures": [

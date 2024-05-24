@@ -31,7 +31,7 @@ export class PhongMaterial extends ShaderMaterial {
     options: PhongMaterialOptions,
     program: Application["phongProgram"]
   ) {
-    super(options);
+    super(options, "phong");
     this.ambient = options.ambient;
     this.diffuse = options.diffuse;
     this.specular = options.specular;

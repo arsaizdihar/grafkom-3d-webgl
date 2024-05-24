@@ -14,7 +14,7 @@ export class BasicMaterial extends ShaderMaterial {
     options: BasicMaterialOptions,
     program: Application["basicProgram"]
   ) {
-    super(options);
+    super(options, "basic");
     this.color = options.color;
     this._program = program;
   }
