@@ -103,4 +103,8 @@ export class Texture {
     }
     return Texture.black;
   }
+
+  toString() {
+    return `Texture(${this.options.image?.src ?? this.options.color?.hexString})`;
+  }
 }

@@ -2,12 +2,41 @@ import { Color } from "@/lib/engine/color";
 import { BasicMaterial } from "@/lib/material/basic-material";
 import { PhongMaterial } from "@/lib/material/phong-material";
 import { ShaderMaterial } from "@/lib/material/shader-material";
+import { useReducer, useState } from "react";
+import { TextureSelect } from "./texture-select";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent } from "./ui/dialog";
 import { InputDrag } from "./ui/input-drag";
 
+type TextureKey = Extract<keyof PhongMaterial, "texture" | `${string}Texture`>;
+
 export function MaterialEdits({ material }: { material: ShaderMaterial }) {
+  const [textureToChange, setTextureToChange] = useState<null | TextureKey>();
+  const [_, rerender] = useReducer((x) => !x, false);
+
   return (
     <div className="flex flex-col gap-2 mt-4">
       <h2>{material.type} material</h2>
+      <div className="flex gap-4 items-center">
+        <label className="block">Texture</label>
+        {material.texture && <div>Texture {material.texture.toString()}</div>}
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <Button onClick={() => setTextureToChange("texture")}>
+          {material.texture ? "Change" : "Add"}
+        </Button>
+        {material.texture && (
+          <Button
+            variant={"destructive"}
+            onClick={() => {
+              material.texture = undefined;
+              rerender();
+            }}
+          >
+            Remove
+          </Button>
+        )}
+      </div>
       {material instanceof BasicMaterial && (
         <div className="flex gap-4 items-center">
           <label className="block">Color</label>
@@ -65,6 +94,28 @@ export function MaterialEdits({ material }: { material: ShaderMaterial }) {
           </div>
         </>
       )}
+      <Dialog
+        open={!!textureToChange}
+        onOpenChange={(open) => {
+          if (!open) {
+            setTextureToChange(null);
+          }
+        }}
+      >
+        <DialogContent>
+          <TextureSelect
+            onSelect={(texture) => {
+              if (textureToChange && textureToChange in material) {
+                // @ts-expect-error its ok
+                material[textureToChange] = texture;
+                setTextureToChange(null);
+              }
+            }}
+            // @ts-expect-error its ok
+            currentTexture={material[textureToChange ?? "texture"]}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
