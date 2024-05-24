@@ -106,12 +106,15 @@ function App() {
         {isEditingAnimation ? (
           <AnimationEdits />
         ) : (
-          <Tabs defaultValue="edit" className="h-full flex flex-col">
+          <Tabs defaultValue="edit" className="h-screen flex flex-col">
             <TabsList>
               <TabsTrigger value="edit">Edit</TabsTrigger>
               <TabsTrigger value="animations">Animations</TabsTrigger>
             </TabsList>
-            <TabsContent value="edit" className="px-4 pb-4 flex-1">
+            <TabsContent
+              value="edit"
+              className="px-4 pb-4 flex-1 overflow-y-auto"
+            >
               <NodeEdits />
               <Load />
             </TabsContent>

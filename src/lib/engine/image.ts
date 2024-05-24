@@ -5,9 +5,12 @@ export class GLImage {
     const image = new Image();
     this.image = image;
     image.src = src;
-    this.promise = new Promise((resolve) => {
+    this.promise = new Promise((resolve, reject) => {
       image.onload = () => {
         resolve(image);
+      };
+      image.onerror = () => {
+        reject(new Error(`Failed to load image: ${src}`));
       };
     });
   }

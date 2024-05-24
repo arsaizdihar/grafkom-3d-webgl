@@ -105,6 +105,6 @@ export class Texture {
   }
 
   toString() {
-    return `Texture(${this.options.image?.src ?? this.options.color?.hexString})`;
+    return `Texture (${this.options.image?.src ?? this.options.color?.hexString})`;
   }
 }

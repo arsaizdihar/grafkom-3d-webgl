@@ -19,7 +19,7 @@ export function MaterialEdits({ material }: { material: ShaderMaterial }) {
       <h2>{material.type} material</h2>
       <div className="flex gap-4 items-center">
         <label className="block">Texture</label>
-        {material.texture && <div>Texture {material.texture.toString()}</div>}
+        {material.texture && <div>{material.texture.toString()}</div>}
       </div>
       <div className="grid grid-cols-2 gap-2">
         <Button onClick={() => setTextureToChange("texture")}>
@@ -82,6 +82,28 @@ export function MaterialEdits({ material }: { material: ShaderMaterial }) {
             />
           </div>
           <div className="flex gap-4 items-center">
+            <label className="block">Texture</label>
+            {material.specularTexture && (
+              <div>{material.specularTexture.toString()}</div>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Button onClick={() => setTextureToChange("specularTexture")}>
+              {material.specularTexture ? "Change" : "Add"}
+            </Button>
+            {material.specularTexture && (
+              <Button
+                variant={"destructive"}
+                onClick={() => {
+                  material.specularTexture = undefined;
+                  rerender();
+                }}
+              >
+                Remove
+              </Button>
+            )}
+          </div>
+          <div className="flex gap-4 items-center">
             <label className="block">Shininess</label>
             <InputDrag
               getValue={() => material.shininess}
@@ -90,6 +112,70 @@ export function MaterialEdits({ material }: { material: ShaderMaterial }) {
               }}
               min={0}
               max={100}
+            />
+          </div>
+          <div className="flex gap-4 items-center">
+            <label className="block">Normal</label>
+            {material.normalTexture && (
+              <div>{material.normalTexture.toString()}</div>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Button onClick={() => setTextureToChange("normalTexture")}>
+              {material.normalTexture ? "Change" : "Add"}
+            </Button>
+            {material.normalTexture && (
+              <Button
+                variant={"destructive"}
+                onClick={() => {
+                  material.normalTexture = undefined;
+                  rerender();
+                }}
+              >
+                Remove
+              </Button>
+            )}
+          </div>
+          <div className="flex gap-4 items-center">
+            <label className="block">Displacement</label>
+            {material.displacementTexture && (
+              <div>{material.displacementTexture.toString()}</div>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Button onClick={() => setTextureToChange("displacementTexture")}>
+              {material.displacementTexture ? "Change" : "Add"}
+            </Button>
+            {material.displacementTexture && (
+              <Button
+                variant={"destructive"}
+                onClick={() => {
+                  material.displacementTexture = undefined;
+                  rerender();
+                }}
+              >
+                Remove
+              </Button>
+            )}
+          </div>
+          <div className="flex gap-4 items-center">
+            <label className="block">Displacement Factor</label>
+            <InputDrag
+              getValue={() => material.displacementFactor}
+              onChange={(value) => {
+                material.displacementFactor = value;
+              }}
+              min={0}
+              step={0.1}
+            />
+          </div>
+          <div className="flex gap-4 items-center">
+            <label className="block">Displacement Bias</label>
+            <InputDrag
+              getValue={() => material.displacementBias}
+              onChange={(value) => {
+                material.displacementBias = value;
+              }}
             />
           </div>
         </>
