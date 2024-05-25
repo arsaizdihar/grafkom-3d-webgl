@@ -13,7 +13,8 @@ const GeometryEnum = [
 ] as const;
 
 export const GLTFSchema = z.object({
-  scene: arrayIndex(),
+  scene: arrayIndex().optional(),
+  root: arrayIndex().optional(),
   nodes: z.array(
     z.object({
       translation: z.array(z.number()).length(3),

@@ -16,9 +16,13 @@ import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
 import { GLTF, GLTFGeometry, GLTFMaterial, GLTFMesh, GLTFNode } from "./type";
 
-export async function saveGLTF(scene: Scene, animations: AnimationRunner[]) {
+export async function saveGLTF(
+  scene: Scene | GLNode,
+  animations: AnimationRunner[]
+) {
   const result: GLTF = {
-    scene: 0,
+    scene: scene instanceof Scene ? 0 : undefined,
+    root: scene instanceof GLNode ? 0 : undefined,
     nodes: [],
     meshes: [],
     images: [],

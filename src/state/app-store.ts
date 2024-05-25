@@ -34,7 +34,11 @@ type AppStore = {
   _rerenderSceneGraph: boolean;
   rerenderSceneGraph: () => void;
   animations: AnimationRunner[];
-  setAnimations: (animations: AnimationRunner[]) => void;
+  setAnimations: (
+    animations:
+      | AnimationRunner[]
+      | ((prevAnimations: AnimationRunner[]) => AnimationRunner[])
+  ) => void;
   cameraParams: CameraParams;
   setCameraParams: (
     params: CameraParams | ((prevParams: CameraParams) => CameraParams)
@@ -56,7 +60,13 @@ export const useApp = create<AppStore>()((set) => ({
   rerenderSceneGraph: () =>
     set((state) => ({ _rerenderSceneGraph: !state._rerenderSceneGraph })),
   animations: [],
-  setAnimations: (animations) => set({ animations }),
+  setAnimations: (arg) =>
+    set(({ animations }) => {
+      if (typeof arg === "function") {
+        return { animations: arg(animations) };
+      }
+      return { animations: arg };
+    }),
   cameraParams: {
     fovy: 60,
     aspect: 0,

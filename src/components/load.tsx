@@ -1,3 +1,4 @@
+import { Scene } from "@/lib/engine/scene";
 import { loadGLTF } from "@/lib/gltf/loader";
 import { saveGLTF } from "@/lib/gltf/saver";
 import { useApp } from "@/state/app-store";
@@ -29,7 +30,7 @@ export function Load() {
             try {
               const data = reader.result as string;
               const [scene, animations] = await loadGLTF(JSON.parse(data), app);
-              setScene(scene);
+              setScene(scene as Scene);
               setAnimations(animations);
               setFocusedNode(null);
             } catch (e) {

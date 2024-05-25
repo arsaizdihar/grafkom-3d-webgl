@@ -1,6 +1,6 @@
 import { GLNode } from "@/lib/engine/node";
 import { useApp } from "@/state/app-store";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { AnimationRunner } from "@/lib/engine/animation";
 import { BufferGeometry } from "@/lib/engine/buffer-geometry";
@@ -13,6 +13,8 @@ import { PlaneGeometry } from "@/lib/geometry/plane-geometry";
 import { PyramidHollowGeometry } from "@/lib/geometry/pyramid-hollow-geometry";
 import { SphereGeometry } from "@/lib/geometry/sphere-geometry";
 import { TorusGeometry } from "@/lib/geometry/torus-geometry";
+import { loadGLTF } from "@/lib/gltf/loader";
+import { saveGLTF } from "@/lib/gltf/saver";
 import { BasicMaterial } from "@/lib/material/basic-material";
 import clsx from "clsx";
 import {
@@ -44,14 +46,14 @@ export function ComponentTree() {
   const scene = useApp((state) => state.scene);
   const _ = useApp((state) => state._rerenderSceneGraph);
 
-  const { focusNode, rerenderSceneGraph, animationEdit, app } = useApp(
-    (state) => ({
+  const { focusNode, rerenderSceneGraph, animationEdit, app, setAnimations } =
+    useApp((state) => ({
       focusNode: state.focusedNode,
       rerenderSceneGraph: state.rerenderSceneGraph,
       animationEdit: state.animationEdit,
       app: state.app,
-    })
-  );
+      setAnimations: state.setAnimations,
+    }));
   const node = animationEdit ? animationEdit.rootNode : scene;
   const isEditingAnimation = !!animationEdit;
 
@@ -102,6 +104,7 @@ export function ComponentTree() {
   };
 
   const [selectedOption, setSelectedOption] = useState("cube");
+  const loadRef = useRef<HTMLInputElement>(null);
 
   const handleSelectChange = (option: string) => {
     setSelectedOption(option);
@@ -128,12 +131,60 @@ export function ComponentTree() {
             </SelectContent>
           </Select>
           <Button
-            size={"md"}
+            size={"sm"}
             className="focus:outline-none w-auto"
             onClick={handleAddChildrenClick}
           >
             Add
           </Button>
+          <Button
+            onClick={() => {
+              loadRef.current?.click();
+            }}
+          >
+            Load node
+          </Button>
+          <input
+            ref={loadRef}
+            type="file"
+            className="hidden"
+            onChange={(e) => {
+              if (!app || !scene) {
+                return;
+              }
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = async () => {
+                try {
+                  const data = reader.result as string;
+                  const results = await loadGLTF(JSON.parse(data), app, false);
+                  if (results.length === 2) {
+                    throw new Error("Failed to load GLTF");
+                  }
+                  const [node, animations, materials, geometries, textures] =
+                    results;
+                  if (focusNode) {
+                    focusNode.addChild(node);
+                  } else {
+                    scene.addChild(node);
+                  }
+                  scene.materials.push(...materials);
+                  scene.geometries.push(...geometries);
+                  scene.textures.push(...textures);
+                  setAnimations((prev) => [...prev, ...animations]);
+                } catch (e) {
+                  if (e instanceof Error) {
+                    alert(e.message);
+                  } else {
+                    console.error(e);
+                  }
+                }
+              };
+              reader.readAsText(file);
+            }}
+            accept=".json"
+          />
         </div>
       )}
     </div>
@@ -204,6 +255,24 @@ function Node({ node }: { node: GLNode }) {
         >
           Delete
         </ContextMenuItem>
+        <ContextMenuItem
+          onSelect={async () => {
+            const json = await saveGLTF(
+              node,
+              animations.filter((a) => isAnimationRunnerInNode(node, a))
+            );
+            const a = document.createElement("a");
+            const file = new Blob([JSON.stringify(json, null, 2)], {
+              type: "application/json",
+            });
+            a.href = URL.createObjectURL(file);
+
+            a.download = node.name + ".json";
+            a.click();
+          }}
+        >
+          Save
+        </ContextMenuItem>
         {!animationEdit && (
           <ContextMenuItem
             onSelect={() => {
@@ -252,4 +321,16 @@ function NodeChildren({ nodes }: { nodes: GLNode[] }) {
       </ul>
     </Accordion>
   );
+}
+
+function isAnimationRunnerInNode(
+  node: GLNode,
+  animation: AnimationRunner
+): boolean {
+  return node.children.some((child) => {
+    if (child === animation.rootNode) {
+      return true;
+    }
+    return isAnimationRunnerInNode(child, animation);
+  });
 }

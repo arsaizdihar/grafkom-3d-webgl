@@ -27,7 +27,11 @@ function parseColor(color: string | number[]) {
     : Color.hex(Number(color));
 }
 
-export async function loadGLTF(data: unknown, app: Application) {
+export async function loadGLTF(
+  data: unknown,
+  app: Application,
+  isScene = true
+) {
   const gltf = GLTFSchema.parse(data);
   const images = await Promise.all(
     gltf.images.map(async (image) => {
@@ -246,14 +250,29 @@ export async function loadGLTF(data: unknown, app: Application) {
     anim.tweening = animation.tween;
     return anim;
   });
-
-  const scene = nodes[gltf.scene];
-  if (!scene || !(scene instanceof Scene)) {
-    throw new Error("Scene not found");
+  if (gltf.scene === undefined && gltf.root !== undefined && !isScene) {
+    const root = nodes[gltf.root];
+    if (!root) {
+      throw new Error("Root node not found");
+    }
+    return [
+      nodes[gltf.root],
+      animations,
+      materials,
+      geometries,
+      textures,
+    ] as const;
+  } else if (isScene && gltf.scene !== undefined) {
+    const scene = nodes[gltf.scene];
+    if (!scene || !(scene instanceof Scene)) {
+      throw new Error("Scene not found");
+    }
+    scene.materials = materials;
+    scene.geometries = geometries;
+    scene.textures = textures;
+    scene.images = images;
+    return [scene, animations] as const;
+  } else {
+    throw new Error(isScene ? "Scene not found" : "Root node not found");
   }
-  scene.materials = materials;
-  scene.geometries = geometries;
-  scene.textures = textures;
-  scene.images = images;
-  return [scene, animations] as const;
 }
