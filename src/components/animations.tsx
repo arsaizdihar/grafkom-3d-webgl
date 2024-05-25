@@ -88,32 +88,38 @@ export function Animations() {
   }, [focusedAnimation, loop, reverse]);
 
   return (
-    <div className="flex flex-col h-full">
-      <h2>Animations</h2>
-      <ul className="flex-1">
-        {animations.map((animation, idx) => (
-          <li key={idx}>
-            <Button
-              className="w-full justify-start"
-              size={"sm"}
-              variant={
-                focusedAnimation === animation ? "destructive" : "outline"
-              }
-              onClick={() => {
-                if (focusedAnimation) {
-                  focusedAnimation.isPlaying = false;
+    <div className="flex flex-col h-full gap-2">
+      <h2 className="font-semibold">Animations</h2>
+      {animations.length > 0 ? (
+        <ul className="flex-1">
+          {animations.map((animation, idx) => (
+            <li key={idx}>
+              <Button
+                className="w-full justify-start"
+                size={"sm"}
+                variant={
+                  focusedAnimation === animation ? "destructive" : "outline"
                 }
-                setFocusedAnimation(animation);
-                setIsPlaying(animation.isPlaying);
-                setFrame(animation.currentFrame);
-                setTweening(animation.tweening);
-              }}
-            >
-              {animation.name}
-            </Button>
-          </li>
-        ))}
-      </ul>
+                onClick={() => {
+                  if (focusedAnimation) {
+                    focusedAnimation.isPlaying = false;
+                  }
+                  setFocusedAnimation(animation);
+                  setIsPlaying(animation.isPlaying);
+                  setFrame(animation.currentFrame);
+                  setTweening(animation.tweening);
+                }}
+              >
+                {animation.name}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-sm">
+          No animations yet.
+        </div>
+      )}
       <div className="flex-1">
         {focusedAnimation !== null && (
           <>

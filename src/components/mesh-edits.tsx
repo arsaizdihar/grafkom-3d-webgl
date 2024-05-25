@@ -13,7 +13,12 @@ export function MeshEdits({ mesh }: { mesh: Mesh }) {
       <MaterialEdits material={mesh.material} />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="w-full mt-4">Change material</Button>
+          <Button 
+            className="w-full mt-4"
+            size={"md"}
+          >
+            Change Material
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <MaterialSelect

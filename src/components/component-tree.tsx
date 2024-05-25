@@ -90,12 +90,12 @@ export function ComponentTree() {
 
   return (
     <div className="flex-1 h-1 overflow-y-auto">
-      <h2 className="mb-2">Component Tree</h2>
+      <h2 className="mb-2 font-semibold">Component Tree</h2>
       {node && (
         <NodeChildren nodes={node instanceof Scene ? node.children : [node]} />
       )}
       {!isEditingAnimation && (
-        <div className="flex items-start mt-5">
+        <div className="grid grid-cols-2 mt-5">
           <Accordion asChild type="single" className="text-sm">
             <AccordionItem asChild value="add-node">
               <div>
@@ -152,7 +152,7 @@ export function ComponentTree() {
             </AccordionItem>
           </Accordion>
           <Button
-            size={"sm"}
+            size={"md"}
             className="focus:outline-none w-auto mt-2 ml-2"
             onClick={handleAddChildrenClick}
           >
@@ -197,14 +197,14 @@ function Node({ node }: { node: GLNode }) {
       <ContextMenuTrigger>
         <div
           className={clsx(
-            "flex justify-between",
+            "flex justify-between rounded-md",
             focusNode === node ? "bg-slate-300" : "bg-slate-100"
           )}
         >
           <button
             key={node.id}
             className={clsx(
-              "w-full flex flex-1 items-center justify-between py-2 font-medium transition-all [&[data-state=open]>svg]:rotate-180 pl-2"
+              "w-full flex items-center justify-between py-2.5 font-medium transition-all [&[data-state=open]>svg]:rotate-180 pl-2"
             )}
             onClick={handleClick}
           >

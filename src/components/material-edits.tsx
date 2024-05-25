@@ -14,15 +14,22 @@ export function MaterialEdits({ material }: { material: ShaderMaterial }) {
   const [textureToChange, setTextureToChange] = useState<null | TextureKey>();
   const [_, rerender] = useReducer((x) => !x, false);
 
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   return (
     <div className="flex flex-col gap-2 mt-4">
-      <h2>{material.type} material</h2>
+      <h2 className="font-semibold underline">Material Type: {capitalizeFirstLetter(material.type)} Material</h2>
       <div className="flex gap-4 items-center">
-        <label className="block">Texture</label>
+        <label className="block font-semibold">Texture</label>
         {material.texture && <div>{material.texture.toString()}</div>}
       </div>
       <div className="grid grid-cols-2 gap-2">
-        <Button onClick={() => setTextureToChange("texture")}>
+        <Button 
+          size={"md"}
+          onClick={() => setTextureToChange("texture")}
+        >
           {material.texture ? "Change" : "Add"}
         </Button>
         {material.texture && (
@@ -38,8 +45,8 @@ export function MaterialEdits({ material }: { material: ShaderMaterial }) {
         )}
       </div>
       {material instanceof BasicMaterial && (
-        <div className="flex gap-4 items-center">
-          <label className="block">Color</label>
+        <div className="flex flex-col gap-2">
+          <label className="block font-semibold">Texture Color</label>
           <input
             type="color"
             defaultValue={material.color.hexString}

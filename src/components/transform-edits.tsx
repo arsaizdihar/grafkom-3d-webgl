@@ -9,10 +9,10 @@ export function TransformEdits({
   triggerChange: () => void;
 }) {
   return (
-    <div>
-      <h3 className="mt-2">Transform</h3>
+    <div className="flex flex-col gap-2">
+      <h3 className="font-semibold">Transform</h3>
 
-      <h4>Position</h4>
+      <h4 className="text-sm">Position</h4>
       <div className="flex space-x-3">
         <div className="flex items-center flex-1">
           <span className="mr-2">X</span>
@@ -49,7 +49,7 @@ export function TransformEdits({
         </div>
       </div>
 
-      <h4>Rotation</h4>
+      <h4 className="text-sm">Rotation</h4>
       <div className="flex space-x-3">
         <div className="flex items-center flex-1">
           <span className="mr-2">X</span>
@@ -86,7 +86,7 @@ export function TransformEdits({
         </div>
       </div>
 
-      <h4>Scale</h4>
+      <h4 className="text-sm">Scale</h4>
       <div className="flex space-x-3">
         <div className="flex items-center flex-1">
           <span className="mr-2">X</span>
