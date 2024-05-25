@@ -4,7 +4,7 @@ import { BufferGeometry, GeometryData } from "../engine/buffer-geometry";
 export class CubeGeometry extends BufferGeometry {
   size: number;
 
-  constructor(size = 1, data?: GeometryData) {
+  constructor(size = 50, data?: GeometryData) {
     super(data);
     this.size = size;
     if (data) {

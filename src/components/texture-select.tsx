@@ -1,4 +1,3 @@
-import { Color } from "@/lib/engine/color";
 import { GLImage } from "@/lib/engine/image";
 import { Texture } from "@/lib/engine/texture";
 import { useApp } from "@/state/app-store";
@@ -54,19 +53,7 @@ export function TextureSelect({
         ))}
       </div>
       <Input type="text" name="url" ref={urlRef} placeholder="New Image URL" />
-      <div className="grid grid-cols-2 gap-4">
-        <Button
-          onClick={() => {
-            const newTexture = new Texture(
-              { color: Color.hex(0xffffff) },
-              app.gl
-            );
-            scene.textures.push(newTexture);
-            onSelect(newTexture);
-          }}
-        >
-          New Texture
-        </Button>
+      <div className="flex flex-col">
         <Button
           onClick={async () => {
             const url = urlRef.current?.value;
@@ -84,7 +71,7 @@ export function TextureSelect({
             }
           }}
         >
-          New Image Texture
+          New Texture
         </Button>
       </div>
     </div>

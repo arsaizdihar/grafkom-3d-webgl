@@ -4,7 +4,7 @@ import { Vector3 } from "../engine/vector";
 
 export class SphereGeometry extends BufferGeometry {
   constructor(
-    public radius = 1,
+    public radius = 25,
     public widthSegments = 32,
     public heightSegments = 16,
     public phiStart = 0,

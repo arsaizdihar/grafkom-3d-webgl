@@ -4,8 +4,8 @@ import { addCube } from "./pyramid-hollow-geometry";
 
 export class CubeHollowGeometry extends BufferGeometry {
   constructor(
-    public size: number = 1,
-    public thickness: number = 0.1,
+    public size: number = 50,
+    public thickness: number = 5,
     data?: GeometryData
   ) {
     super(data);

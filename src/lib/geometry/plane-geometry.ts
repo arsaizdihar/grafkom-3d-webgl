@@ -5,7 +5,7 @@ export class PlaneGeometry extends BufferGeometry {
   width: number;
   height: number;
 
-  constructor(width = 1, height = 1, data?: GeometryData) {
+  constructor(width = 50, height = 50, data?: GeometryData) {
     super(data);
     this.width = width;
     this.height = height;

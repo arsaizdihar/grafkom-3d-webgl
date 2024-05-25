@@ -5,8 +5,8 @@ export class TorusGeometry extends BufferGeometry {
   constructor(
     public slices: number = 20,
     public loops: number = 20,
-    public innerRad: number = 0.5,
-    public outerRad: number = 2,
+    public innerRad: number = 5,
+    public outerRad: number = 25,
     data?: GeometryData
   ) {
     super();

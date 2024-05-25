@@ -9,10 +9,7 @@ import { useCamera } from "./hooks/camera";
 import { AnimationRunner } from "./lib/engine/animation";
 import { Application } from "./lib/engine/application";
 import { Color } from "./lib/engine/color";
-import { Mesh } from "./lib/engine/mesh";
 import { Scene } from "./lib/engine/scene";
-import { SphereGeometry } from "./lib/geometry/sphere-geometry";
-import { BasicMaterial } from "./lib/material/basic-material";
 import { useApp } from "./state/app-store";
 
 function App() {
@@ -68,16 +65,7 @@ function App() {
       if (!app) {
         return;
       }
-      const scene = new Scene(Color.hex(0xffffff));
-      const mesh = new Mesh(
-        new SphereGeometry(1, 50, 50),
-        new BasicMaterial({ color: Color.hex(0xff0000) }, app.basicProgram)
-      );
-      console.log(mesh.geometry.attributes);
-      mesh.transform.scale.set(50, 50, 50);
-      scene.addChild(mesh);
-      scene.materials.push(mesh.material);
-      scene.geometries.push(mesh.geometry);
+      const scene = new Scene(Color.hex(0x171717));
       const animations: AnimationRunner[] = [];
       setScene(scene);
       setAnimations(animations);
@@ -100,7 +88,7 @@ function App() {
 
   return (
     <>
-      <div className="bg-slate-200 w-64 flex flex-col p-4">
+      <div className="bg-slate-200 w-64 flex flex-col p-4 h-screen overflow-y-auto">
         <ComponentTree />
 
         <div
