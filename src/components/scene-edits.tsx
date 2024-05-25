@@ -10,8 +10,8 @@ export function SceneEdits() {
 
   return (
     <div>
-      <div className="flex gap-2 items-center mt-4">
-        <label className="block">Background Color</label>
+      <div className="flex flex-col gap-2 mt-4">
+        <label className="block font-semibold">Background Color</label>
         <input
           key={scene.id}
           type="color"

@@ -55,7 +55,6 @@ export class CubeHollowGeometry extends BufferGeometry {
       const bottom = -hs + ht;
       const left = i == 0 ? -hs - ht : hs - ht;
       const right = i == 0 ? -hs + ht : hs + ht;
-      console.log(front, back, top, bottom, left, right);
       addCube(vertices, texcoord, front, back, top, bottom, left, right);
     }
 
@@ -67,7 +66,6 @@ export class CubeHollowGeometry extends BufferGeometry {
       const bottom = -hs + ht;
       const left = i == 0 ? -hs - ht : hs - ht;
       const right = i == 0 ? -hs + ht : hs + ht;
-      console.log(front, back, top, bottom, left, right);
       addCube(vertices, texcoord, front, back, top, bottom, left, right);
     }
 

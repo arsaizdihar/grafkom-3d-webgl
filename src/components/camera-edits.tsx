@@ -146,7 +146,7 @@ export function CameraEdits() {
       {!focusedNode && (
         <div className="h-fit overflow-y-auto flex flex-col gap-2">
           <div className="flex flex-col gap-2">
-            <h2>Camera</h2>
+            <h2 className="font-semibold">Camera Type</h2>
             <Dropdown
               list={cameraTypes}
               selectedVal={currentCameraType}
@@ -154,7 +154,7 @@ export function CameraEdits() {
             />
           </div>
           <div className="text-sm flex flex-col gap-1">
-            <p>Camera Angle</p>
+            <p className="text-base mt-1 mb-2 font-semibold">Camera Angle</p>
             <div className="flex">
               <p>Y:&nbsp; </p>
               <p>{Math.floor(params.cameraAngleDegreeY)}</p>
@@ -189,10 +189,10 @@ export function CameraEdits() {
                 }));
               }}
             />
-          </div>
-          <div className="text-sm">
-            <p>Z Position</p>
-            <p>{params.zPos}</p>
+            <div className="flex">
+              <p>Z:&nbsp; </p>
+              <p>{params.zPos}</p>
+            </div>
             <Slider
               min={0}
               max={5}
@@ -208,9 +208,9 @@ export function CameraEdits() {
             />
           </div>
           <Button
-            size={"sm"}
+            size={"md"}
             onClick={handleResetView}
-            className="w-full text-center"
+            className="w-full text-center mt-2"
           >
             Reset to Default View
           </Button>

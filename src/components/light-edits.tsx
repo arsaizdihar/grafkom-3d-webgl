@@ -9,9 +9,8 @@ export function LightEdits() {
 
   return (
     <div>
-      <hr className="border-slate-400 my-4" />
       <div className="flex flex-col gap-2">
-        <h3>Light</h3>
+        <h2 className="font-semibold">Light</h2>
         <div className="flex space-x-4" key={scene.id}>
           <div className="flex items-center">
             <span className="mr-2">X</span>

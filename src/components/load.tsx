@@ -13,7 +13,7 @@ export function Load() {
     setFocusedNode: state.setFocusedNode,
   }));
   return (
-    <div className="mt-5 flex space-x-2">
+    <div className="mt-5 flex gap-2">
       <input
         ref={fileRef}
         type="file"
@@ -41,7 +41,7 @@ export function Load() {
         accept=".json"
       />
       <Button
-        size={"sm"}
+        size={"md"}
         onClick={() => {
           fileRef.current?.click();
         }}
@@ -51,7 +51,7 @@ export function Load() {
       </Button>
 
       <Button
-        size={"sm"}
+        size={"md"}
         onClick={async () => {
           const { scene, animations } = useApp.getState();
           if (!scene) return;

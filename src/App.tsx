@@ -119,7 +119,7 @@ function App() {
           <AnimationEdits />
         ) : (
           <Tabs defaultValue="edit" className="h-screen flex flex-col">
-            <TabsList>
+            <TabsList className="rounded-none rounded-b-lg">
               <TabsTrigger value="edit">Edit</TabsTrigger>
               <TabsTrigger value="animations">Animations</TabsTrigger>
             </TabsList>

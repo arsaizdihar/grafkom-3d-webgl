@@ -15,16 +15,18 @@ export function NodeEdits() {
     return (
       <>
         <CameraEdits />
+        <hr className="border-slate-400 my-4" />
         <LightEdits />
         <SceneEdits />
+        <hr className="border-slate-400 my-4" />
       </>
     );
   }
 
   return (
     <div>
-      <div>
-        <label className="block">Name</label>
+      <div className="flex flex-col gap-2">
+        <label className="block font-semibold">Name</label>
         <Input
           key={node.id}
           type="text"
@@ -35,6 +37,7 @@ export function NodeEdits() {
           }}
         />
       </div>
+      <hr className="border-slate-400 my-4" />
       <TransformEdits
         key={node.id + "transform"}
         transform={node.transform}
@@ -42,7 +45,9 @@ export function NodeEdits() {
           node.dirty();
         }}
       />
+      <hr className="border-slate-400 my-4" />
       {node instanceof Mesh && <MeshEdits mesh={node} key={node.id + "mesh"} />}
+      <hr className="border-slate-400 my-4" />
     </div>
   );
 }
