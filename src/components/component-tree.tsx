@@ -21,14 +21,30 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "./ui/context-menu";
+import { CubeGeometry } from "@/lib/geometry/cube-geometry";
+import { PlaneGeometry } from "@/lib/geometry/plane-geometry";
+import { TorusGeometry } from "@/lib/geometry/torus-geometry";
+import { ParallelepipedGeometry } from "@/lib/geometry/parallelepiped-geometry";
+import { PyramidHollowGeometry } from "@/lib/geometry/pyramid-hollow-geometry";
+import { Mesh } from "@/lib/engine/mesh";
+import { BasicMaterial, BasicMaterialOptions } from "@/lib/material/basic-material";
+import { Color } from "@/lib/engine/color";
+
+const redColor = Color.rgb(255, 0, 0);
+
+const materialOptions: BasicMaterialOptions = {
+  color: redColor
+};
 
 export function ComponentTree() {
   const scene = useApp((state) => state.scene);
   const _ = useApp((state) => state._rerenderSceneGraph);
-  const { focusNode, rerenderSceneGraph, animationEdit } = useApp((state) => ({
+  
+  const { focusNode, rerenderSceneGraph, animationEdit, app } = useApp((state) => ({
     focusNode: state.focusedNode,
     rerenderSceneGraph: state.rerenderSceneGraph,
     animationEdit: state.animationEdit,
+    app: state.app,
   }));
   const node = animationEdit ? animationEdit.rootNode : scene;
   const isEditingAnimation = !!animationEdit;
@@ -41,27 +57,39 @@ export function ComponentTree() {
       new Vector3(1, 1, 1)
     );
 
+    let geometry, mesh;
+    const material = new BasicMaterial(materialOptions, app.basicProgram);
     switch (selectedOption) {
       case "cube":
-        newNode = new GLNode(transform);
-        newNode.name = "Cube Node";
+        geometry = new CubeGeometry();
+        mesh = new Mesh(geometry, material);
+        mesh.transform = transform;
+        mesh.name = "Cube Node";
         break;
       case "plane":
-        newNode = new GLNode(transform);
-        newNode.name = "Plane Node";
+        geometry = new PlaneGeometry();
+        mesh = new Mesh(geometry, material);
+        mesh.transform = transform;
+        mesh.name = "Plane Node";
         break;
       case "pyramid":
-        newNode = new GLNode(transform);
-        newNode.name = "Pyramid Node";
+        geometry = new PyramidHollowGeometry();
+        mesh = new Mesh(geometry, material);
+        mesh.transform = transform;
+        mesh.name = "Pyramid Hollow Node";
         break;
       case "torus":
-        newNode = new GLNode(transform);
-        newNode.name = "Torus Node";
+        geometry = new TorusGeometry();
+        mesh = new Mesh(geometry, material);
+        mesh.transform = transform;
+        mesh.name = "Torus Node";
         break;
       case "parallelepiped":
-          newNode = new GLNode(transform);
-          newNode.name = "Parallelepiped Node";
-          break;
+        geometry = new ParallelepipedGeometry();
+        mesh = new Mesh(geometry, material);
+        mesh.transform = transform;
+        mesh.name = "Parallelepiped Node";
+        break;
       default:
         newNode = new GLNode(transform);
         newNode.name = "New Node";
@@ -69,9 +97,9 @@ export function ComponentTree() {
     }
 
     if (focusNode) {
-      focusNode.addChild(newNode);
-    } else {
-      scene?.addChild(newNode);
+      focusNode.children.push(mesh);
+    } else if (scene){
+      scene.children.push(mesh);
     }
     rerenderSceneGraph();
   };
