@@ -17,6 +17,7 @@ import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { SphereGeometry } from "../geometry/sphere-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
+import { PointLight } from "../light/point-light";
 import { ParallelepipedHollowGeometry } from "../geometry/parallelepiped-hollow-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
@@ -201,6 +202,8 @@ export async function loadGLTF(
     }
   });
 
+  const lights: PointLight[] = [];
+
   const nodes = gltf.nodes.map((node, index) => {
     const transform = new Transform(
       Vector3.fromArray(node.translation),
@@ -211,9 +214,11 @@ export async function loadGLTF(
     if (gltf.scene === index) {
       return new Scene(
         parseColor(node.background || "0x000000"),
-        node.lightPos && Vector3.fromArray(node.lightPos),
-        node.lightDir && Vector3.fromArray(node.lightDir),
-        node.lightRadius ?? 100
+        node.directional ?? true,
+        node.directionalDir
+          ? Vector3.fromArray(node.directionalDir)
+          : undefined,
+        parseColor(node.directionalColor || "0xffffff")
       );
     }
 
@@ -240,6 +245,21 @@ export async function loadGLTF(
         meshGL.name = node.name;
       }
       return meshGL;
+    } else if (node.light !== undefined) {
+      const light = new PointLight(
+        app.basicProgram,
+        node.light.radius,
+        node.light.color ? parseColor(node.light.color) : undefined
+      );
+      light.transform = transform;
+      if (node.name) {
+        light.name = node.name;
+      }
+      lights.push(light);
+      if (lights.length > 3) {
+        throw new Error("Only 3 lights are supported");
+      }
+      return light;
     } else {
       const nodeGL = new GLNode(transform);
       if (node.name) {
@@ -284,6 +304,7 @@ export async function loadGLTF(
       materials,
       geometries,
       textures,
+      lights,
     ] as const;
   } else if (isScene && gltf.scene !== undefined) {
     const scene = nodes[gltf.scene];
@@ -294,6 +315,7 @@ export async function loadGLTF(
     scene.geometries = geometries;
     scene.textures = textures;
     scene.images = images;
+    scene.lights = lights;
     return [scene, animations] as const;
   } else {
     throw new Error(isScene ? "Scene not found" : "Root node not found");

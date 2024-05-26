@@ -1,0 +1,780 @@
+{
+  "scene": 0,
+  "root": 0,
+  "nodes": [
+    {
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "children": [
+        1
+      ],
+      "name": "GLNode",
+      "background": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "lightPos": [
+        0,
+        10,
+        50
+      ],
+      "lightDir": [
+        0,
+        -1,
+        -1
+      ],
+      "lightRadius": 100
+    },
+    {
+      "translation": [
+        -8,
+        -50,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        15.712000000057829
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "children": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "name": "Hand"
+    },
+    {
+      "translation": [
+        -14.4,
+        -9.7,
+        -9.5
+      ],
+      "rotation": [
+        0,
+        -35,
+        0
+      ],
+      "scale": [
+        7,
+        5.9,
+        1.5
+      ],
+      "children": [],
+      "name": "Palm",
+      "mesh": 0
+    },
+    {
+      "translation": [
+        94.3,
+        54.4,
+        64.9
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        21.1
+      ],
+      "scale": [
+        3.1,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Thumb 1",
+      "mesh": 1
+    },
+    {
+      "translation": [
+        129.8,
+        76.4,
+        89.9
+      ],
+      "rotation": [
+        0,
+        -35,
+        35.6
+      ],
+      "scale": [
+        1.8,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Thumb 2",
+      "mesh": 2
+    },
+    {
+      "translation": [
+        52.1,
+        108.3,
+        36.7
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        86.1
+      ],
+      "scale": [
+        3.1,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Index 1",
+      "mesh": 3
+    },
+    {
+      "translation": [
+        56.6,
+        180.4,
+        40
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        86.1
+      ],
+      "scale": [
+        1.8,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Index 2",
+      "mesh": 4
+    },
+    {
+      "translation": [
+        59.8,
+        227.2,
+        42.7
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        86.1
+      ],
+      "scale": [
+        1.4,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Index 3",
+      "mesh": 5
+    },
+    {
+      "translation": [
+        3,
+        108.3,
+        2.4
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        90.1
+      ],
+      "scale": [
+        3.1,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Middle 1",
+      "mesh": 6
+    },
+    {
+      "translation": [
+        2.6,
+        181.7,
+        4.2
+      ],
+      "rotation": [
+        0,
+        -36.9,
+        89.3
+      ],
+      "scale": [
+        2,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Middle 2",
+      "mesh": 7
+    },
+    {
+      "translation": [
+        4,
+        230.4,
+        2
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        89.7
+      ],
+      "scale": [
+        2.1,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Middle 3",
+      "mesh": 8
+    },
+    {
+      "translation": [
+        -40.4,
+        108.3,
+        -32.8
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        91.2
+      ],
+      "scale": [
+        2.4,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Ring 1",
+      "mesh": 9
+    },
+    {
+      "translation": [
+        -40.8,
+        166.9,
+        -33.8
+      ],
+      "rotation": [
+        0,
+        -35.5,
+        91.2
+      ],
+      "scale": [
+        1.5,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Ring 2",
+      "mesh": 10
+    },
+    {
+      "translation": [
+        -41.5,
+        210.4,
+        -34.8
+      ],
+      "rotation": [
+        0,
+        -35.4,
+        91.3
+      ],
+      "scale": [
+        1.4,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Ring 3",
+      "mesh": 11
+    },
+    {
+      "translation": [
+        -87.2,
+        88.4,
+        -60.7
+      ],
+      "rotation": [
+        0,
+        -33.8,
+        112.9
+      ],
+      "scale": [
+        1.6,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Pinky 1",
+      "mesh": 12
+    },
+    {
+      "translation": [
+        -100.8,
+        125.7,
+        -69.6
+      ],
+      "rotation": [
+        0,
+        -33.9,
+        112
+      ],
+      "scale": [
+        1.5,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Pinky 2",
+      "mesh": 13
+    },
+    {
+      "translation": [
+        -113.7,
+        163.6,
+        -78.3
+      ],
+      "rotation": [
+        0,
+        -33.8,
+        112.1
+      ],
+      "scale": [
+        1.3,
+        1.8,
+        1.5
+      ],
+      "children": [],
+      "name": "Pinky 3",
+      "mesh": 14
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/skin.jpg"
+    }
+  ],
+  "materials": [
+    {
+      "type": "basic",
+      "texture": 0,
+      "basic": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "textures": [
+    {
+      "source": 0
+    }
+  ],
+  "animations": [
+    {
+      "root": 1,
+      "clip": {
+        "name": "Wave",
+        "frames": [
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                3.2,
+                -25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                -25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        ]
+      },
+      "fps": 6,
+      "tween": "linear"
+    }
+  ],
+  "geometries": [
+    {
+      "type": "cube",
+      "vertex": [
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15
+      ],
+      "texcoord": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "cube": {
+        "size": 30
+      }
+    }
+  ]
+}

@@ -26,9 +26,15 @@ export const GLTFSchema = z.object({
       mesh: arrayIndex().optional(),
       name: z.string().optional(),
       background: ColorSchema.optional(),
-      lightPos: z.array(z.number()).length(3).optional(),
-      lightDir: z.array(z.number()).length(3).optional(),
-      lightRadius: z.number().optional(),
+      directional: z.boolean().optional(),
+      directionalColor: ColorSchema.optional(),
+      directionalDir: z.array(z.number()).length(3).optional(),
+      light: z
+        .object({
+          radius: z.number().positive(),
+          color: ColorSchema.optional(),
+        })
+        .optional(),
     })
   ),
   meshes: z.array(

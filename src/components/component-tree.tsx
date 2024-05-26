@@ -16,6 +16,7 @@ import { SphereGeometry } from "@/lib/geometry/sphere-geometry";
 import { TorusGeometry } from "@/lib/geometry/torus-geometry";
 import { loadGLTF } from "@/lib/gltf/loader";
 import { saveGLTF } from "@/lib/gltf/saver";
+import { PointLight } from "@/lib/light/point-light";
 import { BasicMaterial } from "@/lib/material/basic-material";
 import clsx from "clsx";
 import {
@@ -44,6 +45,7 @@ const meshOptions = {
   parallelepipedhollow: "Parallelepiped Hollow",
   node: "Node",
   text: "Text",
+  light: "Point Light",
 };
 
 export function ComponentTree() {
@@ -99,6 +101,13 @@ export function ComponentTree() {
       newNode = new Mesh(geometry, material);
     } else if (selectedOption === "text") {
       newNode = new TextNode("Text", 12, Color.WHITE);
+    } else if (selectedOption === "light") {
+      if (scene && scene.lights.length > 2) {
+        alert("You can only have 3 lights in a scene");
+        return;
+      }
+      newNode = new PointLight(app.basicProgram);
+      scene?.lights.push(newNode as PointLight);
     } else {
       newNode = new GLNode();
     }
@@ -257,6 +266,14 @@ function Node({ node }: { node: GLNode }) {
       <ContextMenuContent>
         <ContextMenuItem
           onSelect={() => {
+            if (node instanceof TextNode) {
+              node.el?.remove();
+              node.el = null;
+            } else if (node instanceof PointLight) {
+              if (scene) {
+                scene.lights = scene.lights.filter((l) => l !== node);
+              }
+            }
             node.removeFromParent();
             if (focusNode === node) {
               setFocusedNode(null);

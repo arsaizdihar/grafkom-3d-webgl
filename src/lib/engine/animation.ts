@@ -165,35 +165,28 @@ export class AnimationRunner {
     node: GLNode = this.root,
     names: string[] = []
   ) {
+    let fNum = frameNumber;
     let exactPrevFrame: AnimationPath | undefined = undefined;
     let prevCount = 0;
-    while (
-      !exactPrevFrame?.keyframe &&
-      frameNumber >= 0 &&
-      frameNumber < this.length
-    ) {
-      exactPrevFrame = this.currentAnimation.frames[frameNumber];
+    while (!exactPrevFrame?.keyframe && fNum >= 0 && fNum < this.length) {
+      exactPrevFrame = this.currentAnimation.frames[fNum];
       names.forEach((name) => {
         exactPrevFrame = exactPrevFrame?.children?.[name];
       });
       prevCount++;
-      frameNumber -= this.reverse ? -1 : 1;
+      fNum -= this.reverse ? -1 : 1;
     }
     let exactNextFrame: AnimationPath | undefined = undefined;
     let nextCount = 0;
 
-    frameNumber = this.getFrameNumberDelta(this.reverse ? -1 : 1);
-    while (
-      !exactNextFrame?.keyframe &&
-      frameNumber >= 0 &&
-      frameNumber < this.length
-    ) {
-      exactNextFrame = this.currentAnimation.frames[frameNumber];
+    fNum = this.getFrameNumberDelta(this.reverse ? -1 : 1);
+    while (!exactNextFrame?.keyframe && fNum >= 0 && fNum < this.length) {
+      exactNextFrame = this.currentAnimation.frames[fNum];
       names.forEach((name) => {
         exactNextFrame = exactNextFrame?.children?.[name];
       });
       nextCount++;
-      frameNumber += this.reverse ? -1 : 1;
+      fNum += this.reverse ? -1 : 1;
     }
 
     if (exactNextFrame?.keyframe && exactPrevFrame?.keyframe) {

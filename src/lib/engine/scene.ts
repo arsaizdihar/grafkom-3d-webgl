@@ -1,3 +1,4 @@
+import { PointLight } from "../light/point-light";
 import { ShaderMaterial } from "../material/shader-material";
 import { BufferGeometry } from "./buffer-geometry";
 import { Color } from "./color";
@@ -14,13 +15,13 @@ export enum LightType {
 export class Scene extends GLNode {
   private _toControl: GLNode | null = null;
   private static multiplier = 50;
+  public lights: PointLight[] = [];
 
   constructor(
     public background: Color,
-    public lightPos = new Vector3(0, 10, 50),
-    public lightDir = new Vector3(0, -1, -1),
-    public lightRadius = 500,
-    public lightType = LightType.Directional,
+    public onDirectional = true,
+    public directionalDir: Vector3 = new Vector3(0, -1, -1),
+    public directionalColor: Color = Color.WHITE,
     public materials: ShaderMaterial[] = [],
     public geometries: BufferGeometry[] = [],
     public textures: Texture[] = [],

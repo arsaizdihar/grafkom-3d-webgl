@@ -10,7 +10,7 @@ export class Color {
   }
 
   get hexString() {
-    return "#" + this.hex.toString(16);
+    return "#" + this.hex.toString(16).padStart(6, "0");
   }
 
   private constructor(value: number[] = [1, 1, 1, 1]) {

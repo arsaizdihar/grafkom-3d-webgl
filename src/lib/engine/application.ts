@@ -9,7 +9,7 @@ import { AnimationRunner } from "./animation";
 import { Camera } from "./camera";
 import { Mesh } from "./mesh";
 import { GLNode } from "./node";
-import { LightType, Scene } from "./scene";
+import { Scene } from "./scene";
 import { TextNode } from "./text-node";
 import { Vector3 } from "./vector";
 
@@ -59,10 +59,9 @@ export class Application {
         specularTexture: { type: "texture" },
         normalTexture: { type: "texture" },
         shininess: { type: "uniform1f" },
-        lightPos: { type: "uniform3f" },
         lightDir: { type: "uniform3f" },
-        lightType: { type: "uniform1i" },
-        lightRadius: { type: "uniform1f" },
+        enableDirLight: { type: "uniform1i" },
+        lightColor: { type: "uniform4f" },
         texture: { type: "texture" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
@@ -78,6 +77,36 @@ export class Application {
         },
         cameraPos: {
           type: "uniform3f",
+        },
+        numLights: {
+          type: "uniform1i",
+        },
+        "lights[0].position": {
+          type: "uniform3f",
+        },
+        "lights[0].color": {
+          type: "uniform4f",
+        },
+        "lights[0].radius": {
+          type: "uniform1f",
+        },
+        "lights[1].position": {
+          type: "uniform3f",
+        },
+        "lights[1].color": {
+          type: "uniform4f",
+        },
+        "lights[1].radius": {
+          type: "uniform1f",
+        },
+        "lights[2].position": {
+          type: "uniform3f",
+        },
+        "lights[2].color": {
+          type: "uniform4f",
+        },
+        "lights[2].radius": {
+          type: "uniform1f",
         },
       },
     });
@@ -176,25 +205,7 @@ export class Application {
       }
       this.time = time;
 
-      this.currentProgram.setUniforms({
-        viewProjectionMat: [false, camera.viewProjectionMatrix.el],
-      });
-      if (this.currentProgram === this.phongProgram) {
-        this.currentProgram.setUniforms({
-          lightType: [scene.lightType],
-          cameraPos: camera.position,
-        });
-        if (scene.lightType === LightType.Directional) {
-          this.currentProgram.setUniforms({
-            lightDir: scene.lightDir.toArray(),
-          });
-        } else {
-          this.currentProgram.setUniforms({
-            lightPos: scene.lightPos.toArray(),
-            lightRadius: [scene.lightRadius],
-          });
-        }
-      }
+      this.setupUniforms(scene, camera);
 
       // set point thickness
       while (nodes.length) {
@@ -204,25 +215,7 @@ export class Application {
           if (program !== this.currentProgram) {
             this.currentProgram = program;
             this.gl.useProgram(program.program);
-            this.currentProgram.setUniforms({
-              viewProjectionMat: [false, camera.viewProjectionMatrix.el],
-            });
-            if (this.currentProgram === this.phongProgram) {
-              this.currentProgram.setUniforms({
-                lightType: [scene.lightType],
-                cameraPos: camera.position,
-              });
-              if (scene.lightType === LightType.Directional) {
-                this.currentProgram.setUniforms({
-                  lightDir: scene.lightDir.toArray(),
-                });
-              } else {
-                this.currentProgram.setUniforms({
-                  lightPos: scene.lightPos.toArray(),
-                  lightRadius: [scene.lightRadius],
-                });
-              }
-            }
+            this.setupUniforms(scene, camera);
           }
           if (node.material instanceof PhongMaterial) {
             const program = node.material.program;
@@ -281,5 +274,28 @@ export class Application {
     return () => {
       end = true;
     };
+  }
+
+  private setupUniforms(scene: Scene, camera: Camera) {
+    this.currentProgram.setUniforms({
+      viewProjectionMat: [false, camera.viewProjectionMatrix.el],
+    });
+    if (this.currentProgram === this.phongProgram) {
+      this.currentProgram.setUniforms({
+        cameraPos: camera.position,
+        lightDir: scene.directionalDir.toArray(),
+        enableDirLight: [scene.onDirectional ? 1 : 0],
+        lightColor: scene.directionalColor.value,
+        numLights: [scene.lights.length],
+      });
+
+      scene.lights.forEach((light, index) => {
+        this.currentProgram.setUniforms({
+          [`lights[${index}].position`]: light.worldPos.toArray(),
+          [`lights[${index}].color`]: light.color.value,
+          [`lights[${index}].radius`]: [light.radius],
+        });
+      });
+    }
   }
 }

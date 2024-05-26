@@ -12,6 +12,7 @@ import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { SphereGeometry } from "../geometry/sphere-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
+import { PointLight } from "../light/point-light";
 import { ParallelepipedHollowGeometry } from "../geometry/parallelepiped-hollow-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
@@ -50,14 +51,18 @@ export async function saveGLTF(
       children: [],
     };
     nodeData.name = node.name;
-
-    if (node instanceof Mesh) {
+    if (node instanceof PointLight) {
+      nodeData.light = {
+        radius: node.radius,
+        color: node.color.value,
+      };
+    } else if (node instanceof Mesh) {
       nodeData.mesh = processMesh(node);
     } else if (node instanceof Scene) {
       nodeData.background = node.background.value;
-      nodeData.lightPos = node.lightPos.toArray();
-      nodeData.lightDir = node.lightDir.toArray();
-      nodeData.lightRadius = node.lightRadius;
+      nodeData.directional = node.onDirectional;
+      nodeData.directionalColor = node.directionalColor.value;
+      nodeData.directionalDir = node.directionalDir.toArray();
     }
     result.nodes.push(nodeData);
     nodeRefs.push(node);
