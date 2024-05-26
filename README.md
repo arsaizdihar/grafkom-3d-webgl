@@ -24,6 +24,14 @@
 2. Install dependencies (you can use pnpm instead) ```npm install -g pnpm``` and ```pnpm install```
 3. Run ```pnpm run dev``` and then open it on ```http://localhost:5173/```
 
+## Work Division
+| Nim      | Task                        |
+| :------: | :-------------------------: |
+| 13521051 | Component editor, load save UI, create node UI |
+| 13521055 | Camera projection, camera editor, scene graph
+| 13521096 | Transform editor            |
+| 13521101 | Setup, load save model, shaders, maths, textures, shading, mappings (normal, displacement), animation, mesh editor, texture editor, animation management, animation editor, character controller, point lighting, multiple lighting, text rendering |
+
 ## Hollow Objects
 
 1. Parallelepiped Hollow (13521051)
