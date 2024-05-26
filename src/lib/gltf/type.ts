@@ -10,6 +10,7 @@ const GeometryEnum = [
   "torus",
   "cubehollow",
   "parallelepiped",
+  "sphere",
 ] as const;
 
 export const GLTFSchema = z.object({

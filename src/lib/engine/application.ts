@@ -66,6 +66,7 @@ export class Application {
         texture: { type: "texture" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
+        viewPos: { type: "uniform3f" },
         displacementTexture: {
           type: "texture",
         },

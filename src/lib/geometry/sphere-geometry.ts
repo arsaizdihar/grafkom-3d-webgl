@@ -1,5 +1,5 @@
 import { BufferAttribute } from "../engine/buffer-attribute";
-import { BufferGeometry } from "../engine/buffer-geometry";
+import { BufferGeometry, GeometryData } from "../engine/buffer-geometry";
 import { Vector3 } from "../engine/vector";
 
 export class SphereGeometry extends BufferGeometry {
@@ -10,7 +10,8 @@ export class SphereGeometry extends BufferGeometry {
     public phiStart = 0,
     public phiLength = Math.PI * 2,
     public thetaStart = 0,
-    public thetaLength = Math.PI
+    public thetaLength = Math.PI,
+    data?: GeometryData
   ) {
     super();
     widthSegments = Math.max(3, Math.floor(widthSegments));

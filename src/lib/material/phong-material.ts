@@ -49,7 +49,7 @@ export class PhongMaterial extends ShaderMaterial {
       ...super.getUniforms(gl),
       ambientColor: this.ambient.value,
       diffuseColor: this.diffuse.value,
-      specular: this.specular.value,
+      specularColor: this.specular.value,
       shininess: [this.shininess],
       specularTexture: [
         this.specularTexture?.texture ?? Texture.WHITE(gl).texture,

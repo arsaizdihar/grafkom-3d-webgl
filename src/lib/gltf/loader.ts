@@ -15,6 +15,7 @@ import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
+import { SphereGeometry } from "../geometry/sphere-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
@@ -140,6 +141,8 @@ export async function loadGLTF(
         return new PlaneGeometry(
           geometry.plane.width,
           geometry.plane.height,
+          50,
+          50,
           data
         );
       case "pyramidhollow":
@@ -177,6 +180,17 @@ export async function loadGLTF(
           throw new Error("Parallelepiped geometry missing parameter");
         }
         return new ParallelepipedGeometry(geometry.parallelepiped.size, data);
+      case "sphere":
+        return new SphereGeometry(
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          data
+        );
     }
   });
 

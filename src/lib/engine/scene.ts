@@ -17,9 +17,9 @@ export class Scene extends GLNode {
 
   constructor(
     public background: Color,
-    public lightPos = new Vector3(100, 100, 100),
+    public lightPos = new Vector3(0, 10, 50),
     public lightDir = new Vector3(0, -1, -1),
-    public lightRadius = 100,
+    public lightRadius = 500,
     public lightType = LightType.Directional,
     public materials: ShaderMaterial[] = [],
     public geometries: BufferGeometry[] = [],

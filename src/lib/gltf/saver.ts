@@ -10,6 +10,7 @@ import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
 import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
+import { SphereGeometry } from "../geometry/sphere-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
@@ -129,6 +130,8 @@ export async function saveGLTF(
         geometryData.parallelepiped = {
           size: geometry.size,
         };
+      } else if (geometry instanceof SphereGeometry) {
+        geometryData.type = "sphere";
       }
       result.geometries.push(geometryData);
       index = geometryRefs.length - 1;

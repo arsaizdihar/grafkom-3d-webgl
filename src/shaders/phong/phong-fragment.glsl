@@ -40,8 +40,9 @@ void main() {
       // calculate intensity based on distance
       // Attenuation factors can be adjusted as needed
       float constant = 1.0;
-      float linear = 0.09 / u_lightRadius;
-      float quadratic = 0.032 / (u_lightRadius * u_lightRadius);
+      float x = 5.0;
+      float linear = 0.09 / x;
+      float quadratic = 0.032 / (x * x);
       float attenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));
       lambertian *= attenuation;
     }
