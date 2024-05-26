@@ -20,7 +20,7 @@
       ],
       "children": [
         1,
-        24
+        25
       ],
       "name": "GLNode",
       "background": [
@@ -64,7 +64,8 @@
         10,
         14,
         18,
-        21
+        21,
+        24
       ],
       "name": "Car"
     },
@@ -543,8 +544,27 @@
     {
       "translation": [
         0,
-        64.8,
-        52.4
+        128.3,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "children": [],
+      "name": "Text"
+    },
+    {
+      "translation": [
+        86.1,
+        18.8,
+        115.7
       ],
       "rotation": [
         0,
