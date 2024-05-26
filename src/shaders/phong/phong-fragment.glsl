@@ -2,7 +2,6 @@ precision mediump float;
 
 varying vec2 v_texcoord;
 varying vec3 v_vertPos;
-varying vec3 v_viewDir;
 varying mat3 v_TBN;
 
 uniform vec4 u_ambientColor;
@@ -13,6 +12,7 @@ uniform vec3 u_lightPos;
 uniform vec3 u_lightDir;
 uniform float u_lightRadius;
 uniform int u_lightType;
+uniform vec3 u_cameraPos;
 
 uniform sampler2D u_texture;
 uniform sampler2D u_specularTexture;
@@ -30,30 +30,30 @@ void main() {
   // Lambert's cosine law
   float lambertian = max(dot(N, L), 0.0);
   float specular = 0.0;
+  float attenuation = 1.0;
 
   // If the light is a point light, check if the light is within the radius
   if(u_lightType == 1) {
     float distance = length(u_lightPos - v_vertPos);
     if(distance > u_lightRadius) {
-      lambertian = 0.0;
+      attenuation = 0.0;
     } else {
       // calculate intensity based on distance
       // Attenuation factors can be adjusted as needed
-      float constant = 1.0;
+      float constant = 0.5;
       float x = 5.0;
       float linear = 0.09 / x;
-      float quadratic = 0.032 / (x * x);
-      float attenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));
-      lambertian *= attenuation;
+      float quadratic = 0.01 / (x * x);
+      attenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));
     }
   }
-
+  lambertian *= attenuation;
   if(lambertian > 0.0) {
     vec3 R = reflect(-L, N);      // Reflected light vector
-    vec3 V = normalize(v_viewDir); // Vector to viewer
+    vec3 V = normalize(u_cameraPos - v_vertPos); // Vector to viewer
     // Compute the specular term
     float specAngle = max(dot(R, V), 0.0);
-    specular = pow(specAngle, u_shininess);
+    specular = pow(specAngle, u_shininess) * attenuation;
   }
   gl_FragColor = vec4((u_ambientColor +
     lambertian * diffuseColor +

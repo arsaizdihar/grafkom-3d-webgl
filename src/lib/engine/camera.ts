@@ -1,10 +1,12 @@
 import { Matrix4 } from "../math/m4";
 import { GLNode } from "./node";
+import { Vector3 } from "./vector";
 
 export abstract class Camera extends GLNode {
   protected _projectionMatrix = Matrix4.identity();
   private _invWorldMatrix = Matrix4.identity();
   private _isCameraDirty = true;
+  private _vec = new Vector3();
 
   get isCameraDirty() {
     return this._isCameraDirty;
@@ -33,4 +35,10 @@ export abstract class Camera extends GLNode {
   }
 
   abstract computeProjectionMatrix(): void;
+
+  get position() {
+    const mat = this.worldMatrix;
+    const vec = mat.applyVector3(this._vec.copy(this.transform.position));
+    return vec.toArray();
+  }
 }

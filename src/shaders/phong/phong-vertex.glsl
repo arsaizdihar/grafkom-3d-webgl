@@ -12,7 +12,6 @@ uniform float u_displacementBias;
 
 varying vec2 v_texcoord;
 varying vec3 v_vertPos;
-varying vec3 v_viewDir;
 varying mat3 v_TBN;
 
 void main() {
@@ -27,5 +26,4 @@ void main() {
   v_TBN = mat3(T, B, N);
   v_vertPos = position4.xyz;
   v_texcoord = a_texcoord;
-  v_viewDir = gl_Position.xyz;
 }

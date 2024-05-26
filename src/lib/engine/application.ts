@@ -76,6 +76,9 @@ export class Application {
         displacementBias: {
           type: "uniform1f",
         },
+        cameraPos: {
+          type: "uniform3f",
+        },
       },
     });
     this.currentProgram = this.phongProgram;
@@ -179,6 +182,7 @@ export class Application {
       if (this.currentProgram === this.phongProgram) {
         this.currentProgram.setUniforms({
           lightType: [scene.lightType],
+          cameraPos: camera.position,
         });
         if (scene.lightType === LightType.Directional) {
           this.currentProgram.setUniforms({
@@ -206,6 +210,7 @@ export class Application {
             if (this.currentProgram === this.phongProgram) {
               this.currentProgram.setUniforms({
                 lightType: [scene.lightType],
+                cameraPos: camera.position,
               });
               if (scene.lightType === LightType.Directional) {
                 this.currentProgram.setUniforms({
