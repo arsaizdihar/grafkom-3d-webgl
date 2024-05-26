@@ -683,24 +683,36 @@ export class Matrix4 {
     _x.crossVectors(up, _z);
 
     if (_x.length() === 0) {
-      if ( Math.abs( up.z ) === 1 ) {
-				_z.x += 0.0001;
-			} else {
-				_z.z += 0.0001;
-			}
+      if (Math.abs(up.z) === 1) {
+        _z.x += 0.0001;
+      } else {
+        _z.z += 0.0001;
+      }
 
-			_z.normalize();
-			_x.crossVectors(up, _z);
+      _z.normalize();
+      _x.crossVectors(up, _z);
     }
 
     _x.normalize();
     _y.crossVectors(_z, _x);
 
-    te[ 0 ] = _x.x; te[ 4 ] = _y.x; te[ 8 ] = _z.x; te[ 12 ] = eye.x;
-		te[ 1 ] = _x.y; te[ 5 ] = _y.y; te[ 9 ] = _z.y; te[ 13 ] = eye.y;
-		te[ 2 ] = _x.z; te[ 6 ] = _y.z; te[ 10 ] = _z.z; te[ 14 ] = eye.z;
-    te[ 3 ] = 0; te[ 7 ] = 0; te[ 11 ] = 0; te[ 15 ] = 1;
-    
+    te[0] = _x.x;
+    te[4] = _y.x;
+    te[8] = _z.x;
+    te[12] = eye.x;
+    te[1] = _x.y;
+    te[5] = _y.y;
+    te[9] = _z.y;
+    te[13] = eye.y;
+    te[2] = _x.z;
+    te[6] = _y.z;
+    te[10] = _z.z;
+    te[14] = eye.z;
+    te[3] = 0;
+    te[7] = 0;
+    te[11] = 0;
+    te[15] = 1;
+
     return this;
   }
 
@@ -710,13 +722,37 @@ export class Matrix4 {
     const y = Vector3.cross(z, x).normalize();
 
     const te = [
-      x.x, x.y, x.z, 0,
-      y.x, y.y, y.z, 0,
-      z.x, z.y, z.z, 0,
-      eye.x, eye.y, eye.z, 1
+      x.x,
+      x.y,
+      x.z,
+      0,
+      y.x,
+      y.y,
+      y.z,
+      0,
+      z.x,
+      z.y,
+      z.z,
+      0,
+      eye.x,
+      eye.y,
+      eye.z,
+      1,
     ];
 
     return new Matrix4(te);
+  }
+
+  applyVector3(v: Vector3) {
+    // apply compose matrix to v
+    const x = v.x,
+      y = v.y,
+      z = v.z;
+    const e = this.el;
+    v.x = e[0] * x + e[4] * y + e[8] * z + e[12];
+    v.y = e[1] * x + e[5] * y + e[9] * z + e[13];
+    v.z = e[2] * x + e[6] * y + e[10] * z + e[14];
+    return v;
   }
 
   toString() {

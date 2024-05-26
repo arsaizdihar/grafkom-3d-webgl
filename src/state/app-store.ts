@@ -26,7 +26,7 @@ type AppStore = {
   app: Application | null;
   setApp: (app: Application) => void;
   scene: Scene | null;
-  setScene: (scene: Scene) => void;
+  setScene: (scene: Scene | ((scene: Scene | null) => Scene)) => void;
   currentCamera: Camera | null;
   setCurrentCamera: (camera: Camera) => void;
   focusedNode: GLNode | null;
@@ -51,7 +51,13 @@ export const useApp = create<AppStore>()((set) => ({
   app: null,
   setApp: (app) => set({ app }),
   scene: null,
-  setScene: (scene) => set({ scene }),
+  setScene: (arg) =>
+    set(({ scene }) => {
+      if (typeof arg === "function") {
+        return { scene: arg(scene) };
+      }
+      return { scene: arg };
+    }),
   currentCamera: null,
   setCurrentCamera: (camera) => set({ currentCamera: camera }),
   focusedNode: null,

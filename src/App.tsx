@@ -67,7 +67,12 @@ function App() {
       }
       const scene = new Scene(Color.hex(0x171717));
       const animations: AnimationRunner[] = [];
-      setScene(scene);
+      setScene((prev) => {
+        if (prev) {
+          app.restart(prev);
+        }
+        return scene;
+      });
       setAnimations(animations);
       setFocusedNode(null);
     }
@@ -97,7 +102,7 @@ function App() {
         ></div>
       </div>
       <div
-        className="flex-1 canvas-container max-w-3/4 overflow-hidden"
+        className="flex-1 canvas-container max-w-3/4 overflow-hidden relative"
         ref={containterRef}
       >
         <canvas ref={canvasRef}></canvas>

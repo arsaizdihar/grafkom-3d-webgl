@@ -7,6 +7,7 @@ import { BufferGeometry } from "@/lib/engine/buffer-geometry";
 import { Color } from "@/lib/engine/color";
 import { Mesh } from "@/lib/engine/mesh";
 import { Scene } from "@/lib/engine/scene";
+import { TextNode } from "@/lib/engine/text-node";
 import { CubeGeometry } from "@/lib/geometry/cube-geometry";
 import { ParallelepipedGeometry } from "@/lib/geometry/parallelepiped-geometry";
 import { PlaneGeometry } from "@/lib/geometry/plane-geometry";
@@ -40,6 +41,7 @@ const meshOptions = {
   parallelepiped: "Parallelepiped",
   sphere: "Sphere",
   node: "Node",
+  text: "Text",
 };
 
 export function ComponentTree() {
@@ -90,6 +92,8 @@ export function ComponentTree() {
     }
     if (geometry) {
       newNode = new Mesh(geometry, material);
+    } else if (selectedOption === "text") {
+      newNode = new TextNode("Text", 12, Color.WHITE);
     } else {
       newNode = new GLNode();
     }

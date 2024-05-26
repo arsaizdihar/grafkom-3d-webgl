@@ -126,4 +126,10 @@ export class GLNode {
     });
     this.children = [];
   }
+
+  restart() {
+    this.children.forEach((child) => {
+      child.restart();
+    });
+  }
 }

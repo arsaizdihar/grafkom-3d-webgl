@@ -10,6 +10,8 @@ import { Camera } from "./camera";
 import { Mesh } from "./mesh";
 import { GLNode } from "./node";
 import { LightType, Scene } from "./scene";
+import { TextNode } from "./text-node";
+import { Vector3 } from "./vector";
 
 export class Application {
   public gl;
@@ -112,6 +114,13 @@ export class Application {
     } else {
       node.children.forEach(this.recomputeIfDirty.bind(this));
     }
+  }
+
+  restart(scene: Scene) {
+    this.container.querySelectorAll("span").forEach((el) => {
+      el.remove();
+    });
+    scene.restart();
   }
 
   render(scene: Scene, camera: Camera, animations: AnimationRunner[] = []) {
@@ -236,6 +245,24 @@ export class Application {
             this.gl.drawArrays(this.gl.TRIANGLES, 0, position.count);
             this.gl.bindTexture(this.gl.TEXTURE_2D, null);
           }
+        } else if (node instanceof TextNode) {
+          let el = node.el;
+          if (!el) {
+            el = document.createElement("span");
+            el.className = "absolute select-none block";
+            this.container.appendChild(el);
+          }
+          node.el = el;
+          node.update();
+          const mat = camera.viewProjectionMatrix
+            .clone()
+            .multiply(node.worldMatrix);
+          const position = mat.applyVector3(new Vector3(0, 0, 0));
+          position.x = (position.x / position.z + 1) / 2;
+          position.y = (-position.y / position.z + 1) / 2;
+          el.style.left = `${position.x * this.container.clientWidth - el.clientWidth / 2}px`;
+          el.style.top = `${position.y * this.container.clientHeight - el.clientHeight / 2}px`;
+          el.style.fontSize = `${node.fontSize}px`;
         }
         nodes.push(...node.children);
       }

@@ -7,12 +7,15 @@ import { Button } from "./ui/button";
 
 export function Load() {
   const fileRef = useRef<HTMLInputElement>(null);
-  const { app, setAnimations, setScene, setFocusedNode } = useApp((state) => ({
-    app: state.app,
-    setScene: state.setScene,
-    setAnimations: state.setAnimations,
-    setFocusedNode: state.setFocusedNode,
-  }));
+  const { app, setAnimations, setScene, setFocusedNode, scene } = useApp(
+    (state) => ({
+      app: state.app,
+      setScene: state.setScene,
+      scene: state.scene,
+      setAnimations: state.setAnimations,
+      setFocusedNode: state.setFocusedNode,
+    })
+  );
   return (
     <div className="mt-5 flex gap-2">
       <input
@@ -26,10 +29,14 @@ export function Load() {
           const file = e.target.files?.[0];
           if (!file) return;
           const reader = new FileReader();
+          const prevScene = scene;
           reader.onload = async () => {
             try {
               const data = reader.result as string;
               const [scene, animations] = await loadGLTF(JSON.parse(data), app);
+              if (prevScene) {
+                app.restart(prevScene);
+              }
               setScene(scene as Scene);
               setAnimations(animations);
               setFocusedNode(null);

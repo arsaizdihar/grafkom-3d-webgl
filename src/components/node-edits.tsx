@@ -1,9 +1,11 @@
 import { Mesh } from "@/lib/engine/mesh";
+import { TextNode } from "@/lib/engine/text-node.ts";
 import { useApp } from "@/state/app-store";
 import { CameraEdits } from "./camera-edits";
 import { LightEdits } from "./light-edits.tsx";
 import { MeshEdits } from "./mesh-edits";
 import { SceneEdits } from "./scene-edits.tsx";
+import { TextEdits } from "./text-edits.tsx";
 import { TransformEdits } from "./transform-edits.tsx";
 import { Input } from "./ui/input";
 
@@ -47,6 +49,9 @@ export function NodeEdits() {
       />
       <hr className="border-slate-400 my-4" />
       {node instanceof Mesh && <MeshEdits mesh={node} key={node.id + "mesh"} />}
+      {node instanceof TextNode && (
+        <TextEdits node={node} key={node.id + "text"} />
+      )}
       <hr className="border-slate-400 my-4" />
     </div>
   );
