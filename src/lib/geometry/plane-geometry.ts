@@ -20,28 +20,27 @@ export class PlaneGeometry extends BufferGeometry {
       -hh, // back left
       hw,
       0,
+      hh, // front right
+      hw,
+      0,
       -hh, // back right
+      -hw,
+      0,
+      hh, // front left
       hw,
       0,
       hh, // front right
       -hw,
       0,
-      hh, // front left
-      -hw, // use indices instead
-      0,
       -hh, // back left
-      hw,
-      0,
-      hh, // front right
     ]);
-    // TODO: indices
-    // this.setIndices(
-    //   new BufferAttribute(new Uint16Array([0, 1, 2, 3, 0, 2]), 1)
-    // );
     this.setAttribute("position", new BufferAttribute(vertices, 3));
     this.setAttribute(
       "texcoord",
-      new BufferAttribute(new Float32Array([0, 0, 0, 1, 1, 1, 0, 1]), 2)
+      new BufferAttribute(
+        new Float32Array([0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0]),
+        2
+      )
     );
     this.calculateNormals();
   }

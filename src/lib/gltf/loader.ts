@@ -190,7 +190,9 @@ export async function loadGLTF(
     if (gltf.scene === index) {
       return new Scene(
         parseColor(node.background || "0x000000"),
-        node.lightPos && Vector3.fromArray(node.lightPos)
+        node.lightPos && Vector3.fromArray(node.lightPos),
+        node.lightDir && Vector3.fromArray(node.lightDir),
+        node.lightRadius ?? 100
       );
     }
 

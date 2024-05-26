@@ -9,7 +9,7 @@ import { AnimationRunner } from "./animation";
 import { Camera } from "./camera";
 import { Mesh } from "./mesh";
 import { GLNode } from "./node";
-import { Scene } from "./scene";
+import { LightType, Scene } from "./scene";
 
 export class Application {
   public gl;
@@ -57,6 +57,9 @@ export class Application {
         normalTexture: { type: "texture" },
         shininess: { type: "uniform1f" },
         lightPos: { type: "uniform3f" },
+        lightDir: { type: "uniform3f" },
+        lightType: { type: "uniform1i" },
+        lightRadius: { type: "uniform1f" },
         texture: { type: "texture" },
         viewProjectionMat: { type: "uniformMatrix4fv" },
         normalMat: { type: "uniformMatrix4fv" },
@@ -138,7 +141,19 @@ export class Application {
         viewProjectionMat: [false, camera.viewProjectionMatrix.el],
       });
       if (this.currentProgram === this.phongProgram) {
-        this.currentProgram.setUniforms({ lightPos: scene.lightPos.toArray() });
+        this.currentProgram.setUniforms({
+          lightType: [scene.lightType],
+        });
+        if (scene.lightType === LightType.Directional) {
+          this.currentProgram.setUniforms({
+            lightDir: scene.lightDir.toArray(),
+          });
+        } else {
+          this.currentProgram.setUniforms({
+            lightPos: scene.lightPos.toArray(),
+            lightRadius: [scene.lightRadius],
+          });
+        }
       }
 
       // set point thickness
@@ -154,8 +169,18 @@ export class Application {
             });
             if (this.currentProgram === this.phongProgram) {
               this.currentProgram.setUniforms({
-                lightPos: scene.lightPos.toArray(),
+                lightType: [scene.lightType],
               });
+              if (scene.lightType === LightType.Directional) {
+                this.currentProgram.setUniforms({
+                  lightDir: scene.lightDir.toArray(),
+                });
+              } else {
+                this.currentProgram.setUniforms({
+                  lightPos: scene.lightPos.toArray(),
+                  lightRadius: [scene.lightRadius],
+                });
+              }
             }
           }
           if (node.material instanceof PhongMaterial) {

@@ -25,6 +25,8 @@ export const GLTFSchema = z.object({
       name: z.string().optional(),
       background: ColorSchema.optional(),
       lightPos: z.array(z.number()).length(3).optional(),
+      lightDir: z.array(z.number()).length(3).optional(),
+      lightRadius: z.number().optional(),
     })
   ),
   meshes: z.array(

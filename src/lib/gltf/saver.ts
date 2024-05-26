@@ -54,6 +54,8 @@ export async function saveGLTF(
     } else if (node instanceof Scene) {
       nodeData.background = node.background.value;
       nodeData.lightPos = node.lightPos.toArray();
+      nodeData.lightDir = node.lightDir.toArray();
+      nodeData.lightRadius = node.lightRadius;
     }
     result.nodes.push(nodeData);
     nodeRefs.push(node);
