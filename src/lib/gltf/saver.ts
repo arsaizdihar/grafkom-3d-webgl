@@ -5,15 +5,17 @@ import { Mesh } from "../engine/mesh";
 import { GLNode } from "../engine/node";
 import { Scene } from "../engine/scene";
 import { Texture } from "../engine/texture";
+import { CircleGeometry } from "../geometry/circle-geometry";
 import { CubeGeometry } from "../geometry/cube-geometry";
 import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
+import { CylinderGeometry } from "../geometry/cylinder-geometry";
 import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
+import { ParallelepipedHollowGeometry } from "../geometry/parallelepiped-hollow-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { SphereGeometry } from "../geometry/sphere-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
 import { PointLight } from "../light/point-light";
-import { ParallelepipedHollowGeometry } from "../geometry/parallelepiped-hollow-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
@@ -143,6 +145,18 @@ export async function saveGLTF(
         geometryData.parallelepipedhollow = {
           size: geometry.size,
           thickness: geometry.thickness,
+        };
+      } else if (geometry instanceof CylinderGeometry) {
+        geometryData.type = "cylinder";
+        geometryData.cylinder = {
+          radiusTop: geometry.radiusTop,
+          radiusBottom: geometry.radiusBottom,
+          height: geometry.height,
+        };
+      } else if (geometry instanceof CircleGeometry) {
+        geometryData.type = "circle";
+        geometryData.circle = {
+          radius: geometry.radius,
         };
       }
       result.geometries.push(geometryData);

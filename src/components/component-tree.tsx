@@ -8,8 +8,11 @@ import { Color } from "@/lib/engine/color";
 import { Mesh } from "@/lib/engine/mesh";
 import { Scene } from "@/lib/engine/scene";
 import { TextNode } from "@/lib/engine/text-node";
+import { CircleGeometry } from "@/lib/geometry/circle-geometry";
 import { CubeGeometry } from "@/lib/geometry/cube-geometry";
+import { CylinderGeometry } from "@/lib/geometry/cylinder-geometry";
 import { ParallelepipedGeometry } from "@/lib/geometry/parallelepiped-geometry";
+import { ParallelepipedHollowGeometry } from "@/lib/geometry/parallelepiped-hollow-geometry";
 import { PlaneGeometry } from "@/lib/geometry/plane-geometry";
 import { PyramidHollowGeometry } from "@/lib/geometry/pyramid-hollow-geometry";
 import { SphereGeometry } from "@/lib/geometry/sphere-geometry";
@@ -33,7 +36,6 @@ import {
   ContextMenuTrigger,
 } from "./ui/context-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
-import { ParallelepipedHollowGeometry } from "@/lib/geometry/parallelepiped-hollow-geometry";
 
 const meshOptions = {
   cube: "Cube",
@@ -43,6 +45,8 @@ const meshOptions = {
   parallelepiped: "Parallelepiped",
   sphere: "Sphere",
   parallelepipedhollow: "Parallelepiped Hollow",
+  cylinder: "Cylinder",
+  circle: "Circle",
   node: "Node",
   text: "Text",
   light: "Point Light",
@@ -95,6 +99,12 @@ export function ComponentTree() {
         break;
       case "parallelepipedhollow":
         geometry = new ParallelepipedHollowGeometry();
+        break;
+      case "cylinder":
+        geometry = new CylinderGeometry();
+        break;
+      case "circle":
+        geometry = new CircleGeometry();
         break;
     }
     if (geometry) {
@@ -191,6 +201,7 @@ export function ComponentTree() {
                   scene.geometries.push(...geometries);
                   scene.textures.push(...textures);
                   setAnimations((prev) => [...prev, ...animations]);
+                  rerenderSceneGraph();
                 } catch (e) {
                   if (e instanceof Error) {
                     alert(e.message);

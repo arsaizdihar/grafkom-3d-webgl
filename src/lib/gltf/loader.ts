@@ -10,15 +10,17 @@ import { Scene } from "../engine/scene";
 import { Texture } from "../engine/texture";
 import { Transform } from "../engine/transform";
 import { Vector3 } from "../engine/vector";
+import { CircleGeometry } from "../geometry/circle-geometry";
 import { CubeGeometry } from "../geometry/cube-geometry";
 import { CubeHollowGeometry } from "../geometry/cube-hollow-geometry";
+import { CylinderGeometry } from "../geometry/cylinder-geometry";
 import { ParallelepipedGeometry } from "../geometry/parallelepiped-geometry";
+import { ParallelepipedHollowGeometry } from "../geometry/parallelepiped-hollow-geometry";
 import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { SphereGeometry } from "../geometry/sphere-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
 import { PointLight } from "../light/point-light";
-import { ParallelepipedHollowGeometry } from "../geometry/parallelepiped-hollow-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { Euler } from "../math/euler";
@@ -192,13 +194,37 @@ export async function loadGLTF(
           undefined,
           undefined,
           data
-      );
+        );
       case "parallelepipedhollow":
         console.log(geometry.parallelepipedhollow);
         if (!geometry.parallelepipedhollow) {
           throw new Error("Parallelepipedhollow geometry missing parameter");
         }
-        return new ParallelepipedHollowGeometry(geometry.parallelepipedhollow.size, geometry.parallelepipedhollow.thickness, data);
+        return new ParallelepipedHollowGeometry(
+          geometry.parallelepipedhollow.size,
+          geometry.parallelepipedhollow.thickness,
+          data
+        );
+      case "cylinder":
+        if (!geometry.cylinder) {
+          throw new Error("Cylinder geometry missing parameter");
+        }
+        return new CylinderGeometry(
+          geometry.cylinder.radiusTop,
+          geometry.cylinder.radiusBottom,
+          geometry.cylinder.height,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          data
+        );
+      case "circle":
+        if (!geometry.circle) {
+          throw new Error("Circle geometry missing parameter");
+        }
+        return new CircleGeometry(geometry.circle.radius);
     }
   });
 

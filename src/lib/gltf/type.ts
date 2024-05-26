@@ -12,6 +12,8 @@ const GeometryEnum = [
   "parallelepiped",
   "parallelepipedhollow",
   "sphere",
+  "cylinder",
+  "circle",
 ] as const;
 
 export const GLTFSchema = z.object({
@@ -123,10 +125,22 @@ export const GLTFSchema = z.object({
             size: z.number().nonnegative(),
           })
           .optional(),
-          parallelepipedhollow: z
+        parallelepipedhollow: z
           .object({
             size: z.number().nonnegative(),
             thickness: z.number().nonnegative(),
+          })
+          .optional(),
+        cylinder: z
+          .object({
+            radiusTop: z.number().nonnegative(),
+            radiusBottom: z.number().nonnegative(),
+            height: z.number().nonnegative(),
+          })
+          .optional(),
+        circle: z
+          .object({
+            radius: z.number().nonnegative(),
           })
           .optional(),
         vertex: z.array(z.number()),
