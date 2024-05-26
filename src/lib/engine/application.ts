@@ -88,12 +88,10 @@ export class Application {
 
     window.addEventListener("keydown", (e) => {
       this.pressedKeys.add(e.key);
-      console.log("up", e.key);
     });
 
     window.addEventListener("keyup", (e) => {
       this.pressedKeys.delete(e.key);
-      console.log("down", e.key);
     });
   }
 
