@@ -44,14 +44,15 @@ export class Scene extends GLNode {
     if (jump && node.transform.position.y === 0) {
       node.vy = 5 * Scene.multiplier;
     }
-    if (node.transform.position.y < 0) {
-      node.transform.position.y = 0;
-      node.vy = 0;
-    } else if (node.transform.position.y > 0) {
+    if (node.transform.position.y > 0) {
       node.vy -= 9.8 * Scene.multiplier * dt;
     }
     if (node.vy) {
       node.transform.position.y += node.vy * dt;
+      if (node.transform.position.y < 0) {
+        node.transform.position.y = 0;
+        node.vy = 0;
+      }
       node.dirty();
     }
     if (v === 0 && h === 0) {
