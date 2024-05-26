@@ -11,7 +11,12 @@
 5. Adjust lighting configuration
 6. Component editor (scene graph)
 7. Display model animations
-9. 
+9. Animation editor
+10. Animation tweening
+11. Point lighting
+12. Multiple light sources
+13. Character controller
+14. Text rendering
 
 ## How to Start
 
@@ -31,7 +36,7 @@
 1. House (13521051)
 2. Steve (human) (13521055)
 3. Hand (13521096)
-4. xxx (13521101)
+4. Car (13521101)
 
 ## Teams
 
