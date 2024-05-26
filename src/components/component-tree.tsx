@@ -36,6 +36,7 @@ import {
   ContextMenuTrigger,
 } from "./ui/context-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
+import {CrystalHollowGeometry} from "@/lib/geometry/crystal-hollow-geometry.ts";
 
 const meshOptions = {
   cube: "Cube",
@@ -99,6 +100,9 @@ export function ComponentTree() {
         break;
       case "parallelepipedhollow":
         geometry = new ParallelepipedHollowGeometry();
+        break;
+      case "crystalhollow":
+        geometry = new CrystalHollowGeometry();
         break;
       case "cylinder":
         geometry = new CylinderGeometry();

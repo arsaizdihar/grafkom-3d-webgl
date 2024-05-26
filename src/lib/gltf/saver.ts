@@ -20,6 +20,7 @@ import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { ShaderMaterial } from "../material/shader-material";
 import { GLTF, GLTFGeometry, GLTFMaterial, GLTFMesh, GLTFNode } from "./type";
+import {CrystalHollowGeometry} from "@/lib/geometry/crystal-hollow-geometry.ts";
 
 export async function saveGLTF(
   scene: Scene | GLNode,
@@ -143,6 +144,12 @@ export async function saveGLTF(
       } else if (geometry instanceof ParallelepipedHollowGeometry) {
         geometryData.type = "parallelepipedhollow";
         geometryData.parallelepipedhollow = {
+          size: geometry.size,
+          thickness: geometry.thickness,
+        };
+      } else if (geometry instanceof CrystalHollowGeometry) {
+        geometryData.type = "crystalhollow";
+        geometryData.crystalhollow = {
           size: geometry.size,
           thickness: geometry.thickness,
         };
