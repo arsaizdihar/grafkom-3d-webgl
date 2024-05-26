@@ -12,6 +12,7 @@ const GeometryEnum = [
   "parallelepiped",
   "parallelepipedhollow",
   "sphere",
+  "crystalhollow",
   "cylinder",
   "circle",
 ] as const;
@@ -37,7 +38,7 @@ export const GLTFSchema = z.object({
           color: ColorSchema.optional(),
         })
         .optional(),
-    })
+    }),
   ),
   meshes: z.array(
     z.object({
@@ -45,7 +46,7 @@ export const GLTFSchema = z.object({
         geometry: arrayIndex(),
         material: arrayIndex(),
       }),
-    })
+    }),
   ),
   materials: z.array(
     z.object({
@@ -69,13 +70,13 @@ export const GLTFSchema = z.object({
           displacementBias: z.number().optional(),
         })
         .optional(),
-    })
+    }),
   ),
   textures: z.array(
     z.object({
       source: arrayIndex().optional(),
       color: ColorSchema.optional(),
-    })
+    }),
   ),
   images: z.array(z.object({ uri: z.string() })),
   animations: z.array(
@@ -84,7 +85,7 @@ export const GLTFSchema = z.object({
       fps: z.number().default(30),
       tween: z.enum(TWEENING_FN_KEYS).default("linear"),
       clip: AnimationClipSchema,
-    })
+    }),
   ),
   geometries: z
     .array(
@@ -131,6 +132,12 @@ export const GLTFSchema = z.object({
             thickness: z.number().nonnegative(),
           })
           .optional(),
+        crystalhollow: z
+          .object({
+            size: z.number().nonnegative(),
+            thickness: z.number().nonnegative(),
+          })
+          .optional(),
         cylinder: z
           .object({
             radiusTop: z.number().nonnegative(),
@@ -145,7 +152,7 @@ export const GLTFSchema = z.object({
           .optional(),
         vertex: z.array(z.number()),
         texcoord: z.array(z.number()),
-      })
+      }),
     )
     .default([]),
 });

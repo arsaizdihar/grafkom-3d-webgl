@@ -28,22 +28,22 @@ import { GLTFSchema } from "./type";
 
 function parseColor(color: string | number[]) {
   return Array.isArray(color)
-    ? Color.fromArray(color)
-    : Color.hex(Number(color));
+      ? Color.fromArray(color)
+      : Color.hex(Number(color));
 }
 
 export async function loadGLTF(
-  data: unknown,
-  app: Application,
-  isScene = true
+    data: unknown,
+    app: Application,
+    isScene = true
 ) {
   const gltf = GLTFSchema.parse(data);
   const images = await Promise.all(
-    gltf.images.map(async (image) => {
-      const img = new GLImage(image.uri);
-      await img.load();
-      return img;
-    })
+      gltf.images.map(async (image) => {
+        const img = new GLImage(image.uri);
+        await img.load();
+        return img;
+      })
   );
 
   const textures = gltf.textures.map((texture) => {
@@ -53,21 +53,21 @@ export async function loadGLTF(
         throw new Error(`Image not found for index ${texture.source}`);
       }
       return new Texture(
-        {
-          image,
-          ...texture,
-          color: undefined,
-        },
-        app.gl
+          {
+            image,
+            ...texture,
+            color: undefined,
+          },
+          app.gl
       );
     } else if (texture.color) {
       return new Texture(
-        {
-          ...texture,
-          color: parseColor(texture.color),
-          image: undefined,
-        },
-        app.gl
+          {
+            ...texture,
+            color: parseColor(texture.color),
+            image: undefined,
+          },
+          app.gl
       );
     } else {
       throw new Error("Texture missing parameter, source or color");
@@ -76,7 +76,7 @@ export async function loadGLTF(
 
   const materials = gltf.materials.map((material) => {
     const texture =
-      material.texture === undefined ? undefined : textures[material.texture];
+        material.texture === undefined ? undefined : textures[material.texture];
     if (!texture && material.texture !== undefined) {
       throw new Error(`Texture not found for index ${material.texture}`);
     }
@@ -87,42 +87,42 @@ export async function loadGLTF(
           throw new Error("Basic material missing parameter");
         }
         return new BasicMaterial(
-          {
-            color: parseColor(material.basic.color),
-            texture: texture,
-          },
-          app.basicProgram
+            {
+              color: parseColor(material.basic.color),
+              texture: texture,
+            },
+            app.basicProgram
         );
       case "phong":
         if (!material.phong) {
           throw new Error("Phong material missing parameter");
         }
         const specularTexture =
-          material.phong.specularTexture !== undefined
-            ? textures[material.phong.specularTexture]
-            : undefined;
+            material.phong.specularTexture !== undefined
+                ? textures[material.phong.specularTexture]
+                : undefined;
         const normalTexture =
-          material.phong.normalTexture !== undefined
-            ? textures[material.phong.normalTexture]
-            : undefined;
+            material.phong.normalTexture !== undefined
+                ? textures[material.phong.normalTexture]
+                : undefined;
         const displacementTexture =
-          material.phong.displacementTexture !== undefined
-            ? textures[material.phong.displacementTexture]
-            : undefined;
+            material.phong.displacementTexture !== undefined
+                ? textures[material.phong.displacementTexture]
+                : undefined;
         return new PhongMaterial(
-          {
-            ambient: parseColor(material.phong.ambient),
-            diffuse: parseColor(material.phong.diffuse),
-            specular: parseColor(material.phong.specular),
-            shininess: material.phong.shininess,
-            texture: texture,
-            specularTexture: specularTexture,
-            normalTexture: normalTexture,
-            displacementTexture: displacementTexture,
-            displacementFactor: material.phong.displacementFactor,
-            displacementBias: material.phong.displacementBias,
-          },
-          app.phongProgram
+            {
+              ambient: parseColor(material.phong.ambient),
+              diffuse: parseColor(material.phong.diffuse),
+              specular: parseColor(material.phong.specular),
+              shininess: material.phong.shininess,
+              texture: texture,
+              specularTexture: specularTexture,
+              normalTexture: normalTexture,
+              displacementTexture: displacementTexture,
+              displacementFactor: material.phong.displacementFactor,
+              displacementBias: material.phong.displacementBias,
+            },
+            app.phongProgram
         );
     }
   });
@@ -143,40 +143,40 @@ export async function loadGLTF(
           throw new Error("Plane geometry missing parameter");
         }
         return new PlaneGeometry(
-          geometry.plane.width,
-          geometry.plane.height,
-          50,
-          50,
-          data
+            geometry.plane.width,
+            geometry.plane.height,
+            50,
+            50,
+            data
         );
       case "pyramidhollow":
         if (!geometry.pyramidhollow) {
           throw new Error("Pyramid hollow geometry missing parameter");
         }
         return new PyramidHollowGeometry(
-          geometry.pyramidhollow.size,
-          geometry.pyramidhollow.thickness,
-          data
+            geometry.pyramidhollow.size,
+            geometry.pyramidhollow.thickness,
+            data
         );
       case "cubehollow":
         if (!geometry.cubehollow) {
           throw new Error("Cube hollow geometry missing parameter");
         }
         return new CubeHollowGeometry(
-          geometry.cubehollow.size,
-          geometry.cubehollow.thickness,
-          data
+            geometry.cubehollow.size,
+            geometry.cubehollow.thickness,
+            data
         );
       case "torus":
         if (!geometry.torus) {
           throw new Error("Torus geometry missing parameter");
         }
         return new TorusGeometry(
-          geometry.torus.slices,
-          20,
-          geometry.torus.innerRad,
-          geometry.torus.outerRad,
-          data
+            geometry.torus.slices,
+            20,
+            geometry.torus.innerRad,
+            geometry.torus.outerRad,
+            data
         );
       case "parallelepiped":
         console.log(geometry.parallelepiped);
@@ -186,14 +186,14 @@ export async function loadGLTF(
         return new ParallelepipedGeometry(geometry.parallelepiped.size, data);
       case "sphere":
         return new SphereGeometry(
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          data
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            data
         );
       case "parallelepipedhollow":
         console.log(geometry.parallelepipedhollow);
@@ -201,30 +201,40 @@ export async function loadGLTF(
           throw new Error("Parallelepipedhollow geometry missing parameter");
         }
         return new ParallelepipedHollowGeometry(
-          geometry.parallelepipedhollow.size,
-          geometry.parallelepipedhollow.thickness,
-          data
+            geometry.parallelepipedhollow.size,
+            geometry.parallelepipedhollow.thickness,
+            data
         );
       case "cylinder":
         if (!geometry.cylinder) {
           throw new Error("Cylinder geometry missing parameter");
         }
         return new CylinderGeometry(
-          geometry.cylinder.radiusTop,
-          geometry.cylinder.radiusBottom,
-          geometry.cylinder.height,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          data
+            geometry.cylinder.radiusTop,
+            geometry.cylinder.radiusBottom,
+            geometry.cylinder.height,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            data
         );
       case "circle":
         if (!geometry.circle) {
           throw new Error("Circle geometry missing parameter");
         }
         return new CircleGeometry(geometry.circle.radius);
+      case "crystalhollow":
+        console.log(geometry.crystalhollow);
+        if (!geometry.crystalhollow) {
+          throw new Error("crystalhollow geometry missing parameter");
+        }
+        return new ParallelepipedHollowGeometry(
+            geometry.crystalhollow.size,
+            geometry.crystalhollow.thickness,
+            data
+        );
     }
   });
 
@@ -232,19 +242,19 @@ export async function loadGLTF(
 
   const nodes = gltf.nodes.map((node, index) => {
     const transform = new Transform(
-      Vector3.fromArray(node.translation),
-      Euler.fromArray(node.rotation),
-      Vector3.fromArray(node.scale)
+        Vector3.fromArray(node.translation),
+        Euler.fromArray(node.rotation),
+        Vector3.fromArray(node.scale)
     );
 
     if (gltf.scene === index) {
       return new Scene(
-        parseColor(node.background || "0x000000"),
-        node.directional ?? true,
-        node.directionalDir
-          ? Vector3.fromArray(node.directionalDir)
-          : undefined,
-        parseColor(node.directionalColor || "0xffffff")
+          parseColor(node.background || "0x000000"),
+          node.directional ?? true,
+          node.directionalDir
+              ? Vector3.fromArray(node.directionalDir)
+              : undefined,
+          parseColor(node.directionalColor || "0xffffff")
       );
     }
 
@@ -256,13 +266,13 @@ export async function loadGLTF(
       const material = materials[mesh.primitive.material];
       if (!material) {
         throw new Error(
-          `Material not found for index ${mesh.primitive.material}`
+            `Material not found for index ${mesh.primitive.material}`
         );
       }
       const geometry = geometries[mesh.primitive.geometry];
       if (!geometry) {
         throw new Error(
-          `Geometry not found for index ${mesh.primitive.geometry}`
+            `Geometry not found for index ${mesh.primitive.geometry}`
         );
       }
       const meshGL = new Mesh(geometry, material);
@@ -273,9 +283,9 @@ export async function loadGLTF(
       return meshGL;
     } else if (node.light !== undefined) {
       const light = new PointLight(
-        app.basicProgram,
-        node.light.radius,
-        node.light.color ? parseColor(node.light.color) : undefined
+          app.basicProgram,
+          node.light.radius,
+          node.light.color ? parseColor(node.light.color) : undefined
       );
       light.transform = transform;
       if (node.name) {
@@ -310,7 +320,7 @@ export async function loadGLTF(
     const root = nodes[animation.root];
     if (!root) {
       throw new Error(
-        `Root node animation not found for index ${animation.root}`
+          `Root node animation not found for index ${animation.root}`
       );
     }
     const anim = new AnimationRunner(animation.clip, root, {
