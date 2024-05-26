@@ -29,7 +29,7 @@
 ## Articulated Models
 
 1. xxx (13521051)
-2. xxx (13521055)
+2. Steve (human) (13521055)
 3. xxx (13521096)
 4. xxx (13521101)
 
