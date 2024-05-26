@@ -200,6 +200,7 @@ function Node({ node }: { node: GLNode }) {
     setAnimationEdit,
     animations,
     setAnimations,
+    scene,
   } = useApp((state) => ({
     focusNode: state.focusedNode,
     setFocusedNode: state.setFocusedNode,
@@ -208,6 +209,7 @@ function Node({ node }: { node: GLNode }) {
     animationEdit: state.animationEdit,
     setAnimationEdit: state.setAnimationEdit,
     setAnimations: state.setAnimations,
+    scene: state.scene,
   }));
 
   const handleClick = () => {
@@ -291,6 +293,16 @@ function Node({ node }: { node: GLNode }) {
             Add new animation
           </ContextMenuItem>
         )}
+        <ContextMenuItem
+          onSelect={() => {
+            if (!scene) {
+              return;
+            }
+            scene.toControl = node;
+          }}
+        >
+          Control
+        </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   );

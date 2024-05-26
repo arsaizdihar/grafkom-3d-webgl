@@ -9,6 +9,7 @@ export class GLNode {
   public id;
   private _isDirty = true;
   public name: string = "GLNode";
+  public vy = 0;
 
   private _localMatrix: Matrix4;
   set localMatrix(matrix: Matrix4) {

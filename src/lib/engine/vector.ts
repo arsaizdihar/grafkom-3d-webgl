@@ -77,12 +77,15 @@ export class Vector3 {
     return this;
   }
 
+  multScalar(scalar: number): this {
+    this.x *= scalar;
+    this.y *= scalar;
+    this.z *= scalar;
+    return this;
+  }
+
   static subtract(v1: Vector3, v2: Vector3): Vector3 {
-    return new Vector3(
-      v1.x - v2.x,
-      v1.y - v2.y,
-      v1.z - v2.z
-    );
+    return new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
   }
 
   length(): number {

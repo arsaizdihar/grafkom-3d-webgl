@@ -19,6 +19,7 @@ export class Application {
     | Application["phongProgram"]
     | Application["basicProgram"];
   private time = performance.now();
+  private pressedKeys = new Set<string>();
   private fpsEl;
 
   constructor(
@@ -84,6 +85,16 @@ export class Application {
 
     const ro = new ResizeObserver(this.adjustCanvas.bind(this));
     ro.observe(container, { box: "content-box" });
+
+    window.addEventListener("keydown", (e) => {
+      this.pressedKeys.add(e.key);
+      console.log("up", e.key);
+    });
+
+    window.addEventListener("keyup", (e) => {
+      this.pressedKeys.delete(e.key);
+      console.log("down", e.key);
+    });
   }
 
   adjustCanvas() {
@@ -125,10 +136,27 @@ export class Application {
       );
       this.gl.clear(this.gl.COLOR_BUFFER_BIT);
       const nodes: GLNode[] = [...scene.children];
-      const delta = time - this.time;
+      const delta = (time - this.time) / 1000;
       animations.forEach((runner) => {
-        runner.update(delta / 1000);
+        runner.update(delta);
       });
+
+      let y = 0;
+      if (this.pressedKeys.has("ArrowDown")) {
+        y = 1;
+      } else if (this.pressedKeys.has("ArrowUp")) {
+        y = -1;
+      }
+      let x = 0;
+      if (this.pressedKeys.has("ArrowLeft")) {
+        x = -1;
+      } else if (this.pressedKeys.has("ArrowRight")) {
+        x = 1;
+      }
+
+      const jump = this.pressedKeys.has(" ");
+      scene.updateController(y, x, jump, delta);
+
       frames += 1;
       if (time - lastFps >= 1000) {
         this.fpsEl.textContent = `FPS: ${((frames / (time - lastFps)) * 1000).toFixed(2)}`;
