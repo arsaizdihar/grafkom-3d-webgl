@@ -36,7 +36,7 @@
 
 1. Parallelepiped Hollow (13521051)
 2. Hollow cube & torus (13521055)
-3. xxx (13521096)
+3. Crystal Hollow (13521096)
 4. Hollow prism (13521101)
 
 ## Articulated Models
