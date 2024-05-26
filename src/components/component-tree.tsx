@@ -32,6 +32,7 @@ import {
   ContextMenuTrigger,
 } from "./ui/context-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
+import { ParallelepipedHollowGeometry } from "@/lib/geometry/parallelepiped-hollow-geometry";
 
 const meshOptions = {
   cube: "Cube",
@@ -40,6 +41,7 @@ const meshOptions = {
   torus: "Torus",
   parallelepiped: "Parallelepiped",
   sphere: "Sphere",
+  parallelepipedhollow: "Parallelepiped Hollow",
   node: "Node",
   text: "Text",
 };
@@ -88,6 +90,9 @@ export function ComponentTree() {
         break;
       case "sphere":
         geometry = new SphereGeometry();
+        break;
+      case "parallelepipedhollow":
+        geometry = new ParallelepipedHollowGeometry();
         break;
     }
     if (geometry) {

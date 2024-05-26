@@ -17,6 +17,7 @@ import { PlaneGeometry } from "../geometry/plane-geometry";
 import { PyramidHollowGeometry } from "../geometry/pyramid-hollow-geometry";
 import { SphereGeometry } from "../geometry/sphere-geometry";
 import { TorusGeometry } from "../geometry/torus-geometry";
+import { ParallelepipedHollowGeometry } from "../geometry/parallelepiped-hollow-geometry";
 import { BasicMaterial } from "../material/basic-material";
 import { PhongMaterial } from "../material/phong-material";
 import { Euler } from "../math/euler";
@@ -190,7 +191,13 @@ export async function loadGLTF(
           undefined,
           undefined,
           data
-        );
+      );
+      case "parallelepipedhollow":
+        console.log(geometry.parallelepipedhollow);
+        if (!geometry.parallelepipedhollow) {
+          throw new Error("Parallelepipedhollow geometry missing parameter");
+        }
+        return new ParallelepipedHollowGeometry(geometry.parallelepipedhollow.size, geometry.parallelepipedhollow.thickness, data);
     }
   });
 
