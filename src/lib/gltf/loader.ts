@@ -244,6 +244,7 @@ export async function loadGLTF(
         node.light.radius,
         node.light.color ? parseColor(node.light.color) : undefined
       );
+      light.transform = transform;
       if (node.name) {
         light.name = node.name;
       }

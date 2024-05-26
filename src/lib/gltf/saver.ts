@@ -50,19 +50,18 @@ export async function saveGLTF(
       children: [],
     };
     nodeData.name = node.name;
-
-    if (node instanceof Mesh) {
+    if (node instanceof PointLight) {
+      nodeData.light = {
+        radius: node.radius,
+        color: node.color.value,
+      };
+    } else if (node instanceof Mesh) {
       nodeData.mesh = processMesh(node);
     } else if (node instanceof Scene) {
       nodeData.background = node.background.value;
       nodeData.directional = node.onDirectional;
       nodeData.directionalColor = node.directionalColor.value;
       nodeData.directionalDir = node.directionalDir.toArray();
-    } else if (node instanceof PointLight) {
-      nodeData.light = {
-        radius: node.radius,
-        color: node.color.value,
-      };
     }
     result.nodes.push(nodeData);
     nodeRefs.push(node);

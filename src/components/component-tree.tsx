@@ -264,6 +264,10 @@ function Node({ node }: { node: GLNode }) {
             if (node instanceof TextNode) {
               node.el?.remove();
               node.el = null;
+            } else if (node instanceof PointLight) {
+              if (scene) {
+                scene.lights = scene.lights.filter((l) => l !== node);
+              }
             }
             node.removeFromParent();
             if (focusNode === node) {
