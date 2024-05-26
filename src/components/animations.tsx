@@ -96,7 +96,7 @@ export function Animations() {
             <li key={idx}>
               <Button
                 className="w-full justify-start"
-                size={"sm"}
+                size={"md"}
                 variant={
                   focusedAnimation === animation ? "destructive" : "outline"
                 }
@@ -116,9 +116,7 @@ export function Animations() {
           ))}
         </ul>
       ) : (
-        <div className="text-sm">
-          No animations yet.
-        </div>
+        <div className="text-sm">No animations yet.</div>
       )}
       <div className="flex-1">
         {focusedAnimation !== null && (
@@ -212,19 +210,19 @@ export function Animations() {
               </div>
             </div>
 
-            <div className="my-2">
-              <h4 className="font-medium">FRAME</h4>
+            <div className="my-2 flex flex-col gap-2">
+              <h4 className="font-medium">Frame</h4>
               <Progress
                 value={(frame / (focusedAnimation.length - 1)) * 100}
                 className="w-full"
               />
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span>{frame + 1}</span>
                 <span>{focusedAnimation.length}</span>
               </div>
             </div>
-            <div>
-              <label>FPS</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">FPS</label>
               <InputDrag
                 ref={fpsRef}
                 defaultValue={focusedAnimation.fps}
@@ -239,8 +237,8 @@ export function Animations() {
                 step={1}
               />
             </div>
-            <div className="my-2">
-              <label>Tweening</label>
+            <div className="my-2 flex flex-col gap-2">
+              <label className="text-sm">Tweening</label>
               <Select
                 value={tweening}
                 onValueChange={(value: typeof tweening) => {
@@ -263,6 +261,7 @@ export function Animations() {
               </Select>
             </div>
             <Button
+              size={"md"}
               className="w-full mt-2"
               onClick={() => {
                 setAnimationEdit(focusedAnimation);

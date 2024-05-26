@@ -91,10 +91,11 @@ export function AnimationEdits() {
   }, [animationEdit]);
 
   return (
-    <div className="p-4 overflow-y-auto h-screen">
+    <div className="p-4 overflow-y-auto h-screen flex flex-col gap-2">
       <Button
+        size={"md"}
         variant={"ghost"}
-        className="w-full mb-2"
+        className="w-full"
         onClick={() => {
           setAnimationEdit(null);
         }}
@@ -172,8 +173,8 @@ export function AnimationEdits() {
             </div>
           </div>
 
-          <div className="my-2">
-            <h4 className="font-medium">FRAME</h4>
+          <div className="my-2 flex flex-col gap-2">
+            <h4 className="font-medium">Frame</h4>
             <Progress
               value={(currentFrameIdx / (animationEdit.length - 1)) * 100}
               className="w-full"
@@ -186,6 +187,8 @@ export function AnimationEdits() {
         </>
       ) : (
         <Button
+          className="w-full"
+          size={"md"}
           onClick={() => {
             animationEdit.addFrame(0);
             animationEdit.updateSceneGraph();
@@ -195,8 +198,24 @@ export function AnimationEdits() {
           Add Frame
         </Button>
       )}
-      <div>
-        <label>FPS</label>
+      {/* <div className="flex flex-col gap-2">
+        <label className="text-sm">FPS</label>
+        <InputDrag
+          ref={fpsRef}
+          defaultValue={focusedAnimation.fps}
+          getValue={() => focusedAnimation.fps}
+          onChange={(value) => {
+            if (focusedAnimation) {
+              focusedAnimation.fps = value;
+            }
+          }}
+          min={0.01}
+          max={60}
+          step={1}
+        />
+      </div> */}
+      <div className="flex flex-col gap-2">
+        <label className="text-sm">FPS</label>
         <InputDrag
           ref={fpsRef}
           defaultValue={animationEdit.fps}
@@ -211,8 +230,8 @@ export function AnimationEdits() {
           step={1}
         />
       </div>
-      <div className="my-2">
-        <label>Tweening</label>
+      <div className="flex flex-col gap-2">
+        <label className="text-sm">Tweening</label>
         <Select
           value={tweening}
           onValueChange={(value: typeof tweening) => {
@@ -272,7 +291,7 @@ export function AnimationEdits() {
                       animationEdit.updateSceneGraph();
                     }}
                   >
-                    Add after
+                    Add After
                   </ContextMenuItem>
                   {i !== 0 && (
                     <ContextMenuItem
@@ -317,15 +336,17 @@ export function AnimationEdits() {
         focusedNode &&
         (!focusedFrame?.keyframe ? (
           <Button
+            size={"sm"}
             onClick={() => {
               addKeyframe(currentFrame, focusedNode, animationEdit.rootNode);
               rerender();
             }}
           >
-            Add keyframe
+            Add Keyframe
           </Button>
         ) : (
           <Button
+            size={"sm"}
             onClick={() => {
               removeKeyframe(currentFrame, focusedFrame!);
               rerender();
@@ -333,7 +354,7 @@ export function AnimationEdits() {
             variant={"destructive"}
             className="w-full mt-2"
           >
-            Remove keyframe
+            Remove Keyframe
           </Button>
         ))}
     </div>
@@ -481,7 +502,7 @@ function TRSEdits({
             rerender();
           }}
         >
-          Add position
+          Add Position
         </Button>
       )}
       {trs.rotation ? (
@@ -531,7 +552,7 @@ function TRSEdits({
             variant={"destructive"}
             className="mt-2"
           >
-            Delete rotation
+            Delete Rotation
           </Button>
         </>
       ) : (
@@ -546,7 +567,7 @@ function TRSEdits({
             rerender();
           }}
         >
-          Add rotation
+          Add Rotation
         </Button>
       )}
       {trs.scale ? (
@@ -601,13 +622,14 @@ function TRSEdits({
         </>
       ) : (
         <Button
+          size={"sm"}
           onClick={() => {
             trs.scale = [initial.scale.x, initial.scale.y, initial.scale.z];
             triggerChange();
             rerender();
           }}
         >
-          Add scale
+          Add Scale
         </Button>
       )}
     </div>

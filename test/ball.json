@@ -1,0 +1,92 @@
+{
+    "scene": 0,
+    "nodes": [
+      {
+        "translation": [0, 0, 0],
+        "rotation": [0, 0, 0],
+        "scale": [1, 1, 1],
+        "children": [1],
+        "name": "GLNode",
+        "background": [1, 1, 1, 1],
+        "lightPos": [0, 0, 0]
+      },
+      {
+        "translation": [0, 0, 0],
+        "rotation": [0, 0, 0],
+        "scale": [1, 1, 1],
+        "children": [],
+        "name": "ball",
+        "mesh": 0
+      }
+    ],
+    "meshes": [
+      {
+        "primitive": {
+          "geometry": 0,
+          "material": 0
+        }
+      }
+    ],
+    "images": [
+      {
+        "uri": "/red.png"
+      }
+    ],
+    "materials": [
+      {
+        "type": "phong",
+        "texture": 0,
+        "phong": {
+          "ambient": [0, 0, 0, 1],
+          "diffuse": [1, 1, 1, 1],
+          "specular": [1, 1, 1, 1],
+          "shininess": 100
+        }
+      }
+    ],
+    "animations": [
+    {
+      "root": 1,
+      "clip": {
+        "name": "animation",
+        "frames": [
+          {
+            "keyframe": {
+              "rotation": [25, 0, 0]
+            }
+          },
+          {},
+          {
+            "keyframe": {
+              "rotation": [25, 360, 0]
+            }
+          }
+        ]
+      },
+      "fps": 1,
+      "tween": "linear"
+    }
+  ],
+    "textures": [
+      {
+        "source": 0
+      }
+    ],
+    "geometries": [
+      {
+        "type": "ball",
+        "vertex": [
+          
+        ],
+        "texcoord": [
+          
+        ],
+        "ball": {
+          "radius": 30,
+          "widthSegments": 2,
+          "heightSegments": 2
+        }
+      }
+    ]
+  }
+  
