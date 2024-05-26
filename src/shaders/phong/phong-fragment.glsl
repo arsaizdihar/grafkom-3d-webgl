@@ -47,15 +47,15 @@ void main() {
       attenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));
     }
   }
-  lambertian *= attenuation;
+
+  // blinn phong
   if(lambertian > 0.0) {
-    vec3 R = reflect(-L, N);      // Reflected light vector
     vec3 V = normalize(u_cameraPos - v_vertPos); // Vector to viewer
+    vec3 H = normalize(L + V);
     // Compute the specular term
-    float specAngle = max(dot(R, V), 0.0);
-    specular = pow(specAngle, u_shininess) * attenuation;
+    float specAngle = max(dot(N, H), 0.0);
+    specular = pow(specAngle, u_shininess);
   }
-  gl_FragColor = vec4((u_ambientColor +
-    lambertian * diffuseColor +
+  gl_FragColor = vec4((attenuation * (u_ambientColor + lambertian * diffuseColor) +
     specular * specularColor).xyz, 1.0);
 }

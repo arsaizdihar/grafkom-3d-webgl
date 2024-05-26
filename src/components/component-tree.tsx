@@ -252,6 +252,10 @@ function Node({ node }: { node: GLNode }) {
       <ContextMenuContent>
         <ContextMenuItem
           onSelect={() => {
+            if (node instanceof TextNode) {
+              node.el?.remove();
+              node.el = null;
+            }
             node.removeFromParent();
             if (focusNode === node) {
               setFocusedNode(null);
