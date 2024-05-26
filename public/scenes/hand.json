@@ -49,7 +49,7 @@
       "rotation": [
         0,
         0,
-        0
+        15.712000000057829
       ],
       "scale": [
         1,
@@ -494,39 +494,94 @@
   ],
   "animations": [
     {
-      "root": 0,
+      "root": 1,
       "clip": {
         "name": "Wave",
         "frames": [
           {
-            "children": {
-              "body": {
-                "keyframe": {
-                  "rotation": [
-                    15,
-                    0,
-                    0
-                  ]
-                }
-              }
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
             }
           },
           {
-            "children": {
-              "body": {
-                "keyframe": {
-                  "rotation": [
-                    15,
-                    360,
-                    0
-                  ]
-                }
-              }
+            "keyframe": {
+              "rotation": [
+                0,
+                3.2,
+                -25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                -25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                25
+              ]
+            }
+          },
+          {
+            "keyframe": {
+              "rotation": [
+                0,
+                0,
+                0
+              ]
             }
           }
         ]
       },
-      "fps": 12,
+      "fps": 6,
       "tween": "linear"
     }
   ],
