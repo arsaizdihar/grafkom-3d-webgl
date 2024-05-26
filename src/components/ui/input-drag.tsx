@@ -114,7 +114,7 @@ export const InputDrag = forwardRef<HTMLInputElement, InputDragProps>(
     return (
       <Input
         {...props}
-        className="px-2 py-1 h-auto"
+        className="px-2 py-1 h-10"
         ref={(next) => {
           // @ts-expect-error - ref is a forwardRef
           ref.current = next;

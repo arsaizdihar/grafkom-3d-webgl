@@ -1,0 +1,858 @@
+{
+  "scene": 0,
+  "root": 0,
+  "nodes": [
+    {
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "children": [
+        1
+      ],
+      "name": "GLNode",
+      "background": [
+        0.8,
+        0.8,
+        0.8,
+        1
+      ],
+      "directional": true,
+      "directionalColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "directionalDir": [
+        0,
+        -1,
+        -1
+      ]
+    },
+    {
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        4,
+        6,
+        2
+      ],
+      "children": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "name": "body",
+      "mesh": 0
+    },
+    {
+      "translation": [
+        0,
+        25,
+        0
+      ],
+      "rotation": [
+        0,
+        -0.20850000000003296,
+        0
+      ],
+      "scale": [
+        1,
+        0.667,
+        2
+      ],
+      "children": [],
+      "name": "head",
+      "mesh": 1
+    },
+    {
+      "translation": [
+        22.5,
+        -1.5,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.5,
+        1.1,
+        1
+      ],
+      "children": [],
+      "name": "left hand",
+      "mesh": 2
+    },
+    {
+      "translation": [
+        -22.5,
+        -1.5,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.5,
+        1.1,
+        1
+      ],
+      "children": [],
+      "name": "right hand",
+      "mesh": 3
+    },
+    {
+      "translation": [
+        7.5,
+        -30,
+        0
+      ],
+      "rotation": [
+        0.6255000000000989,
+        0,
+        0
+      ],
+      "scale": [
+        0.5,
+        1,
+        1
+      ],
+      "children": [],
+      "name": "left leg",
+      "mesh": 4
+    },
+    {
+      "translation": [
+        -7.5,
+        -30,
+        0
+      ],
+      "rotation": [
+        -0.6255000000000989,
+        0,
+        0
+      ],
+      "scale": [
+        0.5,
+        1,
+        1
+      ],
+      "children": [],
+      "name": "right leg",
+      "mesh": 5
+    }
+  ],
+  "meshes": [
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    },
+    {
+      "primitive": {
+        "geometry": 0,
+        "material": 0
+      }
+    }
+  ],
+  "images": [
+    {
+      "uri": "/gradient.jpg"
+    }
+  ],
+  "materials": [
+    {
+      "type": "basic",
+      "texture": 0,
+      "basic": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "textures": [
+    {
+      "source": 0
+    }
+  ],
+  "animations": [
+    {
+      "root": 0,
+      "clip": {
+        "name": "walk",
+        "frames": [
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "left hand": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right hand": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left leg": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right leg": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "head": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "keyframe": {
+                  "rotation": [
+                    0,
+                    0,
+                    0
+                  ]
+                },
+                "children": {
+                  "left hand": {
+                    "keyframe": {
+                      "rotation": [
+                        15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right hand": {
+                    "keyframe": {
+                      "rotation": [
+                        -15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left leg": {
+                    "keyframe": {
+                      "rotation": [
+                        -15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right leg": {
+                    "keyframe": {
+                      "rotation": [
+                        15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "head": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        5,
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "right leg": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left leg": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right hand": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left hand": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "head": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "right leg": {
+                    "keyframe": {
+                      "rotation": [
+                        -15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left leg": {
+                    "keyframe": {
+                      "rotation": [
+                        15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right hand": {
+                    "keyframe": {
+                      "rotation": [
+                        15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left hand": {
+                    "keyframe": {
+                      "rotation": [
+                        -15,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "head": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        -5,
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "head": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left hand": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right hand": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left leg": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right leg": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "fps": 3,
+      "tween": "linear"
+    },
+    {
+      "root": 0,
+      "clip": {
+        "name": "dap",
+        "frames": [
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "left hand": {
+                    "keyframe": {
+                      "translation": [
+                        22.5,
+                        -1.5,
+                        0
+                      ],
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "right hand": {
+                    "keyframe": {
+                      "translation": [
+                        -22.5,
+                        -1.5,
+                        0
+                      ],
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "left hand": {
+                    "keyframe": {
+                      "translation": [
+                        30,
+                        12.5,
+                        0
+                      ],
+                      "rotation": [
+                        0,
+                        0,
+                        120
+                      ]
+                    }
+                  },
+                  "right hand": {
+                    "keyframe": {
+                      "translation": [
+                        4.6,
+                        19.1,
+                        34.8
+                      ],
+                      "rotation": [
+                        0,
+                        0,
+                        120
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "right hand": {
+                    "keyframe": {
+                      "rotation": [
+                        0,
+                        0,
+                        120
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "left hand": {
+                    "keyframe": {}
+                  },
+                  "right hand": {
+                    "keyframe": {}
+                  }
+                }
+              }
+            }
+          },
+          {
+            "children": {
+              "body": {
+                "children": {
+                  "right hand": {
+                    "keyframe": {
+                      "translation": [
+                        -22.5,
+                        -1.5,
+                        0
+                      ],
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  },
+                  "left hand": {
+                    "keyframe": {
+                      "translation": [
+                        22.5,
+                        -1.5,
+                        0
+                      ],
+                      "rotation": [
+                        0,
+                        0,
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "fps": 3,
+      "tween": "linear"
+    }
+  ],
+  "geometries": [
+    {
+      "type": "cube",
+      "vertex": [
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        15,
+        -15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        -15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15,
+        -15,
+        15,
+        15,
+        15
+      ],
+      "texcoord": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "cube": {
+        "size": 30
+      }
+    }
+  ]
+}
