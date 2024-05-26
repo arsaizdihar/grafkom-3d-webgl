@@ -46,6 +46,7 @@ const meshOptions = {
   parallelepiped: "Parallelepiped",
   sphere: "Sphere",
   parallelepipedhollow: "Parallelepiped Hollow",
+  crystalhollow: "Crystal Hollow",
   cylinder: "Cylinder",
   circle: "Circle",
   node: "Node",
