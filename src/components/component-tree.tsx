@@ -9,6 +9,7 @@ import { Mesh } from "@/lib/engine/mesh";
 import { Scene } from "@/lib/engine/scene";
 import { TextNode } from "@/lib/engine/text-node";
 import { CircleGeometry } from "@/lib/geometry/circle-geometry";
+import { CrystalHollowGeometry } from "@/lib/geometry/crystal-hollow-geometry.ts";
 import { CubeGeometry } from "@/lib/geometry/cube-geometry";
 import { CylinderGeometry } from "@/lib/geometry/cylinder-geometry";
 import { ParallelepipedGeometry } from "@/lib/geometry/parallelepiped-geometry";
@@ -36,7 +37,6 @@ import {
   ContextMenuTrigger,
 } from "./ui/context-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
-import {CrystalHollowGeometry} from "@/lib/geometry/crystal-hollow-geometry.ts";
 
 const meshOptions = {
   cube: "Cube",
@@ -176,6 +176,14 @@ export function ComponentTree() {
             }}
           >
             Load node
+          </Button>
+          <Button asChild variant={"outline"}>
+            <a
+              href="/Panduan Penggunaan 3D WebGL Tugas Besar Grafika Komputasi Minecraft.pdf"
+              target="_blank"
+            >
+              Guides
+            </a>
           </Button>
           <input
             ref={loadRef}
